@@ -1,0 +1,10 @@
+import Link from "next/link";
+import { ArrowLeft, ArrowRight, BookOpen } from "lucide-react";
+import type { Locale } from "@/lib/i18n";
+import { Container } from "@/components/shared/Container";
+
+type Props = { locale: Locale; eyebrow: string; title: string; description: string; bullets?: string[]; notice?: string; primaryHref?: string; primaryLabel?: string };
+export function InfoPage({ locale, eyebrow, title, description, bullets = [], notice, primaryHref = `/${locale}/shop`, primaryLabel }: Props) {
+  const ar = locale === "ar";
+  return <main dir={ar ? "rtl" : "ltr"} className="min-h-[65vh] bg-ubh-canvas py-12 md:py-16"><Container><div className="mx-auto max-w-3xl"><Link href={`/${locale}`} className="inline-flex items-center gap-2 text-sm font-semibold text-ubh-blue-bright hover:text-ubh-gold">{ar ? <ArrowRight size={16}/> : <ArrowLeft size={16}/>} {ar ? "الرئيسية" : "Home"}</Link><section className="mt-7 rounded-2xl border border-ubh-border bg-white p-7 shadow-sm sm:p-10"><div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#f4f7fa] text-ubh-gold"><BookOpen size={23}/></div><p className="mt-6 text-xs font-bold uppercase tracking-[.18em] text-ubh-gold">{eyebrow}</p><h1 className="mt-3 font-serif text-3xl leading-tight text-ubh-blue sm:text-4xl">{title}</h1><p className="mt-5 text-sm leading-7 text-[#5e7188]">{description}</p>{bullets.length > 0 && <ul className="mt-6 space-y-3">{bullets.map((item) => <li key={item} className="flex gap-3 text-sm leading-6 text-[#40556f]"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-ubh-gold"/><span>{item}</span></li>)}</ul>}{notice && <div role="status" className="mt-7 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-amber-900">{notice}</div>}<Link href={primaryHref} className="mt-8 inline-flex min-h-11 items-center justify-center rounded-lg bg-ubh-blue px-6 py-3 text-sm font-semibold text-white transition hover:bg-ubh-blue-deep">{primaryLabel || (ar ? "تصفح الكتب" : "Browse books")}</Link></section></div></Container></main>
+}

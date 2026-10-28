@@ -1,0 +1,195 @@
+@import "tailwindcss";
+@import "flag-icons/css/flag-icons.min.css";
+
+/*
+ * UBH design tokens — edit this block to change the site's core visual system.
+ * Keep components on semantic `ubh-*` utilities instead of hard-coded hex values.
+ */
+:root {
+  color-scheme: light;
+  --ubh-navy: #061a37;
+  --ubh-blue: #06295a;
+  --ubh-blue-bright: #064a98;
+  --ubh-blue-deep: #0a356b;
+  --ubh-blue-muted: #385477;
+  --ubh-navy-deep: #03152f;
+  --ubh-gold: #c89438;
+  --ubh-gold-light: #dcae57;
+  --ubh-gold-soft: #edc574;
+  --ubh-gold-deep: #a87522;
+  --ubh-gold-wash: #f8f5ef;
+  --ubh-ink: #071b38;
+  --ubh-canvas: #fbfcfe;
+  --ubh-surface: #ffffff;
+  --ubh-border: #dfe7ef;
+  --ubh-muted: #71869f;
+  --ubh-muted-light: #91a2b6;
+
+  /* Typography is local/system-first: no blocking third-party font request. */
+  --ubh-font-sans: "Segoe UI", "Noto Sans Arabic", Arial, sans-serif;
+  --ubh-font-serif: Georgia, "Noto Sans Arabic", serif;
+  --ubh-font-arabic: "Noto Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
+
+  --ubh-radius-card: 1rem;
+  --ubh-content-width: 90rem;
+}
+
+@theme inline {
+  --color-ubh-navy: var(--ubh-navy);
+  --color-ubh-blue: var(--ubh-blue);
+  --color-ubh-blue-bright: var(--ubh-blue-bright);
+  --color-ubh-blue-deep: var(--ubh-blue-deep);
+  --color-ubh-blue-muted: var(--ubh-blue-muted);
+  --color-ubh-navy-deep: var(--ubh-navy-deep);
+  --color-ubh-gold: var(--ubh-gold);
+  --color-ubh-gold-light: var(--ubh-gold-light);
+  --color-ubh-gold-soft: var(--ubh-gold-soft);
+  --color-ubh-gold-deep: var(--ubh-gold-deep);
+  --color-ubh-gold-wash: var(--ubh-gold-wash);
+  --color-ubh-ink: var(--ubh-ink);
+  --color-ubh-canvas: var(--ubh-canvas);
+  --color-ubh-border: var(--ubh-border);
+  --color-ubh-muted: var(--ubh-muted);
+  --color-ubh-muted-light: var(--ubh-muted-light);
+  --font-sans: var(--ubh-font-sans);
+  --font-serif: var(--ubh-font-serif);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+html {
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ubh-surface);
+  color: var(--ubh-ink);
+  font-family: var(--ubh-font-sans);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-serif {
+  font-family: var(--ubh-font-serif);
+}
+
+[dir="rtl"] {
+  font-family: var(--ubh-font-arabic);
+}
+
+[dir="rtl"] .font-serif {
+  font-family: var(--ubh-font-arabic);
+}
+
+::selection {
+  background: var(--ubh-gold);
+  color: #fff;
+}
+
+:focus-visible {
+  outline-color: var(--ubh-gold);
+}
+
+/* Publisher marquee: GPU-friendly, pauses on interaction, respects reduced motion. */
+.publisher-track {
+  display: flex;
+  width: max-content;
+  direction: ltr;
+  animation: publisher-scroll 55s linear infinite;
+  will-change: transform;
+}
+
+.publisher-group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.publisher-logo-wrapper {
+  position: relative;
+  width: 176px;
+  height: 100px;
+}
+
+.publisher-logo {
+  object-fit: contain;
+}
+
+.publisher-track:hover,
+.publisher-track:focus-within {
+  animation-play-state: paused;
+}
+
+@keyframes publisher-scroll {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+/* Small, progressive page reveals. */
+@media (prefers-reduced-motion: no-preference) {
+  .home-reveal,
+  .about-reveal {
+    animation: ubh-fade-up 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .home-delay-1 { animation-delay: 90ms; }
+  .home-delay-2 { animation-delay: 170ms; }
+  .home-delay-3 { animation-delay: 250ms; }
+
+  .about-reveal > * {
+    animation: ubh-fade-up 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .about-reveal > *:nth-child(2) { animation-delay: 100ms; }
+  .about-reveal > *:nth-child(3) { animation-delay: 180ms; }
+  .about-reveal > *:nth-child(4) { animation-delay: 260ms; }
+
+  .about-card {
+    transition: transform 280ms ease, border-color 280ms ease, box-shadow 280ms ease;
+  }
+
+  .about-card:hover {
+    transform: translateY(-4px);
+    border-color: rgb(220 174 87 / 45%);
+    box-shadow: 0 16px 36px rgb(6 26 55 / 10%);
+  }
+}
+
+@keyframes ubh-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 640px) {
+  .publisher-track { animation-duration: 38s; }
+  .publisher-group { gap: 1rem; padding-right: 1rem; }
+  .publisher-logo-wrapper { width: 144px; height: 82px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
