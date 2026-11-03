@@ -20,8 +20,6 @@ import { useCart } from "@/components/store/CartProvider";
 
 import { Container } from "@/components/shared/Container";
 
-
-
 /* ==========================================================================
    CART PAGE
    ========================================================================== */
@@ -59,9 +57,8 @@ export default function CartPage({
      ======================================================================== */
 
   const subtotal = items.reduce(
-    (total, item) =>
-      total + item.product.price * item.quantity,
-    0
+    (total, item) => total + item.product.price * item.quantity,
+    0,
   );
 
   return (
@@ -70,30 +67,22 @@ export default function CartPage({
       {/* HEADER                                                             */}
       {/* ================================================================== */}
 
-      <header
-        dir={isArabic ? "rtl" : "ltr"}
-        className="bg-ubh-navy text-white"
-      >
+      <header dir={isArabic ? "rtl" : "ltr"} className="bg-ubh-navy text-white">
         {/*
-*/}
-<Container>
+         */}
+        {/* <Container>
           <div className="pb-6 pt-4">
             <div className="flex items-center gap-2 text-[10px] text-white/50">
-              <Link
-                href={`/${locale}`}
-                className="hover:text-white"
-              >
+              <Link href={`/${locale}`} className="hover:text-white">
                 {t.home}
               </Link>
 
               <span>›</span>
 
-              <span className="text-white/80">
-                {t.cart}
-              </span>
+              <span className="text-white/80">{t.cart}</span>
             </div>
           </div>
-        </Container>
+        </Container> */}
       </header>
 
       {/* ================================================================== */}
@@ -106,17 +95,12 @@ export default function CartPage({
       >
         <Container>
           <div className="py-8 md:py-12">
-
             {/* Back to shop */}
             <Link
               href={`/${locale}/shop`}
               className="mb-8 inline-flex items-center gap-2 text-[10px] font-semibold text-ubh-blue-bright hover:text-ubh-gold"
             >
-              {isArabic ? (
-                <ArrowRight size={14} />
-              ) : (
-                <ArrowLeft size={14} />
-              )}
+              {isArabic ? <ArrowRight size={14} /> : <ArrowLeft size={14} />}
 
               {t.continueShopping}
             </Link>
@@ -144,12 +128,8 @@ export default function CartPage({
 
             {items.length === 0 ? (
               <section className="rounded-lg border border-ubh-border bg-white px-6 py-16 text-center md:px-10">
-
                 <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[#f0f5f9] text-ubh-gold">
-                  <ShoppingBag
-                    size={32}
-                    strokeWidth={1.4}
-                  />
+                  <ShoppingBag size={32} strokeWidth={1.4} />
                 </div>
 
                 <h2 className="mt-6 font-serif text-2xl text-ubh-blue">
@@ -172,26 +152,20 @@ export default function CartPage({
                     <ArrowRight size={15} />
                   )}
                 </Link>
-
               </section>
             ) : (
-
               /* ================================================================== */
               /* CART CONTENT                                                        */
               /* ================================================================== */
 
               <div className="grid gap-7 lg:grid-cols-[1fr_340px]">
-
                 {/* ================================================================ */}
                 {/* ITEMS                                                             */}
                 {/* ================================================================ */}
 
                 <section>
-
                   <div className="overflow-hidden rounded-lg border border-ubh-border bg-white">
-
                     {items.map((item, index) => (
-
                       <div
                         key={item.product.id}
                         className={`p-5 md:p-6 ${
@@ -200,9 +174,7 @@ export default function CartPage({
                             : ""
                         }`}
                       >
-
                         <div className="flex gap-4 md:gap-6">
-
                           {/* ====================================================== */}
                           {/* PRODUCT IMAGE                                           */}
                           {/* ====================================================== */}
@@ -211,7 +183,6 @@ export default function CartPage({
                             href={`/${locale}/shop/${item.product.slug}`}
                             className="relative flex h-28 w-20 shrink-0 items-center justify-center overflow-hidden rounded border border-[#e4eaf0] bg-ubh-canvas md:h-36 md:w-24"
                           >
-
                             {item.product.cover ? (
                               <Image
                                 src={item.product.cover}
@@ -226,7 +197,6 @@ export default function CartPage({
                                 className="text-[#a5b4c4]"
                               />
                             )}
-
                           </Link>
 
                           {/* ====================================================== */}
@@ -234,7 +204,6 @@ export default function CartPage({
                           {/* ====================================================== */}
 
                           <div className="min-w-0 flex-1">
-
                             {/* Publisher */}
                             <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-ubh-gold">
                               {item.product.publisher}
@@ -266,22 +235,18 @@ export default function CartPage({
                             {/* ==================================================== */}
 
                             <div className="mt-4 flex flex-wrap items-center gap-4">
-
                               {/* Quantity */}
                               <div className="flex h-9 items-center rounded border border-[#d8e1ea] bg-white">
-
                                 {/* Minus */}
                                 <button
                                   type="button"
                                   onClick={() =>
                                     updateQuantity(
                                       item.product.id,
-                                      item.quantity - 1
+                                      item.quantity - 1,
                                     )
                                   }
-                                  disabled={
-                                    item.quantity <= 1
-                                  }
+                                  disabled={item.quantity <= 1}
                                   className="flex h-full w-9 items-center justify-center text-ubh-blue-muted hover:text-ubh-gold disabled:opacity-30"
                                 >
                                   <Minus size={13} />
@@ -298,37 +263,27 @@ export default function CartPage({
                                   onClick={() =>
                                     updateQuantity(
                                       item.product.id,
-                                      item.quantity + 1
+                                      item.quantity + 1,
                                     )
                                   }
-                                  disabled={
-                                    item.quantity >=
-                                    item.product.stock
-                                  }
+                                  disabled={item.quantity >= item.product.stock}
                                   className="flex h-full w-9 items-center justify-center text-ubh-blue-muted hover:text-ubh-gold disabled:opacity-30"
                                 >
                                   <Plus size={13} />
                                 </button>
-
                               </div>
 
                               {/* Remove */}
                               <button
                                 type="button"
-                                onClick={() =>
-                                  removeItem(
-                                    item.product.id
-                                  )
-                                }
+                                onClick={() => removeItem(item.product.id)}
                                 className="flex items-center gap-1.5 text-[10px] font-semibold text-ubh-muted-light hover:text-red-600"
                               >
                                 <Trash2 size={13} />
 
                                 {t.remove}
                               </button>
-
                             </div>
-
                           </div>
 
                           {/* ====================================================== */}
@@ -336,23 +291,14 @@ export default function CartPage({
                           {/* ====================================================== */}
 
                           <div className="hidden text-right md:block">
-
                             <p className="text-sm font-bold text-ubh-blue">
                               {item.product.currency}{" "}
-                              {(
-                                item.product.price *
-                                item.quantity
-                              ).toFixed(2)}
+                              {(item.product.price * item.quantity).toFixed(2)}
                             </p>
-
                           </div>
-
                         </div>
-
                       </div>
-
                     ))}
-
                   </div>
 
                   {/* Clear cart */}
@@ -365,7 +311,6 @@ export default function CartPage({
                       {t.clearCart}
                     </button>
                   </div>
-
                 </section>
 
                 {/* ================================================================ */}
@@ -373,18 +318,14 @@ export default function CartPage({
                 {/* ================================================================ */}
 
                 <aside>
-
                   <section className="rounded-lg border border-ubh-border bg-white p-6">
-
                     <h2 className="text-sm font-bold text-ubh-blue">
                       {t.orderSummary}
                     </h2>
 
                     <div className="mt-5 space-y-4">
-
                       {/* Subtotal */}
                       <div className="flex justify-between gap-4">
-
                         <span className="text-xs text-ubh-muted">
                           {t.subtotal}
                         </span>
@@ -392,12 +333,10 @@ export default function CartPage({
                         <span className="text-xs font-semibold text-ubh-blue-muted">
                           AED {subtotal.toFixed(2)}
                         </span>
-
                       </div>
 
                       {/* Delivery */}
                       <div className="flex justify-between gap-4 border-b border-[#edf1f5] pb-4">
-
                         <span className="text-xs text-ubh-muted">
                           {t.delivery}
                         </span>
@@ -405,12 +344,10 @@ export default function CartPage({
                         <span className="text-xs font-semibold text-ubh-blue-muted">
                           {t.calculatedAtCheckout}
                         </span>
-
                       </div>
 
                       {/* Total */}
                       <div className="flex justify-between gap-4">
-
                         <span className="text-sm font-bold text-ubh-blue">
                           {t.total}
                         </span>
@@ -418,9 +355,7 @@ export default function CartPage({
                         <span className="text-lg font-bold text-ubh-blue">
                           AED {subtotal.toFixed(2)}
                         </span>
-
                       </div>
-
                     </div>
 
                     {/* Checkout */}
@@ -444,7 +379,6 @@ export default function CartPage({
                     >
                       {t.continueShopping}
                     </Link>
-
                   </section>
 
                   {/* ============================================================ */}
@@ -452,9 +386,7 @@ export default function CartPage({
                   {/* ============================================================ */}
 
                   <div className="mt-4 grid grid-cols-2 gap-2">
-
                     <div className="rounded border border-ubh-border bg-white p-4 text-center">
-
                       <ShieldCheck
                         size={18}
                         className="mx-auto text-ubh-gold"
@@ -463,32 +395,22 @@ export default function CartPage({
                       <p className="mt-2 text-[8px] font-bold text-ubh-blue-muted">
                         {t.secureCheckout}
                       </p>
-
                     </div>
 
                     <div className="rounded border border-ubh-border bg-white p-4 text-center">
-
-                      <Truck
-                        size={18}
-                        className="mx-auto text-ubh-gold"
-                      />
+                      <Truck size={18} className="mx-auto text-ubh-gold" />
 
                       <p className="mt-2 text-[8px] font-bold text-ubh-blue-muted">
                         {t.uaeDelivery}
                       </p>
-
                     </div>
-
                   </div>
-
                 </aside>
-
               </div>
             )}
-
           </div>
         </Container>
       </main>
-</>
+    </>
   );
 }

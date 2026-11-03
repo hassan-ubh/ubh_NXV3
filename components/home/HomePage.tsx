@@ -265,7 +265,7 @@ export function HomePage({ locale }: { locale: Locale }) {
                 src="/images/home/world map.png"
                 alt="UBH global reach map"
                 fill
-                    sizes="(max-width: 1023px) 100vw, 50vw"
+                sizes="(max-width: 1023px) 100vw, 50vw"
                 className="object-cover"
               />
             </div>
@@ -923,79 +923,39 @@ export function HomePage({ locale }: { locale: Locale }) {
       </section>
       <section className="bg-ubh-navy py-8 text-white">
         <Container>
-          <div className="flex items-center justify-between">
-            <h2 className="font-serif text-2xl">{t.institutionsTitle}</h2>
+          
+<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+  <h2 className="font-serif text-xl leading-snug sm:text-2xl">
+    {t.institutionsTitle}
+  </h2>
 
-            <Link
-              href={`/${locale}/institutions`}
-              className="
-          group
-          inline-flex
-          w-fit
-          shrink-0
-          items-center
-          gap-2
-          rounded-full
-          border
-          border-slate-200
-          bg-white
-          px-5
-          py-2.5
-          text-sm
-          font-semibold
-          text-ubh-navy
-          shadow-sm
-          transition-all
-          duration-300
-          hover:border-ubh-gold-light
-          hover:bg-ubh-navy
-          hover:text-white
-          hover:shadow-md
-          focus:outline-none
-          focus:ring-2
-          focus:ring-ubh-gold-light
-          focus:ring-offset-2
-        "
-            >
-              <span>{t.viewAllInstitutions}</span>
+  <Link
+    href={`/${locale}/institutions`}
+    className="
+      group inline-flex w-fit shrink-0 items-center justify-center gap-2
+      rounded-full border border-slate-200 bg-white
+      px-4 py-2.5 text-sm font-semibold text-ubh-navy shadow-sm
+      transition-all duration-300
+      hover:border-ubh-gold-light hover:bg-ubh-navy hover:text-white
+      hover:shadow-md
+      focus:outline-none focus:ring-2 focus:ring-ubh-gold-light
+      focus:ring-offset-2
+    "
+  >
+    <span>{t.viewAllInstitutions}</span>
 
-              <span
-                aria-hidden="true"
-                className={`
-    transition-transform
-    duration-300
-    ${
-      locale === "ar"
-        ? "group-hover:-translate-x-1"
-        : "group-hover:translate-x-1"
-    }
-  `}
-              >
-                {locale === "ar" ? "←" : "→"}
-              </span>
-            </Link>
-
-            {/* <Link
-              className="text-sm text-ubh-gold-light"
-              href={`/${locale}/institutions`}
-            >
-              
-              <span
-                aria-hidden="true"
-                className={`
-    transition-transform
-    duration-300
-    ${
-      locale === "ar"
-        ? "group-hover:-translate-x-1"
-        : "group-hover:translate-x-1"
-    }
-  `}
-              >
-                {locale === "ar" ? "←" : "→"}
-              </span>
-            </Link> */}
-          </div>
+    <span
+      aria-hidden="true"
+      className={`transition-transform duration-300 ${
+        locale === "ar"
+          ? "group-hover:-translate-x-1"
+          : "group-hover:translate-x-1"
+      }`}
+    >
+      {locale === "ar" ? "←" : "→"}
+    </span>
+  </Link>
+</div>
 
           <div className="mt-5 grid grid-cols-2 overflow-hidden rounded-md bg-white text-ubh-ink sm:grid-cols-3 lg:grid-cols-6">
             {institutions.map((institution) => (

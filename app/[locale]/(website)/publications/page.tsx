@@ -460,7 +460,7 @@ export default async function PublicationsPage({
             {subjects.slice(1).map((subject) => (
               <Link
                 key={subject.en}
-                href={`/${locale}/shop/products?category=${resolveCategorySlug(subject.en)}`}
+                href={`/${locale}/shop/products?collection=ubh?category=${resolveCategorySlug(subject.en)}`}
                 className="group flex min-h-20 items-center justify-center rounded-xl border border-ubh-border bg-white p-4 text-center transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-ubh-gold-light hover:shadow-[0_12px_28px_rgba(6,26,55,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold-light focus-visible:ring-offset-2 sm:p-5"
               >
                 <span className="text-sm font-semibold text-ubh-navy transition-colors group-hover:text-ubh-gold-deep">

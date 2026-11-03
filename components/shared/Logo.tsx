@@ -57,20 +57,25 @@ export function Logo({
       href={store ? `/${locale}/shop` : `/${locale}`}
       aria-label={label}
       dir={isArabic ? "rtl" : "ltr"}
-      className={[
-        "group inline-flex min-w-0 shrink-0 items-center",
-        "rounded-md transition-opacity duration-200",
-        "hover:opacity-90",
-        "focus-visible:outline-none focus-visible:ring-2",
-        "focus-visible:ring-ubh-gold focus-visible:ring-offset-2",
-        isFooter
-          ? "w-full"
-          : [
-              "h-full",
-              "max-w-full",
-              isArabic ? "ms-auto" : "me-auto",
-            ].join(" "),
-      ].join(" ")}
+      
+className={[
+  "group inline-flex min-w-0 shrink-0 items-center",
+  "rounded-md transition-opacity duration-200",
+  "hover:opacity-90",
+  "focus-visible:outline-none focus-visible:ring-2",
+  "focus-visible:ring-ubh-gold focus-visible:ring-offset-2",
+  isFooter
+    ? "w-full"
+    : [
+        "h-full",
+        "max-w-full",
+        // Keep the logo close to the outer edge on mobile.
+        // Restore the existing auto-margin behavior on desktop.
+        "mx-0 sm:mx-0",
+        isArabic ? "sm:ms-auto" : "sm:me-auto",
+      ].join(" "),
+].join(" ")}
+
     >
       <Image
         src="/images/logo/ubh-logo.svg"

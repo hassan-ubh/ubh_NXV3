@@ -103,58 +103,58 @@ export default async function NewsPage({ params }: NewsPageProps) {
       className="min-h-screen bg-ubh-canvas"
     >
       {/* Hero */}
-      <section className="relative isolate overflow-hidden bg-ubh-navy text-white">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-32 -top-40 h-[28rem] w-[28rem] rounded-full bg-ubh-gold/10 blur-3xl"
-        />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -bottom-40 -left-24 h-[26rem] w-[26rem] rounded-full bg-blue-500/10 blur-3xl"
-        />
+ 
+<section className="relative isolate overflow-hidden bg-ubh-navy text-white">
+  {/* Background image */}
+  <Image
+    src="/images/news/publishing-connections.jpg"
+    alt=""
+    fill
+    priority
+    sizes="100vw"
+    className="object-cover object-center"
+  />
 
-        <Container className="relative py-14 sm:py-20 lg:py-24">
-          {/* <nav
-            aria-label={isArabic ? "مسار التنقل" : "Breadcrumb"}
-            className="flex items-center gap-2 text-xs text-slate-400 sm:text-sm"
-          >
-            <Link
-              href={`/${locale}`}
-              className="transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold-light"
-            >
-              {content.breadcrumbHome}
-            </Link>
+  {/* Dark overlay for readability */}
+  <div
+    aria-hidden="true"
+    className="absolute inset-0 bg-gradient-to-r from-ubh-navy via-ubh-navy/90 to-ubh-navy/60"
+  />
 
-            <span aria-hidden="true" className="text-white/30">
-              /
-            </span>
+  {/* Bottom fade */}
+  <div
+    aria-hidden="true"
+    className="absolute inset-0 bg-gradient-to-t from-ubh-navy/70 via-transparent to-ubh-navy/30"
+  />
 
-            <span aria-current="page" className="text-white">
-              {content.breadcrumbNews}
-            </span>
-          </nav> */}
+  {/* Gold ambient accent */}
+  <div
+    aria-hidden="true"
+    className="pointer-events-none absolute -right-32 -top-40 h-[28rem] w-[28rem] rounded-full bg-ubh-gold/10 blur-3xl"
+  />
 
-          <div className="mt-10 max-w-4xl sm:mt-14">
-            <div className="inline-flex items-center gap-2 rounded-full border border-ubh-gold-light/25 bg-white/[0.04] px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#e4ba6e] sm:text-sm">
-              <Newspaper className="h-4 w-4" aria-hidden="true" />
-              {content.eyebrow}
-            </div>
+  <Container className="relative z-10 py-14 sm:py-20 lg:py-24">
+    <div className="mt-10 max-w-4xl sm:mt-14">
+      <div className="inline-flex items-center gap-2 rounded-full border border-ubh-gold-light/30 bg-white/[0.06] px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#e4ba6e] backdrop-blur-sm sm:text-sm">
+        <Newspaper className="h-4 w-4" aria-hidden="true" />
+        {content.eyebrow}
+      </div>
 
-            <h1 className="mt-6 max-w-4xl text-balance font-serif text-4xl leading-[1.15] tracking-tight sm:text-5xl lg:text-6xl">
-              {content.title}
-            </h1>
+      <h1 className="mt-6 max-w-4xl text-balance font-serif text-4xl leading-[1.15] tracking-tight sm:text-5xl lg:text-6xl">
+        {content.title}
+      </h1>
 
-            <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg sm:leading-9">
-              {content.description}
-            </p>
-          </div>
+      <p className="mt-6 max-w-2xl text-base leading-8 text-slate-200 sm:text-lg sm:leading-9">
+        {content.description}
+      </p>
+    </div>
 
-          <div
-            aria-hidden="true"
-            className="mt-12 h-px bg-gradient-to-r from-ubh-gold-light/50 via-white/10 to-transparent sm:mt-16"
-          />
-        </Container>
-      </section>
+    <div
+      aria-hidden="true"
+      className="mt-12 h-px bg-gradient-to-r from-ubh-gold-light/60 via-white/20 to-transparent sm:mt-16"
+    />
+  </Container>
+</section>
 
       {/* Featured story */}
       {featured ? (

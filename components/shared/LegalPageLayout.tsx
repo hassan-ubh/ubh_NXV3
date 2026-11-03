@@ -48,7 +48,9 @@ export function LegalPageLayout({
     <main
       dir={isArabic ? "rtl" : "ltr"}
       lang={locale}
-      className="min-h-screen bg-[#f7f8fb] text-ubh-navy "
+      className={`min-h-screen bg-[#f7f8fb] text-ubh-navy ${
+  isStore ? "" : "pt-13 sm:pt-17 lg:pt-19"
+}`}
     >
       {/* Hero */}
       <section className="relative overflow-hidden bg-ubh-navy">
@@ -63,7 +65,7 @@ export function LegalPageLayout({
 
         <Container>
           <div className="relative py-12 sm:py-16 lg:py-20">
-            <div className="mb-6 flex items-center gap-2 text-sm text-white/60">
+            {/* <div className="mb-6 flex items-center gap-2 text-sm text-white/60">
               <Link
                 href={backHref}
                 className="transition-colors hover:text-ubh-gold-light"
@@ -80,7 +82,7 @@ export function LegalPageLayout({
               <span className="text-ubh-gold-light">
                 {isArabic ? "المعلومات القانونية" : "Legal"}
               </span>
-            </div>
+            </div> */}
 
             <div className="flex max-w-3xl items-start gap-4">
               <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-ubh-gold-light/30 bg-white/5 sm:flex">

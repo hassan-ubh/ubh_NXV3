@@ -586,6 +586,12 @@ function PopularSubjects({ locale }: { locale: Locale }) {
   );
 }
 
+
+
+
+
+import BannerCarousel from "@/components/store/Bannner/BannerCarousel";
+import { bannersByLocale } from "@/data/carousel";
 /* =========================================================
    INSTITUTIONAL SERVICES
    ========================================================= */
@@ -732,6 +738,7 @@ export function StorePage({ locale }: StorePageProps) {
           shopLabel={t.shop}
           ebooksLabel={t.ebooks}
         />
+        <BannerCarousel items={bannersByLocale[locale]} />
 
         <StoreFeatureStrip locale={locale} />
 

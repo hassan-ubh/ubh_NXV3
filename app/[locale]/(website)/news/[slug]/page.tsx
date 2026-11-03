@@ -117,15 +117,37 @@ export default async function NewsArticlePage({
     >
       {/* Article hero */}
       <section className="relative isolate overflow-hidden bg-ubh-navy text-white">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-32 -top-40 h-[28rem] w-[28rem] rounded-full bg-ubh-gold/10 blur-3xl"
-        />
+        <Image
+    src={article.image}
+    alt=""
+    fill
+    priority
+    sizes="100vw"
+    className="object-cover object-center"
+  />
 
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -bottom-40 -left-24 h-[26rem] w-[26rem] rounded-full bg-blue-500/10 blur-3xl"
-        />
+  {/* Navy overlay for readable text */}
+  <div
+    aria-hidden="true"
+    className="absolute inset-0 bg-gradient-to-r from-ubh-navy/95 via-ubh-navy/85 to-ubh-navy/65"
+  />
+
+  {/* Additional top and bottom shading */}
+  <div
+    aria-hidden="true"
+    className="absolute inset-0 bg-gradient-to-b from-ubh-navy/30 via-transparent to-ubh-navy/75"
+  />
+
+  {/* Gold ambient accent */}
+  <div
+    aria-hidden="true"
+    className="pointer-events-none absolute -right-32 -top-40 h-[28rem] w-[28rem] rounded-full bg-ubh-gold/10 blur-3xl"
+  />
+
+  <div
+    aria-hidden="true"
+    className="pointer-events-none absolute -bottom-40 -left-24 h-[26rem] w-[26rem] rounded-full bg-blue-500/10 blur-3xl"
+  />
 
         <Container className="relative py-10 sm:py-14 lg:py-16">
           {/* Breadcrumb */}

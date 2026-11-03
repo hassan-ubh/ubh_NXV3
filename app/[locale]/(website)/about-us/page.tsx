@@ -419,7 +419,7 @@ export default async function AboutUsPage({
                 </div>
 
                 <Link
-                  href={`/${locale}/publishers`}
+                  href={`/${locale}/publish-with-us`}
                   className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-ubh-navy transition hover:text-ubh-gold"
                 >
                   {t.publishCta}
