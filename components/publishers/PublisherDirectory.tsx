@@ -20,11 +20,13 @@ const PAGE_SIZE = 8;
 type PublisherDirectoryProps = {
   publishers: readonly Publisher[];
   locale: Locale;
+  variant?: "website" | "store";
 };
 
 export function PublisherDirectory({
   publishers,
   locale,
+  variant = "website",
 }: PublisherDirectoryProps) {
   const t = copy[locale].publishers;
   const isArabic = locale === "ar";
@@ -96,6 +98,16 @@ export function PublisherDirectory({
     setPage(1);
   }
 
+const getPublisherHref = (publisher: Publisher) => {
+  if (variant === "store") {
+    return `/${locale}/shop/products?publisher=${encodeURIComponent(
+      publisher.name,
+    )}`;
+  }
+
+  return `/${locale}/publishers/${publisher.slug}`;
+};
+
   return (
     <section dir={isArabic ? "rtl" : "ltr"}>
       {/* Search and sorting */}
@@ -157,7 +169,7 @@ export function PublisherDirectory({
               className="group flex min-h-[285px] min-w-0 flex-col rounded-md border border-[#dce5ef] bg-white p-4 transition duration-300 hover:-translate-y-1 hover:border-[#c8d8e8] hover:shadow-[0_12px_30px_rgba(6,38,76,0.08)]"
             >
               <Link
-                href={`/${locale}/publishers/${publisher.slug}`}
+                href={getPublisherHref(publisher)}
                 aria-label={`${t.viewPublisher}: ${publisher.name}`}
                 className="flex h-[72px] items-center rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-ubh-gold"
               >
@@ -201,7 +213,7 @@ export function PublisherDirectory({
               </div>
 
               <Link
-                href={`/${locale}/publishers/${publisher.slug}`}
+                href={getPublisherHref(publisher)}
                 className="mt-auto inline-flex items-center gap-2 pt-5 text-xs font-semibold text-ubh-blue-bright transition-colors hover:text-ubh-gold focus-visible:outline focus-visible:outline-2 focus-visible:outline-ubh-gold"
               >
                 {t.viewPublisher}

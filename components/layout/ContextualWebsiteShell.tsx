@@ -1,4 +1,3 @@
-
 "use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
@@ -31,7 +30,7 @@ export function ContextualWebsiteShell({
         <SiteHeader locale={locale} />
       )}
 
-      {children}
+      <main className={useStoreHeader ? "" : "pt-[70px]"}>{children}</main>
 
       <Footer locale={locale} />
     </>

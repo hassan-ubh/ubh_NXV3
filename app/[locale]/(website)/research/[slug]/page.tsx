@@ -106,7 +106,7 @@ export default async function ResearchDetailPage({
         />
 
         <div className="relative mx-auto max-w-5xl px-5 pb-14 pt-10 sm:px-8 sm:pb-20 sm:pt-14 lg:px-10 lg:pb-24 lg:pt-16">
-          <Link
+          {/* <Link
             href={`/${locale}/research`}
             className="group mb-10 inline-flex min-h-11 items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-4 py-2 text-sm font-medium text-slate-200 transition-colors duration-200 hover:border-ubh-gold-light/60 hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold-light focus-visible:ring-offset-2 focus-visible:ring-offset-ubh-navy sm:mb-14"
           >
@@ -122,7 +122,7 @@ export default async function ResearchDetailPage({
               />
             )}
             {backLabel}
-          </Link>
+          </Link> */}
 
           <div className="max-w-4xl">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-ubh-gold-light/25 bg-ubh-gold-light/10 px-3.5 py-2 text-xs font-semibold tracking-wide text-[#e7bd70] sm:text-sm">

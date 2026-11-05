@@ -227,13 +227,15 @@ export function SearchForm({
   const isArabic = locale === "ar";
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
-  const visibleSuggestions = suggestionsOpen && query.trim().length >= 2
-    ? suggestions.slice(0, 6)
-    : [];
+  const visibleSuggestions =
+    suggestionsOpen && query.trim().length >= 2 ? suggestions.slice(0, 6) : [];
 
   useEffect(() => {
     const handlePointerDown = (event: PointerEvent) => {
-      if (event.target instanceof Node && !rootRef.current?.contains(event.target)) {
+      if (
+        event.target instanceof Node &&
+        !rootRef.current?.contains(event.target)
+      ) {
         setSuggestionsOpen(false);
       }
     };
@@ -305,7 +307,11 @@ export function SearchForm({
           aria-label={searchLabel}
           className={`group flex ${compact ? "h-9" : "h-11"} w-12 shrink-0 items-center justify-center rounded-e-[11px] bg-ubh-gold text-white transition-colors duration-200 hover:bg-[#b5822e] active:bg-[#9f7025] focus-visible:z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ubh-navy ${buttonClassName}`}
         >
-          <Search size={19} strokeWidth={2} className="transition-transform duration-200 group-hover:scale-110" />
+          <Search
+            size={19}
+            strokeWidth={2}
+            className="transition-transform duration-200 group-hover:scale-110"
+          />
         </button>
       </form>
 
@@ -333,19 +339,38 @@ export function SearchForm({
               <span className="flex h-14 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-100 bg-slate-50">
                 {item.cover ? (
                   // Remote covers are already present in the product catalogue.
-                  <Image src={item.cover} alt="" width={44} height={56} sizes="44px" loading="lazy" className="h-full w-full object-contain" />
+                  <Image
+                    src={item.cover}
+                    alt=""
+                    width={44}
+                    height={56}
+                    sizes="44px"
+                    loading="lazy"
+                    className="h-full w-full object-contain"
+                  />
                 ) : (
-                  <span className="text-[9px] font-semibold text-slate-400">UBH</span>
+                  <span className="text-[9px] font-semibold text-slate-400">
+                    UBH
+                  </span>
                 )}
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block line-clamp-2 text-sm font-semibold leading-5 text-ubh-navy">{item.title}</span>
-                <span className="mt-1 block truncate text-xs text-slate-500">{item.meta}</span>
+                <span className="block line-clamp-2 text-sm font-semibold leading-5 text-ubh-navy">
+                  {item.title}
+                </span>
+                <span className="mt-1 block truncate text-xs text-slate-500">
+                  {item.meta}
+                </span>
                 {item.price !== undefined && (
-                  <span className="mt-1 block text-xs font-bold text-ubh-gold-deep">AED {item.price.toFixed(2)}</span>
+                  <span className="mt-1 block text-xs font-bold text-ubh-gold-deep">
+                    AED {item.price.toFixed(2)}
+                  </span>
                 )}
               </span>
-              <ArrowRight size={15} className={`shrink-0 text-slate-300 ${isArabic ? "rotate-180" : ""}`} />
+              <ArrowRight
+                size={15}
+                className={`shrink-0 text-slate-300 ${isArabic ? "rotate-180" : ""}`}
+              />
             </button>
           ))}
           <button
@@ -464,13 +489,16 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
     });
   }, []);
 
-  const normalizeSearch = useCallback((value: unknown) =>
-    String(value ?? "")
-      .normalize("NFC")
-      .toLocaleLowerCase(locale === "ar" ? "ar" : "en")
-      .replace(/[^\p{L}\p{N}]+/gu, " ")
-      .trim()
-      .replace(/\s+/g, " "), [locale]);
+  const normalizeSearch = useCallback(
+    (value: unknown) =>
+      String(value ?? "")
+        .normalize("NFC")
+        .toLocaleLowerCase(locale === "ar" ? "ar" : "en")
+        .replace(/[^\p{L}\p{N}]+/gu, " ")
+        .trim()
+        .replace(/\s+/g, " "),
+    [locale],
+  );
 
   const suggestions = useMemo<SearchSuggestion[]>(() => {
     const query = normalizeSearch(searchQuery);
@@ -479,32 +507,39 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
 
     return products
       .filter((product: Product) => {
-        const searchable = normalizeSearch([
-          product.title,
-          product.titleAr,
-          product.subtitle,
-          product.description,
-          product.descriptionAr,
-          ...(product.authors ?? []),
-          product.publisher,
-          product.publisherSlug,
-          product.isbn,
-          product.isbn10,
-          product.barcode,
-          product.sku,
-          ...(product.subjects ?? []),
-          product.category,
-          product.series,
-          product.language,
-          product.format,
-        ].filter(Boolean).join(" "));
+        const searchable = normalizeSearch(
+          [
+            product.title,
+            product.titleAr,
+            product.subtitle,
+            product.description,
+            product.descriptionAr,
+            ...(product.authors ?? []),
+            product.publisher,
+            product.publisherSlug,
+            product.isbn,
+            product.isbn10,
+            product.barcode,
+            product.sku,
+            ...(product.subjects ?? []),
+            product.category,
+            product.series,
+            product.language,
+            product.format,
+          ]
+            .filter(Boolean)
+            .join(" "),
+        );
         return terms.every((term) => searchable.includes(term));
       })
       .slice(0, 6)
       .map((product) => ({
         id: product.id,
-        title: locale === "ar" ? product.titleAr || product.title : product.title,
-        meta: [product.authors?.join(", "), product.publisher, product.isbn].filter(Boolean).join(" · "),
+        title:
+          locale === "ar" ? product.titleAr || product.title : product.title,
+        meta: [product.authors?.join(", "), product.publisher, product.isbn]
+          .filter(Boolean)
+          .join(" · "),
         href: `/${locale}/shop/${encodeURIComponent(product.slug)}`,
         cover: product.cover,
         price: product.price,
@@ -638,7 +673,7 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
       {
         key: "publishers",
         label: t.publishersNav,
-        href: `/${locale}/publishers`,
+        href: `/${locale}/shop/publishers`,
       },
       {
         key: "offers",
@@ -660,18 +695,33 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
   );
 
   const getSubItems = useCallback(
-    (key: string): string[] => {
-      if (key === "institutions") return [];
+  (key: string): string[] => {
+    if (key === "institutions") return [];
 
-      const items = t.navItems[key as keyof typeof t.navItems];
+    if (key === "publishers") {
+      return locale === "ar"
+        ? [
+            "دوليون – الإنجليزية",
+            "دوليون – العربية",
+            "محليون – الإنجليزية",
+            "محليون – العربية",
+          ]
+        : [
+            "International – English",
+            "International – Arabic",
+            "Local – English",
+            "Local – Arabic",
+          ];
+    }
 
-      if (!Array.isArray(items)) return [];
+    const items = t.navItems[key as keyof typeof t.navItems];
 
-      return items.filter((item): item is string => typeof item === "string");
-    },
-    [t],
-  );
+    if (!Array.isArray(items)) return [];
 
+    return items.filter((item): item is string => typeof item === "string");
+  },
+  [locale, t],
+);
   const categories = useMemo(() => getSubItems("categories"), [getSubItems]);
 
   /* ------------------------------------------------------------------------ */
@@ -715,6 +765,36 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
   );
 
   const getSubItemHref = (item: NavItem, subItem: string): string => {
+    if (item.key === "publishers") {
+      const publisherFilters: Record<
+        string,
+        { market: "local" | "international"; language: "en" | "ar" }
+      > = {
+        "international-en": {
+          market: "international",
+          language: "en",
+        },
+        "international-ar": {
+          market: "international",
+          language: "ar",
+        },
+        "local-en": {
+          market: "local",
+          language: "en",
+        },
+        "local-ar": {
+          market: "local",
+          language: "ar",
+        },
+      };
+
+      const filter = publisherFilters[subItem];
+
+      if (filter) {
+        return `/${locale}/shop/publishers?market=${filter.market}&language=${filter.language}`;
+      }
+    }
+
     const params = new URLSearchParams();
     const existingQuery = item.href.split("?")[1];
 
@@ -723,14 +803,33 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
         params.set(key, value);
       });
     }
+    if (item.key === "publishers") {
+  const publisherSubItems = getSubItems("publishers");
+  const selectedIndex = publisherSubItems.indexOf(subItem);
+
+  const publisherFilters = [
+    { market: "international", language: "en" },
+    { market: "international", language: "ar" },
+    { market: "local", language: "en" },
+    { market: "local", language: "ar" },
+  ];
+
+  const selectedFilter = publisherFilters[selectedIndex];
+
+  if (selectedFilter) {
+    return `/${locale}/shop/publishers?market=${selectedFilter.market}&language=${selectedFilter.language}`;
+  }
+
+  return item.href;
+}
 
     const categorySlug = resolveCategorySlug(subItem);
+
     if (categorySlug) {
       params.set("category", categorySlug);
       return `/${locale}/shop/products?${params.toString()}`;
     }
 
-    // Non-category submenu items still navigate to their valid parent collection.
     return item.href;
   };
 
@@ -1264,8 +1363,32 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
                   onClick={() => setActiveNav(null)}
                   className="flex min-h-10 items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm text-slate-600 transition-colors hover:bg-ubh-gold-wash hover:text-ubh-navy"
                 >
-                  <span>{subItem}</span>
-                  <ArrowRight size={14} className={`shrink-0 text-ubh-gold ${isArabic ? "rotate-180" : ""}`} />
+                  <span>
+                    {item.key === "publishers"
+                      ? ({
+                          "international-en":
+                            locale === "ar"
+                              ? "دوليون – إنجليزي"
+                              : "International – English",
+                          "international-ar":
+                            locale === "ar"
+                              ? "دوليون – عربي"
+                              : "International – Arabic",
+                          "local-en":
+                            locale === "ar"
+                              ? "محليون – إنجليزي"
+                              : "Local – English",
+                          "local-ar":
+                            locale === "ar"
+                              ? "محليون – عربي"
+                              : "Local – Arabic",
+                        }[subItem] ?? subItem)
+                      : subItem}
+                  </span>
+                  <ArrowRight
+                    size={14}
+                    className={`shrink-0 text-ubh-gold ${isArabic ? "rotate-180" : ""}`}
+                  />
                 </Link>
               ))}
             </div>,
@@ -1413,8 +1536,32 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
                           className="flex min-h-11 items-center justify-between gap-4 border-b border-slate-200 py-2.5 text-sm text-slate-600 transition-colors last:border-b-0 hover:text-ubh-gold-deep"
                           onClick={closeMenus}
                         >
-                          <span>{subItem}</span>
-                          <ArrowRight size={14} className={`shrink-0 ${isArabic ? "rotate-180" : ""}`} />
+                          <span>
+                            {item.key === "publishers"
+                              ? ({
+                                  "international-en":
+                                    locale === "ar"
+                                      ? "دوليون – إنجليزي"
+                                      : "International – English",
+                                  "international-ar":
+                                    locale === "ar"
+                                      ? "دوليون – عربي"
+                                      : "International – Arabic",
+                                  "local-en":
+                                    locale === "ar"
+                                      ? "محليون – إنجليزي"
+                                      : "Local – English",
+                                  "local-ar":
+                                    locale === "ar"
+                                      ? "محليون – عربي"
+                                      : "Local – Arabic",
+                                }[subItem] ?? subItem)
+                              : subItem}
+                          </span>
+                          <ArrowRight
+                            size={14}
+                            className={`shrink-0 ${isArabic ? "rotate-180" : ""}`}
+                          />
                         </Link>
                       ))}
                     </div>
@@ -1471,7 +1618,10 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
               </div>
 
               <div className="flex items-center gap-2.5">
-                <ShieldCheck size={16} className="shrink-0 text-ubh-gold-deep" />
+                <ShieldCheck
+                  size={16}
+                  className="shrink-0 text-ubh-gold-deep"
+                />
                 <span>{t.securePayment}</span>
               </div>
 

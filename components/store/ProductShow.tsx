@@ -18,6 +18,7 @@ import type { Locale } from "@/lib/i18n";
 import { products } from "@/lib/store/catalog";
 import type { Product } from "@/lib/store/catalog";
 import { ProductCard } from "@/components/store/catalog/productCard";
+import { ProductListingHero } from "@/components/store/ProductListingHero";
 import {
   getCategoryKeywords,
   getCategoryLabel,
@@ -800,8 +801,13 @@ export function ProductShow({ locale, initialFilters }: ProductShowProps) {
       dir={isArabic ? "rtl" : "ltr"}
       className="min-h-[70vh] bg-ubh-canvas pb-16 pt-8 sm:pb-20 sm:pt-12"
     >
+
+       <div className="mb-5 px-3 sm:mb-7 sm:px-5 lg:px-6">
+    <ProductListingHero locale={locale} />
+  </div>
+      
       <Container>
-        <header className="relative overflow-hidden rounded-3xl bg-ubh-navy px-5 py-8 text-white sm:px-9 sm:py-10 lg:px-12 lg:py-12">
+        {/* <header className="relative overflow-hidden rounded-3xl bg-ubh-navy px-5 py-8 text-white sm:px-9 sm:py-10 lg:px-12 lg:py-12">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute -right-16 -top-24 h-64 w-64 rounded-full border border-white/10 sm:h-80 sm:w-80"
@@ -821,7 +827,7 @@ export function ProductShow({ locale, initialFilters }: ProductShowProps) {
               {t.description}
             </p>
           </div>
-        </header>
+        </header> */}
 
         <div
           className="mt-7 flex flex-wrap gap-2"

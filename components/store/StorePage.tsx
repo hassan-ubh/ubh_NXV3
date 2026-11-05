@@ -728,17 +728,30 @@ export function StorePage({ locale }: StorePageProps) {
       dir={isArabic ? "rtl" : "ltr"}
       className="min-h-screen bg-[#fbfbfa] text-ubh-ink"
     >
+
+
+       {/* Hero and Banner */}
+  <div className="space-y-3 px-3 pt-3 sm:space-y-4 sm:px-5 sm:pt-4 lg:px-6">
+    <StoreHeroSection
+      locale={locale}
+      title={t.destination}
+      description={t.description}
+      shopLabel={t.shop}
+      ebooksLabel={t.ebooks}
+    />
+
+    <BannerCarousel items={bannersByLocale[locale]} />
+  </div>
       <Container className="space-y-5 py-5 sm:space-y-7 sm:py-6">
         {/* Hero */}
-        {/* Hero */}
-        <StoreHeroSection
+        {/* <StoreHeroSection
           locale={locale}
           title={t.destination}
           description={t.description}
           shopLabel={t.shop}
           ebooksLabel={t.ebooks}
         />
-        <BannerCarousel items={bannersByLocale[locale]} />
+        <BannerCarousel items={bannersByLocale[locale]} /> */}
 
         <StoreFeatureStrip locale={locale} />
 

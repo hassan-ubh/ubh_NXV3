@@ -46,6 +46,7 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
 
   const headerRef = useRef<HTMLElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const navigation: NavItem[] = useMemo(
     () => [
@@ -84,6 +85,21 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
     setMobileDropdown(null);
     setSearchOpen(false);
   }, []);
+
+
+  useEffect(() => {
+  const handleScroll = () => {
+    setIsScrolled(window.scrollY > 20);
+  };
+
+  handleScroll();
+
+  window.addEventListener("scroll", handleScroll, { passive: true });
+
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+  };
+}, []);
 
   useEffect(() => {
     closeMenus();
@@ -171,9 +187,24 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
       className="fixed inset-x-0 top-0 z-[100]"
     >
       {/* Main navigation bar */}
-      <div className="border-b border-white/[0.09] bg-ubh-navy/80 backdrop-blur-2xl border-b border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.25)] shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+      <div
+  className={`
+    border-b transition-all duration-300 ease-in-out
+    ${
+      isScrolled
+        ? "border-white/[0.08] bg-[#041329] shadow-[0_8px_32px_rgba(0,0,0,0.25)]"
+        : "border-white/[0.08] bg-ubh-navy shadow-none"
+    }
+  `}
+>
         <Container className="px-3 sm:px-4 lg:px-5 2xl:px-7 py-2">
-          <div className="flex h-[70px] items-center gap-2 lg:gap-2 xl:gap-3 2xl:gap-4">
+          <div
+  className={`
+    flex items-center gap-2 transition-all duration-300 ease-in-out
+    lg:gap-2 xl:gap-3 2xl:gap-4
+    ${isScrolled ? "h-[72px]" : "h-[77px]"}
+  `}
+>
             {/* Logo: reserve only the space it needs */}
             <div className="flex w-[105px] shrink-0 items-center sm:w-[125px] lg:w-[115px] xl:w-[145px] 2xl:w-[170px]">
               <Logo size="header" />
