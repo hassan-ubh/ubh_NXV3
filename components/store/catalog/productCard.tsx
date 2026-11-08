@@ -372,281 +372,280 @@ export function ProductCard({
     setAddError(!success);
   }
 
-  return (
-    <article
-      dir={ar ? "rtl" : "ltr"}
-      className={`group relative flex h-full min-w-0 rounded-2xl border border-slate-200/80 bg-white shadow-sm transition-all duration-200 hover:border-[#c89438]/50 hover:shadow-[0_10px_28px_rgba(6,26,55,0.08)] motion-reduce:transition-none ${
-        viewMode === "list"
-          ? "flex-row items-stretch gap-3 p-3 sm:gap-5 sm:p-4 lg:gap-6"
-          : "flex-col p-2.5 sm:p-3"
+  
+  
+return (
+  <article
+    dir={ar ? "rtl" : "ltr"}
+    className={`group relative min-w-0 rounded-2xl border border-slate-200/80 bg-white shadow-[0_2px_8px_rgba(6,26,55,0.025)] transition-all duration-300 hover:border-[#c89438]/50 hover:shadow-[0_10px_28px_rgba(6,26,55,0.07)] motion-reduce:transition-none ${
+      viewMode === "list"
+        ? "flex flex-col gap-4 p-3 sm:flex-row sm:items-stretch sm:gap-5 sm:p-4 lg:gap-6"
+        : "flex h-full flex-col p-2.5 sm:p-3"
+    }`}
+  >
+    {/* BOOK COVER */}
+    <div
+      className={`relative shrink-0 ${
+        viewMode === "list" ? "w-[92px] sm:w-28 lg:w-32" : "w-full"
       }`}
     >
-      {/* Book cover */}
-      <div
-        className={`relative shrink-0 ${
-          viewMode === "list"
-            ? "w-[88px] sm:w-32 lg:w-36"
-            : "w-full"
-        }`}
+      <Link
+        href={href}
+        aria-label={`${labels.view}: ${title}`}
+        className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438] focus-visible:ring-offset-2"
       >
+        <BookCover
+          product={product}
+          title={title}
+          labels={labels}
+          viewMode={viewMode}
+        />
+      </Link>
+
+      {/* PRODUCT BADGES */}
+      {(product.bestseller || product.newArrival || hasSale) && (
+        <div
+          className={`pointer-events-none absolute top-2 flex max-w-[90%] flex-wrap gap-1 ${
+            ar ? "right-2" : "left-2"
+          }`}
+        >
+          {product.bestseller && (
+            <span className="rounded-full bg-[#061a37] px-2 py-1 text-[9px] font-semibold leading-none text-white shadow-sm">
+              {labels.bestseller}
+            </span>
+          )}
+
+          {!product.bestseller && product.newArrival && (
+            <span className="rounded-full bg-[#c89438] px-2 py-1 text-[9px] font-semibold leading-none text-white shadow-sm">
+              {labels.newArrival}
+            </span>
+          )}
+
+          {hasSale && (
+            <span className="rounded-full bg-white px-2 py-1 text-[9px] font-bold leading-none text-rose-700 shadow-sm">
+              {labels.sale}
+            </span>
+          )}
+        </div>
+      )}
+
+      {/* GRID WISHLIST */}
+      {viewMode === "grid" && (
+        <button
+          type="button"
+          aria-label={labels.wishlist}
+          title={labels.wishlist}
+          aria-pressed={isWishlisted}
+          onClick={toggleWishlist}
+          className={`absolute end-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-slate-200/80 bg-white/95 shadow-sm transition hover:border-[#c89438] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438] ${
+            isWishlisted
+              ? "text-rose-600"
+              : "text-slate-500 hover:text-[#9a6c20]"
+          }`}
+        >
+          <Heart
+            size={16}
+            strokeWidth={1.8}
+            fill={isWishlisted ? "currentColor" : "none"}
+            aria-hidden="true"
+          />
+        </button>
+      )}
+    </div>
+
+    {/* BOOK INFORMATION */}
+    <div
+      className={`flex min-w-0 flex-1 flex-col ${
+        viewMode === "list"
+          ? "justify-center gap-3 sm:py-1"
+          : "pt-3"
+      }`}
+    >
+      <div className="min-w-0">
         <Link
           href={href}
-          aria-label={`${labels.view}: ${title}`}
-          className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438] focus-visible:ring-offset-2"
+          className="block rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438]"
         >
-          <BookCover
-            product={product}
-            title={title}
-            labels={labels}
-            viewMode={viewMode}
-          />
-        </Link>
-
-        {/* Product badges */}
-        {(product.bestseller || product.newArrival || hasSale) && (
-          <div
-            className={`pointer-events-none absolute top-2 flex max-w-[90%] flex-wrap gap-1 ${
-              ar ? "right-2" : "left-2"
+          <h2
+            className={`line-clamp-2 font-semibold leading-5 text-[#061a37] transition-colors group-hover:text-[#9a6c20] ${
+              viewMode === "list"
+                ? "text-sm sm:text-base sm:leading-6"
+                : "min-h-10 text-[13px] sm:text-sm"
             }`}
           >
-            {product.bestseller && (
-              <span className="rounded-full bg-[#061a37] px-2 py-1 text-[9px] font-semibold leading-none text-white shadow-sm">
-                {labels.bestseller}
-              </span>
-            )}
+            {title}
+          </h2>
+        </Link>
 
-            {!product.bestseller && product.newArrival && (
-              <span className="rounded-full bg-[#c89438] px-2 py-1 text-[9px] font-semibold leading-none text-white shadow-sm">
-                {labels.newArrival}
-              </span>
-            )}
+        <p className="mt-1.5 line-clamp-1 text-xs leading-5 text-slate-500">
+          {authors.length
+            ? authors.slice(0, 2).join(", ")
+            : product.publisher}
+        </p>
+
+        <p className="mt-0.5 line-clamp-1 text-[11px] leading-4 text-slate-400">
+          {product.publisher}
+        </p>
+
+        <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+          {product.language && (
+            <span className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-[10px] font-medium text-slate-600">
+              {product.language}
+            </span>
+          )}
+
+          {product.format && (
+            <span className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-[10px] font-medium text-slate-600">
+              {product.format}
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* GRID FOOTER */}
+      {viewMode === "grid" && (
+        <div className="mt-auto border-t border-slate-100 pt-3">
+          <div className="flex items-center justify-between gap-2">
+            <span
+              className={`inline-flex items-center gap-1.5 text-[10px] font-medium ${
+                available ? "text-emerald-700" : "text-rose-600"
+              }`}
+            >
+              <span
+                className={`h-1.5 w-1.5 rounded-full ${
+                  available ? "bg-emerald-600" : "bg-rose-500"
+                }`}
+                aria-hidden="true"
+              />
+              {available ? labels.stock : labels.out}
+            </span>
 
             {hasSale && (
-              <span className="rounded-full bg-white px-2 py-1 text-[9px] font-bold leading-none text-rose-700 shadow-sm">
+              <span className="rounded-md bg-rose-50 px-2 py-1 text-[9px] font-semibold text-rose-600">
                 {labels.sale}
               </span>
             )}
           </div>
-        )}
 
-        {/* Grid wishlist */}
-        {viewMode === "grid" && (
+          <div className="mt-2.5 flex min-h-9 items-center">
+            <div className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1">
+              <span className="text-xl font-bold tracking-tight text-[#061a37]">
+                {product.currency} {product.price.toFixed(2)}
+              </span>
+
+              {hasSale && (
+                <del className="text-xs text-slate-400">
+                  {product.currency} {product.oldPrice!.toFixed(2)}
+                </del>
+              )}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            disabled={!available}
+            onClick={handleAddToCart}
+            className="mt-3 flex min-h-10 w-full items-center justify-center gap-2 rounded-xl bg-[#061a37] px-3 py-2.5 text-xs font-semibold text-white shadow-sm transition duration-200 hover:bg-[#0a2a55] hover:shadow-md active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500"
+          >
+            {added ? (
+              <Check size={15} aria-hidden="true" />
+            ) : (
+              <ShoppingCart size={15} aria-hidden="true" />
+            )}
+            <span>{added ? labels.added : labels.add}</span>
+          </button>
+        </div>
+      )}
+    </div>
+
+    {/* LIST VIEW — SEPARATE OPPOSITE-SIDE ACTION PANEL */}
+    {viewMode === "list" && (
+      <aside className="flex w-full shrink-0 flex-col justify-between gap-4 border-t border-slate-100 pt-4 sm:w-52 sm:border-s sm:border-t-0 sm:ps-5 sm:pt-1 lg:w-60">
+        {/* PRICE + WISHLIST */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[11px] font-medium text-slate-400">
+              {ar ? "السعر" : "Price"}
+            </p>
+
+            <div className="mt-1 flex flex-wrap items-baseline gap-2">
+              <span className="text-xl font-bold tracking-tight text-[#061a37]">
+                {product.currency} {product.price.toFixed(2)}
+              </span>
+
+              {hasSale && (
+                <del className="text-xs text-slate-400">
+                  {product.currency} {product.oldPrice!.toFixed(2)}
+                </del>
+              )}
+            </div>
+          </div>
+
           <button
             type="button"
             aria-label={labels.wishlist}
             title={labels.wishlist}
             aria-pressed={isWishlisted}
             onClick={toggleWishlist}
-            className={`absolute end-2 top-2 z-10 flex h-9 w-9 items-center justify-center rounded-full border border-slate-200/80 bg-white/95 shadow-sm transition hover:border-[#c89438] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438] ${
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438] ${
               isWishlisted
-                ? "text-rose-600"
-                : "text-slate-500 hover:text-[#9a6c20]"
+                ? "border-rose-200 bg-rose-50 text-rose-600"
+                : "border-slate-200 bg-white text-slate-500 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-500"
             }`}
           >
             <Heart
-              size={16}
+              size={18}
               strokeWidth={1.8}
               fill={isWishlisted ? "currentColor" : "none"}
               aria-hidden="true"
             />
           </button>
-        )}
-      </div>
-
-      {/* Product information */}
-      <div
-        className={`flex min-w-0 flex-1 ${
-          viewMode === "list"
-            ? "flex-col justify-between gap-3 py-0.5"
-            : "flex-col pt-3"
-        }`}
-      >
-        {/* Title and information */}
-        <div className="min-w-0">
-          <div className="flex items-start justify-between gap-2">
-            <Link
-              href={href}
-              className="min-w-0 flex-1 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438]"
-            >
-              <h2
-                className={`line-clamp-2 font-semibold leading-5 text-[#061a37] transition-colors group-hover:text-[#9a6c20] ${
-                  viewMode === "list"
-                    ? "text-sm sm:text-base sm:leading-6"
-                    : "min-h-10 text-[13px] sm:text-sm"
-                }`}
-              >
-                {title}
-              </h2>
-            </Link>
-
-            {/* List wishlist */}
-            {viewMode === "list" && (
-              <button
-                type="button"
-                aria-label={labels.wishlist}
-                title={labels.wishlist}
-                aria-pressed={isWishlisted}
-                onClick={toggleWishlist}
-                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white transition hover:border-[#c89438] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438] ${
-                  isWishlisted
-                    ? "text-rose-600"
-                    : "text-slate-500 hover:text-[#9a6c20]"
-                }`}
-              >
-                <Heart
-                  size={17}
-                  strokeWidth={1.8}
-                  fill={isWishlisted ? "currentColor" : "none"}
-                  aria-hidden="true"
-                />
-              </button>
-            )}
-          </div>
-
-          {/* Authors */}
-          <p className="mt-1.5 line-clamp-1 text-xs leading-5 text-slate-500">
-            {authors.length
-              ? authors.slice(0, 2).join(", ")
-              : product.publisher}
-          </p>
-
-          {/* Publisher */}
-          <p className="mt-0.5 line-clamp-1 text-[11px] leading-4 text-slate-400">
-            {product.publisher}
-          </p>
-
-          {/* Book metadata */}
-          <div className="mt-2 flex flex-wrap items-center gap-1.5">
-            {product.language && (
-              <span className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-[10px] font-medium text-slate-600">
-                {product.language}
-              </span>
-            )}
-
-            {product.format && (
-              <span className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-[10px] font-medium text-slate-600">
-                {product.format}
-              </span>
-            )}
-          </div>
         </div>
 
-        {/* Product footer */}
-        {viewMode === "list" ? (
-          /* LIST VIEW */
-          <div className="flex min-w-0 flex-col gap-3 border-t border-slate-100 pt-3 sm:flex-row sm:items-end sm:justify-between">
-            <div className="min-w-0">
-              <p
-                className={`flex items-center gap-1.5 text-[11px] font-medium ${
-                  available ? "text-emerald-700" : "text-rose-600"
-                }`}
-              >
-                <span
-                  className={`h-1.5 w-1.5 rounded-full ${
-                    available ? "bg-emerald-600" : "bg-rose-500"
-                  }`}
-                  aria-hidden="true"
-                />
-                {available ? labels.stock : labels.out}
-              </p>
-
-              <button
-                type="button"
-                disabled={!available}
-                onClick={handleAddToCart}
-                className="mt-2 inline-flex min-h-9 w-fit items-center justify-center gap-2 rounded-lg bg-[#061a37] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#0a2a55] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500"
-              >
-                {added ? (
-                  <Check size={14} aria-hidden="true" />
-                ) : (
-                  <ShoppingCart size={14} aria-hidden="true" />
-                )}
-                {added ? labels.added : labels.add}
-              </button>
-            </div>
-
-            <div className="shrink-0 sm:text-end">
-              <div className="flex flex-wrap items-baseline gap-2">
-                <span className="text-lg font-bold text-[#061a37] sm:text-xl">
-                  {product.currency} {product.price.toFixed(2)}
-                </span>
-
-                {hasSale && (
-                  <del className="text-xs text-slate-400">
-                    {product.currency} {product.oldPrice!.toFixed(2)}
-                  </del>
-                )}
-              </div>
-            </div>
-          </div>
-        ) : (
-          /* GRID VIEW */
-          <div className="mt-auto border-t border-slate-100 pt-3">
-            {/* Availability */}
-            <div className="flex items-center justify-between gap-2">
-              <span
-                className={`inline-flex items-center gap-1.5 text-[10px] font-medium ${
-                  available ? "text-emerald-700" : "text-rose-600"
-                }`}
-              >
-                <span
-                  className={`h-1.5 w-1.5 rounded-full ${
-                    available ? "bg-emerald-600" : "bg-rose-500"
-                  }`}
-                  aria-hidden="true"
-                />
-                {available ? labels.stock : labels.out}
-              </span>
-
-              {hasSale && (
-                <span className="rounded-md bg-rose-50 px-2 py-1 text-[9px] font-semibold text-rose-600">
-                  {labels.sale}
-                </span>
-              )}
-            </div>
-
-            {/* Price */}
-            <div className="mt-2.5 flex min-h-9 items-center">
-              <div className="flex min-w-0 flex-wrap items-baseline gap-x-2 gap-y-1">
-                <span className="text-xl font-bold tracking-tight text-[#061a37]">
-                  {product.currency} {product.price.toFixed(2)}
-                </span>
-
-                {hasSale && (
-                  <del className="text-xs text-slate-400">
-                    {product.currency} {product.oldPrice!.toFixed(2)}
-                  </del>
-                )}
-              </div>
-            </div>
-
-            {/* Full-width Add to Cart */}
-            <button
-              type="button"
-              disabled={!available}
-              onClick={handleAddToCart}
-              className="mt-3 flex min-h-10 w-full items-center justify-center gap-2 rounded-xl bg-[#061a37] px-3 py-2.5 text-xs font-semibold text-white shadow-sm transition duration-200 hover:bg-[#0a2a55] hover:shadow-md active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500"
-            >
-              {added ? (
-                <Check size={15} aria-hidden="true" />
-              ) : (
-                <ShoppingCart size={15} aria-hidden="true" />
-              )}
-              <span>{added ? labels.added : labels.add}</span>
-            </button>
-          </div>
-        )}
-
-        {/* Add to Cart error */}
-        {addError && (
+        {/* STOCK + ADD TO CART */}
+        <div className="flex flex-col gap-3">
           <p
-            role="status"
-            className="mt-2 text-[10px] leading-4 text-rose-600"
+            className={`flex items-center gap-2 text-xs font-medium ${
+              available ? "text-emerald-700" : "text-rose-600"
+            }`}
           >
-            {labels.addFailed}
+            <span
+              className={`h-2 w-2 rounded-full ${
+                available ? "bg-emerald-500" : "bg-rose-500"
+              }`}
+              aria-hidden="true"
+            />
+            {available ? labels.stock : labels.out}
           </p>
-        )}
-      </div>
-    </article>
-  );
+
+          <button
+            type="button"
+            disabled={!available}
+            onClick={handleAddToCart}
+            className="flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#061a37] px-4 py-3 text-xs font-semibold text-white shadow-sm transition duration-200 hover:bg-[#0a2a55] hover:shadow-md active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438] focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500"
+          >
+            {added ? (
+              <Check size={16} aria-hidden="true" />
+            ) : (
+              <ShoppingCart size={16} aria-hidden="true" />
+            )}
+            <span>{added ? labels.added : labels.add}</span>
+          </button>
+        </div>
+      </aside>
+    )}
+
+    {/* ADD TO CART ERROR */}
+    {addError && (
+      <p
+        role="status"
+        className="text-[10px] leading-4 text-rose-600 sm:absolute sm:bottom-1 sm:start-4"
+      >
+        {labels.addFailed}
+      </p>
+    )}
+  </article>
+);
+
+
 }

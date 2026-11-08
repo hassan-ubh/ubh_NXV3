@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -22,6 +23,7 @@ import {
   Sparkles,
   type LucideIcon,
 } from "lucide-react";
+import { useState,useEffect } from "react";
 
 
 import { Container } from "@/components/shared/Container";
@@ -282,35 +284,244 @@ export function ProductCard({
     </article>
   );
 }
-function BestSellersPanel({ locale, t }: { locale: Locale; t: StoreCopy }) {
-  const bestSellers = products
+
+// function BestSellersPanel({ locale, t }: { locale: Locale; t: StoreCopy }) {
+//   const bestSellers = products
+//     .filter((product) => product.bestseller)
+//     .slice(0, 6);
+
+//   const isArabic = locale === "ar";
+
+//   return (
+//     <section className="flex h-full min-w-0 flex-col rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5">
+//       <SectionHeading
+//         title={t.bestSellers}
+//         action={t.viewAllBestSellers}
+//         href={`/${locale}/shop/products?collection=best-sellers`}
+//         locale={locale}
+//       />
+
+//       {bestSellers.length ? (
+//         <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3">
+//           {bestSellers.map((product) => (
+//             <ProductCard
+//               key={product.id}
+//               product={product}
+//               locale={locale}
+//               noCoverText={t.noCover}
+//             />
+//           ))}
+//         </div>
+//       ) : (
+//         <div className="flex flex-1 items-center justify-center rounded-lg bg-slate-50 px-4 text-center text-sm leading-6 text-slate-500">
+//           {isArabic
+//             ? "ستظهر الكتب الأكثر مبيعًا هنا عند توفرها."
+//             : "Bestsellers will appear here when available."}
+//         </div>
+//       )}
+//     </section>
+//   );
+// }
+
+
+function BestSellersPanel({
+  locale,
+  t,
+}: {
+  locale: Locale;
+  t: StoreCopy;
+}) {
+  const allBestSellers = products
     .filter((product) => product.bestseller)
-    .slice(0, 6);
+    .slice(0, 12);
 
   const isArabic = locale === "ar";
+  const DISPLAY_COUNT = 6;
+
+  const [startIndex, setStartIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const canRotate = allBestSellers.length > DISPLAY_COUNT;
+
+  useEffect(() => {
+    if (!canRotate || isPaused) return;
+
+    const interval = window.setInterval(() => {
+      setStartIndex((current) =>
+        (current + 1) % allBestSellers.length
+      );
+    }, 4500);
+
+    return () => window.clearInterval(interval);
+  }, [canRotate, isPaused, allBestSellers.length]);
+
+  const visibleProducts = Array.from(
+    { length: Math.min(DISPLAY_COUNT, allBestSellers.length) },
+    (_, index) =>
+      allBestSellers[
+        (startIndex + index) % allBestSellers.length
+      ]
+  );
+
+  const goTo = (index: number) => {
+    setStartIndex(index);
+    setIsPaused(true);
+  };
 
   return (
-    <section className="flex h-full min-w-0 flex-col rounded-xl border border-slate-200/80 bg-white p-4 sm:p-5">
-      <SectionHeading
-        title={t.bestSellers}
-        action={t.viewAllBestSellers}
-        href={`/${locale}/shop/products?collection=best-sellers`}
-        locale={locale}
-      />
+    <section
+      dir={isArabic ? "rtl" : "ltr"}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocusCapture={() => setIsPaused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          setIsPaused(false);
+        }
+      }}
+      className="group relative flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm transition-shadow duration-500 hover:shadow-lg sm:p-5 lg:p-6"
+    >
+      {/* SUBTLE TOP ACCENT */}
+      <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-transparent via-[#c89438] to-transparent opacity-80" />
 
-      {bestSellers.length ? (
-        <div className="grid grid-cols-2 gap-x-4 gap-y-5 sm:grid-cols-3">
-          {bestSellers.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              locale={locale}
-              noCoverText={t.noCover}
-            />
-          ))}
+      {/* HEADER */}
+      <div className="mb-5 flex w-full items-center justify-between gap-3 border-b border-slate-100 pb-4 sm:mb-6 sm:pb-5">
+
+        {/* TITLE */}
+        <div className="flex min-w-0 items-center gap-3">
+
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#c89438]/10">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              className="h-5 w-5 text-[#b8822c]"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="m12 3 2.2 5.2 5.6.5-4.3 3.7 1.3 5.5-4.8-2.9-4.8 2.9 1.3-5.5-4.3-3.7 5.6-.5L12 3Z" />
+              <path d="M5 21h14" />
+            </svg>
+          </div>
+
+          <div className="min-w-0">
+            <div className="mb-0.5 flex items-center gap-2">
+              <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#b8822c]">
+                {isArabic ? "الأكثر رواجاً" : "POPULAR COLLECTION"}
+              </span>
+              <span className="h-1 w-1 rounded-full bg-[#c89438]" />
+            </div>
+
+            <h2 className="truncate text-base font-bold tracking-tight text-[#061a37] sm:text-lg">
+              {t.bestSellers}
+            </h2>
+          </div>
         </div>
+
+        {/* VIEW ALL */}
+        <Link
+          href={`/${locale}/shop/products?collection=best-sellers`}
+          className="group/link inline-flex shrink-0 items-center gap-1.5 rounded-lg px-2.5 py-2 text-[11px] font-semibold text-[#061a37] transition-all duration-300 hover:bg-[#c89438]/10 hover:text-[#a4772c] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438] sm:px-3 sm:text-xs"
+        >
+          <span>{t.viewAllBestSellers}</span>
+
+          <svg
+            viewBox="0 0 20 20"
+            fill="none"
+            className={`h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-0.5 ${
+              isArabic ? "rotate-180" : ""
+            }`}
+          >
+            <path
+              d="M4 10h12M10 4l6 6-6 6"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </Link>
+      </div>
+
+      {/* PRODUCTS */}
+      {allBestSellers.length > 0 ? (
+        <>
+          <div
+            key={startIndex}
+            className="bestseller-products-enter grid flex-1 grid-cols-2 gap-x-3 gap-y-6 sm:grid-cols-3 sm:gap-x-4 sm:gap-y-7"
+            aria-live="off"
+          >
+            {visibleProducts.map((product, index) => (
+              <div
+                key={product.id}
+                className="bestseller-card-enter min-w-0"
+                style={{
+                  animationDelay: `${index * 75}ms`,
+                }}
+              >
+                <ProductCard
+                  product={product}
+                  locale={locale}
+                  noCoverText={t.noCover}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* CAROUSEL CONTROLS */}
+          {canRotate && (
+            <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
+
+              {/* COUNTER */}
+              <div className="flex items-center gap-2 text-[11px] font-semibold tabular-nums">
+                <span className="text-[#061a37]">
+                  {String(startIndex + 1).padStart(2, "0")}
+                </span>
+
+                <span className="text-slate-300">/</span>
+
+                <span className="text-slate-400">
+                  {String(allBestSellers.length).padStart(2, "0")}
+                </span>
+              </div>
+
+              {/* DOT NAVIGATION */}
+              <div
+                className="flex items-center gap-1.5"
+                role="group"
+                aria-label={
+                  isArabic
+                    ? "التنقل بين الكتب الأكثر مبيعًا"
+                    : "Bestseller navigation"
+                }
+              >
+                {allBestSellers.map((product, index) => (
+                  <button
+                    key={product.id}
+                    type="button"
+                    onClick={() => goTo(index)}
+                    aria-label={
+                      isArabic
+                        ? `عرض المجموعة ${index + 1}`
+                        : `Show bestseller position ${index + 1}`
+                    }
+                    aria-current={
+                      startIndex === index ? "true" : undefined
+                    }
+                    className={`h-1.5 rounded-full transition-all duration-500 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438] focus-visible:ring-offset-2 ${
+                      startIndex === index
+                        ? "w-8 bg-[#c89438]"
+                        : "w-1.5 bg-slate-200 hover:w-3 hover:bg-slate-400"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       ) : (
-        <div className="flex flex-1 items-center justify-center rounded-lg bg-slate-50 px-4 text-center text-sm leading-6 text-slate-500">
+        <div className="flex flex-1 items-center justify-center rounded-xl bg-slate-50 px-4 py-10 text-center text-sm text-slate-500">
           {isArabic
             ? "ستظهر الكتب الأكثر مبيعًا هنا عند توفرها."
             : "Bestsellers will appear here when available."}
@@ -319,6 +530,7 @@ function BestSellersPanel({ locale, t }: { locale: Locale; t: StoreCopy }) {
     </section>
   );
 }
+
 export function PromoCard({
   locale,
   title,

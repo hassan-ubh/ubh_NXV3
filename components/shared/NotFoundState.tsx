@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from "next/link";
@@ -21,7 +20,7 @@ export function NotFoundState({
   return (
     <main
       dir={ar ? "rtl" : "ltr"}
-      className="flex min-h-[70vh] items-center justify-center px-6 py-20 mt-2"
+      className="flex min-h-[calc(100vh-76px)] items-center justify-center px-5 pb-16 pt-24 sm:px-6 sm:pb-20 sm:pt-28"
     >
       <div className="mx-auto max-w-2xl text-center">
         <div className="mx-auto mb-7 flex h-20 w-20 items-center justify-center rounded-full bg-ubh-navy/5">
