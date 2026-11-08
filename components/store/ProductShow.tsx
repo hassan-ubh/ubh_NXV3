@@ -25,6 +25,7 @@ import {
   resolveCategorySlug,
 } from "@/lib/store/categories";
 
+
 type Collection =
   | "new-releases"
   | "best-sellers"
@@ -473,6 +474,21 @@ export function ProductShow({ locale, initialFilters }: ProductShowProps) {
     };
   }, [mobileFiltersOpen]);
 
+  useEffect(() => {
+  const mobile = window.matchMedia("(max-width: 639px)");
+
+  const updateView = () => {
+    if (mobile.matches) {
+      setViewMode("grid");
+    }
+  };
+
+  updateView();
+  mobile.addEventListener("change", updateView);
+
+  return () => mobile.removeEventListener("change", updateView);
+}, []);
+
   const subjects = useMemo(
     () =>
       Array.from(new Set(products.flatMap((p) => p.subjects ?? []))).sort(
@@ -903,18 +919,18 @@ export function ProductShow({ locale, initialFilters }: ProductShowProps) {
               </button>
 
               <button
-                type="button"
-                onClick={() => setViewMode("list")}
-                aria-label={t.listView}
-                aria-pressed={viewMode === "list"}
-                className={`flex h-8 w-9 items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold ${
-                  viewMode === "list"
-                    ? "bg-ubh-navy text-white"
-                    : "text-slate-500 hover:bg-slate-100 hover:text-ubh-navy"
-                }`}
-              >
-                <List size={18} aria-hidden="true" />
-              </button>
+  type="button"
+  onClick={() => setViewMode("list")}
+  aria-label={t.listView}
+  aria-pressed={viewMode === "list"}
+  className={`hidden h-8 w-9 items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold sm:flex ${
+    viewMode === "list"
+      ? "bg-ubh-navy text-white"
+      : "text-slate-500 hover:bg-slate-100 hover:text-ubh-navy"
+  }`}
+>
+  <List size={18} aria-hidden="true" />
+</button>
             </div>
 
             {/* Keep your existing sort dropdown here */}

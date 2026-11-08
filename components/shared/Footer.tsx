@@ -444,6 +444,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import {
@@ -467,7 +468,7 @@ type FooterProps = {
   locale: Locale;
 };
 
-export function Footer({ locale }:FooterProps) {
+export function Footer({ locale }: FooterProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -590,7 +591,28 @@ export function Footer({ locale }:FooterProps) {
     },
   ];
 
-  const paymentMethods = ["VISA", "Mastercard", "Apple Pay", "Google Pay"];
+  const paymentMethods = [
+    {
+      name: "Visa",
+      src: "/images/payments/visa.svg",
+      width: 48,
+    },
+    {
+      name: "Mastercard",
+      src: "/images/payments/mastercard.svg",
+      width: 40,
+    },
+    {
+      name: "Apple Pay",
+      src: "/images/payments/apple-pay.svg",
+      width: 48,
+    },
+    {
+      name: "Google Pay",
+      src: "/images/payments/google-pay.svg",
+      width: 58,
+    },
+  ];
 
   const toggleSection = (id: string) => {
     setOpenSection((current) => (current === id ? null : id));
@@ -612,8 +634,8 @@ export function Footer({ locale }:FooterProps) {
             {/* Brand */}
             <div className="sm:col-span-2 lg:col-span-1">
               <div className="w-[125px] sm:w-[140px]">
-  <Logo size="footer" />
-</div>
+                <Logo size="footer" />
+              </div>
 
               <p className="mt-6 max-w-[330px] text-[13px] leading-7 text-white/55 sm:text-sm">
                 {isArabic
@@ -758,6 +780,8 @@ export function Footer({ locale }:FooterProps) {
             </div>
 
             {/* Payments */}
+
+            {/* Payment methods */}
             <div className="md:justify-self-end">
               <h3 className="flex items-center gap-2 text-[13px] font-bold text-white">
                 <ShieldCheck size={16} className="text-[#dcae57]" />
@@ -767,15 +791,22 @@ export function Footer({ locale }:FooterProps) {
               <div className="mt-4 flex flex-wrap items-center gap-2">
                 {paymentMethods.map((method) => (
                   <div
-                    key={method}
-                    className="flex h-10 min-w-[76px] items-center justify-center rounded-lg border border-white/10 bg-white/[0.055] px-3 text-[10px] font-bold tracking-wide text-white/70 transition-colors duration-200 hover:border-[#c89438]/40 hover:bg-white/10"
+                    key={method.name}
+                    className="flex h-8 min-w-[58px] items-center justify-center rounded-md bg-white px-2"
+                    title={method.name}
                   >
-                    {method}
+                    <Image
+                      src={method.src}
+                      alt={method.name}
+                      width={method.width}
+                      height={20}
+                      className="h-4 w-auto object-contain"
+                    />
                   </div>
                 ))}
               </div>
 
-              <p className="mt-3 flex items-center gap-1.5 text-[11px] text-white/35">
+              <p className="mt-3 flex items-center gap-1.5 text-[11px] text-white/40">
                 <CreditCard size={13} />
                 {isArabic
                   ? "مدفوعات آمنة ومشفرة"
@@ -823,58 +854,55 @@ export function Footer({ locale }:FooterProps) {
         </Container>
       </div> */}
       {/* Bottom bar */}
-<div className="border-t border-white/[0.08]">
-  <Container className="flex flex-col gap-5 py-5 text-[11px] text-white/40 lg:flex-row lg:items-center lg:justify-between">
+      <div className="border-t border-white/[0.08]">
+        <Container className="flex flex-col gap-5 py-5 text-[11px] text-white/40 lg:flex-row lg:items-center lg:justify-between">
+          {/* Copyright */}
+          <p className="text-center leading-5 lg:text-start">
+            © {new Date().getFullYear()}{" "}
+            {isArabic
+              ? "دار الكتب الجامعية. جميع الحقوق محفوظة."
+              : "University Book House. All rights reserved."}
+          </p>
 
-    {/* Copyright */}
-   <p className="text-center leading-5 lg:text-start">
-  © {new Date().getFullYear()}{" "}
-  {isArabic
-    ? "دار الكتب الجامعية. جميع الحقوق محفوظة."
-    : "University Book House. All rights reserved."}
-</p>
+          {/* Legal links and language */}
+          <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-center lg:justify-end">
+            <nav
+              aria-label={isArabic ? "روابط قانونية" : "Legal"}
+              className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3"
+            >
+              <Link
+                href={`/${locale}/privacy-policy?source=${source}`}
+                className="transition-colors hover:text-[#dcae57]"
+              >
+                {isArabic ? "الخصوصية" : "Privacy"}
+              </Link>
 
-    {/* Legal links and language */}
-    <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-center lg:justify-end">
+              <Link
+                href={`/${locale}/terms?source=${source}`}
+                className="transition-colors hover:text-[#dcae57]"
+              >
+                {isArabic ? "الشروط" : "Terms"}
+              </Link>
 
-      <nav
-        aria-label={isArabic ? "روابط قانونية" : "Legal"}
-        className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3"
-      >
-        <Link
-          href={`/${locale}/privacy-policy?source=${source}`}
-          className="transition-colors hover:text-[#dcae57]"
-        >
-          {isArabic ? "الخصوصية" : "Privacy"}
-        </Link>
+              <Link
+                href={`/${locale}/accessibility?source=${source}`}
+                className="transition-colors hover:text-[#dcae57]"
+              >
+                {isArabic ? "إمكانية الوصول" : "Accessibility"}
+              </Link>
+            </nav>
 
-        <Link
-          href={`/${locale}/terms?source=${source}`}
-          className="transition-colors hover:text-[#dcae57]"
-        >
-          {isArabic ? "الشروط" : "Terms"}
-        </Link>
+            {/* Language switcher */}
+            <div className="flex items-center gap-3 border-t border-white/10 pt-4 sm:border-s sm:border-t-0 sm:pt-0 sm:ps-5">
+              <span className="text-[11px] text-white/40">
+                {isArabic ? "اللغة" : "Language"}
+              </span>
 
-        <Link
-          href={`/${locale}/accessibility?source=${source}`}
-          className="transition-colors hover:text-[#dcae57]"
-        >
-          {isArabic ? "إمكانية الوصول" : "Accessibility"}
-        </Link>
-      </nav>
-
-      {/* Language switcher */}
-      <div className="flex items-center gap-3 border-t border-white/10 pt-4 sm:border-s sm:border-t-0 sm:pt-0 sm:ps-5">
-        <span className="text-[11px] text-white/40">
-          {isArabic ? "اللغة" : "Language"}
-        </span>
-
-        <LanguageSwitcher locale={locale} />
+              <LanguageSwitcher locale={locale} />
+            </div>
+          </div>
+        </Container>
       </div>
-
-    </div>
-  </Container>
-</div>
     </footer>
   );
 }
