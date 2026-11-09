@@ -13,6 +13,7 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  Building2,
   X,
   Truck,
   ShieldCheck,
@@ -55,6 +56,7 @@ type SearchSuggestion = {
   title: string;
   meta: string;
   href: string;
+  kind: "book" | "author" | "publisher";
   cover?: string;
   price?: number;
 };
@@ -348,6 +350,10 @@ export function SearchForm({
                     loading="lazy"
                     className="h-full w-full object-contain"
                   />
+                ) : item.kind === "author" ? (
+                  <UserRound size={21} className="text-ubh-gold" />
+                ) : item.kind === "publisher" ? (
+                  <Building2 size={21} className="text-ubh-gold" />
                 ) : (
                   <span className="text-[9px] font-semibold text-slate-400">
                     UBH
@@ -500,12 +506,94 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
     [locale],
   );
 
+  //   const suggestions = useMemo<SearchSuggestion[]>(() => {
+  //     const query = normalizeSearch(searchQuery);
+  //     const terms = query.split(" ").filter(Boolean);
+  //     if (terms.length === 0 || query.length < 2) return [];
+
+  //     return products
+  //       .filter((product: Product) => {
+  //         // const searchable = normalizeSearch(
+  //         //   [
+  //         //     product.title,
+  //         //     product.titleAr,
+  //         //     product.subtitle,
+  //         //     product.description,
+  //         //     product.descriptionAr,
+  //         //     ...(product.authors ?? []),
+  //         //     product.publisher,
+  //         //     product.publisherSlug,
+  //         //     product.isbn,
+  //         //     product.isbn10,
+  //         //     product.barcode,
+  //         //     product.sku,
+  //         //     ...(product.subjects ?? []),
+  //         //     product.category,
+  //         //     product.series,
+  //         //     product.language,
+  //         //     product.format,
+  //         //   ]
+  //         //     .filter(Boolean)
+  //         //     .join(" "),
+  //         // );
+  //         const searchable = normalizeSearch(
+  //   [
+  //     product.title,
+  //     product.titleAr,
+  //     product.subtitle,
+  //     product.description,
+  //     product.descriptionAr,
+  //     ...(product.authors ?? []),
+  //     ...(product.authorsAr ?? []),
+  //     product.publisher,
+  //     product.publisherSlug,
+  //     product.isbn,
+  //     product.isbn10,
+  //     product.barcode,
+  //     product.sku,
+  //     ...(product.subjects ?? []),
+  //     product.category,
+  //     product.series,
+  //     product.language,
+  //     product.format,
+  //   ]
+  //     .filter(Boolean)
+  //     .join(" "),
+  // );
+  //         return terms.every((term) => searchable.includes(term));
+  //       })
+  //       .slice(0, 6)
+  //       .map((product) => ({
+  //         id: product.id,
+  //         title:
+  //           locale === "ar" ? product.titleAr || product.title : product.title,
+  //         meta: [
+  //   locale === "ar"
+  //     ? product.authorsAr?.join("، ") || product.authors?.join(", ")
+  //     : product.authors?.join(", "),
+  //   product.publisher,
+  //   product.isbn,
+  // ]
+  //   .filter(Boolean)
+  //   .join(" · "),
+  //         href: `/${locale}/shop/${encodeURIComponent(product.slug)}`,
+  //         cover: product.cover,
+  //         price: product.price,
+  //       }));
+  //   }, [locale, normalizeSearch, searchQuery]);
   const suggestions = useMemo<SearchSuggestion[]>(() => {
     const query = normalizeSearch(searchQuery);
     const terms = query.split(" ").filter(Boolean);
+
     if (terms.length === 0 || query.length < 2) return [];
 
-    return products
+    const matchesQuery = (value: string) => {
+      const normalized = normalizeSearch(value);
+      return terms.every((term) => normalized.includes(term));
+    };
+
+    // Book suggestions
+    const bookSuggestions = products
       .filter((product: Product) => {
         const searchable = normalizeSearch(
           [
@@ -530,11 +618,13 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
             .filter(Boolean)
             .join(" "),
         );
+
         return terms.every((term) => searchable.includes(term));
       })
-      .slice(0, 6)
+      .slice(0, 4)
       .map((product) => ({
-        id: product.id,
+        id: `book-${product.id}`,
+        kind: "book" as const,
         title:
           locale === "ar" ? product.titleAr || product.title : product.title,
         meta: [product.authors?.join(", "), product.publisher, product.isbn]
@@ -544,6 +634,48 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
         cover: product.cover,
         price: product.price,
       }));
+
+    // Unique authors
+    const authors = Array.from(
+      new Set(products.flatMap((product) => product.authors ?? [])),
+    );
+
+    const authorSuggestions = authors
+      .filter(matchesQuery)
+      .slice(0, 1)
+      .map((author) => ({
+        id: `author-${normalizeSearch(author)}`,
+        kind: "author" as const,
+        title: author,
+        meta: locale === "ar" ? "مؤلف — عرض الكتب" : "Author · View books",
+        href: `/${locale}/shop/products?q=${encodeURIComponent(author)}`,
+      }));
+
+    // Unique publishers
+    const publishers = Array.from(
+      new Set(
+        products
+          .map((product) => product.publisher)
+          .filter((publisher): publisher is string => Boolean(publisher)),
+      ),
+    );
+
+    const publisherSuggestions = publishers
+      .filter(matchesQuery)
+      .slice(0, 1)
+      .map((publisher) => ({
+        id: `publisher-${normalizeSearch(publisher)}`,
+        kind: "publisher" as const,
+        title: publisher,
+        meta: locale === "ar" ? "ناشر — عرض الكتب" : "Publisher · View books",
+        href: `/${locale}/shop/products?q=${encodeURIComponent(publisher)}`,
+      }));
+
+    return [
+      ...bookSuggestions,
+      ...authorSuggestions,
+      ...publisherSuggestions,
+    ].slice(0, 6);
   }, [locale, normalizeSearch, searchQuery]);
 
   /* ------------------------------------------------------------------------ */
@@ -695,33 +827,33 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
   );
 
   const getSubItems = useCallback(
-  (key: string): string[] => {
-    if (key === "institutions") return [];
+    (key: string): string[] => {
+      if (key === "institutions") return [];
 
-    if (key === "publishers") {
-      return locale === "ar"
-        ? [
-            "دوليون – الإنجليزية",
-            "دوليون – العربية",
-            "محليون – الإنجليزية",
-            "محليون – العربية",
-          ]
-        : [
-            "International – English",
-            "International – Arabic",
-            "Local – English",
-            "Local – Arabic",
-          ];
-    }
+      if (key === "publishers") {
+        return locale === "ar"
+          ? [
+              "دوليون – الإنجليزية",
+              "دوليون – العربية",
+              "محليون – الإنجليزية",
+              "محليون – العربية",
+            ]
+          : [
+              "International – English",
+              "International – Arabic",
+              "Local – English",
+              "Local – Arabic",
+            ];
+      }
 
-    const items = t.navItems[key as keyof typeof t.navItems];
+      const items = t.navItems[key as keyof typeof t.navItems];
 
-    if (!Array.isArray(items)) return [];
+      if (!Array.isArray(items)) return [];
 
-    return items.filter((item): item is string => typeof item === "string");
-  },
-  [locale, t],
-);
+      return items.filter((item): item is string => typeof item === "string");
+    },
+    [locale, t],
+  );
   const categories = useMemo(() => getSubItems("categories"), [getSubItems]);
 
   /* ------------------------------------------------------------------------ */
@@ -739,6 +871,52 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
     setMobileSubmenu((current) => (current === key ? null : key));
   }, []);
 
+  // const handleSearch = useCallback(
+  //   (event: FormEvent<HTMLFormElement>) => {
+  //     event.preventDefault();
+
+  //     const params = new URLSearchParams();
+  //     const query = searchQuery.trim();
+
+  //     if (query) params.set("q", query);
+  //     if (selectedCategory) {
+  //       const categorySlug = resolveCategorySlug(selectedCategory);
+  //       if (categorySlug) params.set("category", categorySlug);
+  //     }
+
+  //     closeMenus();
+  //     setSearchQuery("");
+
+  //     const queryString = params.toString();
+
+  //     router.push(
+  //       `/${locale}/shop/products${queryString ? `?${queryString}` : ""}`,
+  //     );
+  //   },
+  //   [closeMenus, locale, router, searchQuery, selectedCategory],
+  // );
+
+  const handleCategoryChange = useCallback(
+    (category: string) => {
+      setSelectedCategory(category);
+      closeMenus();
+
+      if (!category) {
+        router.push(`/${locale}/shop/products`);
+        return;
+      }
+
+      const categorySlug = resolveCategorySlug(category);
+
+      if (categorySlug) {
+        router.push(
+          `/${locale}/shop/products?category=${encodeURIComponent(categorySlug)}`,
+        );
+      }
+    },
+    [closeMenus, locale, router],
+  );
+
   const handleSearch = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -746,10 +924,18 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
       const params = new URLSearchParams();
       const query = searchQuery.trim();
 
-      if (query) params.set("q", query);
+      if (query) {
+        params.set("q", query);
+      }
+
       if (selectedCategory) {
         const categorySlug = resolveCategorySlug(selectedCategory);
-        if (categorySlug) params.set("category", categorySlug);
+
+        if (!categorySlug) {
+          console.warn("Could not resolve category slug:", selectedCategory);
+        } else {
+          params.set("category", categorySlug);
+        }
       }
 
       closeMenus();
@@ -804,24 +990,24 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
       });
     }
     if (item.key === "publishers") {
-  const publisherSubItems = getSubItems("publishers");
-  const selectedIndex = publisherSubItems.indexOf(subItem);
+      const publisherSubItems = getSubItems("publishers");
+      const selectedIndex = publisherSubItems.indexOf(subItem);
 
-  const publisherFilters = [
-    { market: "international", language: "en" },
-    { market: "international", language: "ar" },
-    { market: "local", language: "en" },
-    { market: "local", language: "ar" },
-  ];
+      const publisherFilters = [
+        { market: "international", language: "en" },
+        { market: "international", language: "ar" },
+        { market: "local", language: "en" },
+        { market: "local", language: "ar" },
+      ];
 
-  const selectedFilter = publisherFilters[selectedIndex];
+      const selectedFilter = publisherFilters[selectedIndex];
 
-  if (selectedFilter) {
-    return `/${locale}/shop/publishers?market=${selectedFilter.market}&language=${selectedFilter.language}`;
-  }
+      if (selectedFilter) {
+        return `/${locale}/shop/publishers?market=${selectedFilter.market}&language=${selectedFilter.language}`;
+      }
 
-  return item.href;
-}
+      return item.href;
+    }
 
     const categorySlug = resolveCategorySlug(subItem);
 
@@ -1052,7 +1238,7 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
               onSubmit={handleSearch}
               categories={categories}
               selectedCategory={selectedCategory}
-              onCategoryChange={setSelectedCategory}
+              onCategoryChange={handleCategoryChange}
               showCategorySelector
               suggestions={suggestions}
               onSuggestionClick={(href) => {
@@ -1412,7 +1598,7 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
             onSubmit={handleSearch}
             categories={categories}
             selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
+            onCategoryChange={handleCategoryChange}
             inputRef={mobileSearchRef}
             suggestions={suggestions}
             onSuggestionClick={(href) => {
@@ -1476,7 +1662,7 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
             onSubmit={handleSearch}
             categories={categories}
             selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
+            onCategoryChange={handleCategoryChange}
             suggestions={suggestions}
             onSuggestionClick={(href) => {
               setSearchQuery("");

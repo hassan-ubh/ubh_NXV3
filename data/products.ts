@@ -5,6 +5,7 @@ export type Product = {
   subtitle?: string;
 
   authors: string[];
+  authorsAr?: string[];
 
   publisher: string;
   publisherSlug: string;

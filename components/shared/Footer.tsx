@@ -582,7 +582,7 @@ export function Footer({ locale }: FooterProps) {
     {
       name: "LinkedIn",
       icon: Linkedin,
-      href: "YOUR_LINKEDIN_URL",
+      href: "https://www.linkedin.com/",
     },
     {
       name: "X",
