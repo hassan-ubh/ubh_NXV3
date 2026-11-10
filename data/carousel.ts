@@ -137,7 +137,7 @@ export const bannersByLocale: Record<"en" | "ar", CarouselItem[]> = {
         "Explore academic publishing, educational resources and books that inspire students, educators and institutions.",
       buttonText: "Explore Our Books",
       buttonLink: "/en/shop/products?collection=ubh",
-      imageUrl: "/images/main_images/about-global.webp",
+      imageUrl: "/images/main_images/aboutus-hero.webp",
       extraImages: getCovers([
   "ubh00007",
   "9786144523056",
@@ -287,7 +287,10 @@ export const bannersByLocale: Record<"en" | "ar", CarouselItem[]> = {
         "تعرّف على الأفكار والمؤسسات والعلاقات التي تسهم في تشكيل المجتمع الإنساني.",
       buttonText: "استكشف الكتاب",
       buttonLink: "/ar/shop/demo-arabic-book-002",
-      imageUrl: "/images/banners/sociology.png",
+      imageUrl:getCover(
+  "9789948389415",
+  "/images/banners/sociology.png"
+),
       price: 85,
       currency: "AED",
     },
@@ -301,7 +304,11 @@ export const bannersByLocale: Record<"en" | "ar", CarouselItem[]> = {
         "اكتشف أساسيات التخطيط والقيادة واتخاذ القرار في المؤسسات الحديثة والمتغيرة.",
       buttonText: "استكشف كتب الإدارة",
       buttonLink: "/ar/shop/demo-arabic-book-003",
-      imageUrl: "/images/banners/management.png",
+      imageUrl: getCover(
+  "marketing-management",
+ 
+   "9789948389415",
+),
       price: 95,
       oldPrice: 110,
       currency: "AED",

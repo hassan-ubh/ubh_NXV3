@@ -74,7 +74,7 @@ export function StoreHeroSection({
           className="group relative isolate order-1 flex min-h-[220px] min-w-0 flex-col justify-center overflow-hidden rounded-xl bg-ubh-navy p-5 sm:min-h-[240px] sm:p-6 lg:min-h-[250px] lg:p-7 xl:p-8"
         >
           <Image
-            src="/images/store/store-hero2.webp"
+            src="/images/store/storehero.jpg"
             alt={
               isArabic
                 ? "كتب أكاديمية في متجر دار الكتب الجامعية"
@@ -83,9 +83,7 @@ export function StoreHeroSection({
             fill
             priority
             sizes="(max-width: 1023px) 100vw, 80vw"
-            className={`-z-20 object-cover transition-transform duration-700 group-hover:scale-[1.02] ${
-              isArabic ? "hidden" : ""
-            }`}
+            className={`-z-20 object-cover transition-transform duration-700 group-hover:scale-[1.02] `}
           />
 
           {/* Refined navy overlay */}

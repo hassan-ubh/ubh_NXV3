@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -23,8 +23,7 @@ import {
   Sparkles,
   type LucideIcon,
 } from "lucide-react";
-import { useState,useEffect } from "react";
-
+import { useState, useEffect } from "react";
 
 import { Container } from "@/components/shared/Container";
 import { Button } from "@/components/shared/Button";
@@ -323,14 +322,7 @@ export function ProductCard({
 //   );
 // }
 
-
-function BestSellersPanel({
-  locale,
-  t,
-}: {
-  locale: Locale;
-  t: StoreCopy;
-}) {
+function BestSellersPanel({ locale, t }: { locale: Locale; t: StoreCopy }) {
   const allBestSellers = products
     .filter((product) => product.bestseller)
     .slice(0, 12);
@@ -347,9 +339,7 @@ function BestSellersPanel({
     if (!canRotate || isPaused) return;
 
     const interval = window.setInterval(() => {
-      setStartIndex((current) =>
-        (current + 1) % allBestSellers.length
-      );
+      setStartIndex((current) => (current + 1) % allBestSellers.length);
     }, 4500);
 
     return () => window.clearInterval(interval);
@@ -357,10 +347,7 @@ function BestSellersPanel({
 
   const visibleProducts = Array.from(
     { length: Math.min(DISPLAY_COUNT, allBestSellers.length) },
-    (_, index) =>
-      allBestSellers[
-        (startIndex + index) % allBestSellers.length
-      ]
+    (_, index) => allBestSellers[(startIndex + index) % allBestSellers.length],
   );
 
   const goTo = (index: number) => {
@@ -386,10 +373,8 @@ function BestSellersPanel({
 
       {/* HEADER */}
       <div className="mb-5 flex w-full items-center justify-between gap-3 border-b border-slate-100 pb-4 sm:mb-6 sm:pb-5">
-
         {/* TITLE */}
         <div className="flex min-w-0 items-center gap-3">
-
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#c89438]/10">
             <svg
               viewBox="0 0 24 24"
@@ -472,7 +457,6 @@ function BestSellersPanel({
           {/* CAROUSEL CONTROLS */}
           {canRotate && (
             <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
-
               {/* COUNTER */}
               <div className="flex items-center gap-2 text-[11px] font-semibold tabular-nums">
                 <span className="text-[#061a37]">
@@ -506,9 +490,7 @@ function BestSellersPanel({
                         ? `عرض المجموعة ${index + 1}`
                         : `Show bestseller position ${index + 1}`
                     }
-                    aria-current={
-                      startIndex === index ? "true" : undefined
-                    }
+                    aria-current={startIndex === index ? "true" : undefined}
                     className={`h-1.5 rounded-full transition-all duration-500 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c89438] focus-visible:ring-offset-2 ${
                       startIndex === index
                         ? "w-8 bg-[#c89438]"
@@ -798,12 +780,9 @@ function PopularSubjects({ locale }: { locale: Locale }) {
   );
 }
 
-
-
-
-
 import BannerCarousel from "@/components/store/Bannner/BannerCarousel";
 import { bannersByLocale } from "@/data/carousel";
+import { HeroContainer } from "./ui/HeroContainer";
 /* =========================================================
    INSTITUTIONAL SERVICES
    ========================================================= */
@@ -923,12 +902,11 @@ export function StorePage({ locale }: StorePageProps) {
   const t = copy[locale].store;
   const isArabic = locale === "ar";
   const ubhPublisherProducts = products
-  .filter(
-    (product) =>
-      product.publisherSlug === "university-book-house" &&
-      product.stock > 0
-  )
-  .slice(0, 12);
+    .filter(
+      (product) =>
+        product.publisherSlug === "university-book-house" && product.stock > 0,
+    )
+    .slice(0, 12);
   const featuredProducts = products.filter((product) => product.featured);
   const productsForCarousel = featuredProducts.length
     ? featuredProducts
@@ -940,20 +918,18 @@ export function StorePage({ locale }: StorePageProps) {
       dir={isArabic ? "rtl" : "ltr"}
       className="min-h-screen bg-[#fbfbfa] text-ubh-ink"
     >
+      {/* Hero and Banner */}
+       <HeroContainer className="space-y-3 pt-3 sm:space-y-4 sm:pt-4">
+      <StoreHeroSection
+        locale={locale}
+        title={t.destination}
+        description={t.description}
+        shopLabel={t.shop}
+        ebooksLabel={t.ebooks}
+      />
 
-
-       {/* Hero and Banner */}
-  <div className="space-y-3 px-3 pt-3 sm:space-y-4 sm:px-5 sm:pt-4 lg:px-6">
-    <StoreHeroSection
-      locale={locale}
-      title={t.destination}
-      description={t.description}
-      shopLabel={t.shop}
-      ebooksLabel={t.ebooks}
-    />
-
-    <BannerCarousel items={bannersByLocale[locale]} />
-  </div>
+      <BannerCarousel items={bannersByLocale[locale]} />
+    </HeroContainer>
       <Container className="space-y-5 py-5 sm:space-y-7 sm:py-6">
         {/* Hero */}
         {/* <StoreHeroSection
@@ -978,89 +954,89 @@ export function StorePage({ locale }: StorePageProps) {
         <StoreCollectionBenefits locale={locale} t={t} />
 
         <section
-  aria-label={isArabic ? "المنتجات المميزة" : "Featured products"}
-  className="space-y-12 py-8 sm:space-y-16 sm:py-12"
->
-  {/* University Book House Publications */}
-  <div className="relative">
-    <div className="mb-5 flex items-center gap-3 sm:mb-7">
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ubh-navy text-ubh-gold-light">
-        <BookOpen className="h-5 w-5" />
-      </div>
+          aria-label={isArabic ? "المنتجات المميزة" : "Featured products"}
+          className="space-y-12 py-8 sm:space-y-16 sm:py-12"
+        >
+          {/* University Book House Publications */}
+          <div className="relative">
+            <div className="mb-5 flex items-center gap-3 sm:mb-7">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ubh-navy text-ubh-gold-light">
+                <BookOpen className="h-5 w-5" />
+              </div>
 
-      <div className="min-w-0 flex-1">
-        <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-ubh-gold-deep">
-          {isArabic ? "منشوراتنا" : "OUR PUBLICATIONS"}
-        </p>
+              <div className="min-w-0 flex-1">
+                <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-ubh-gold-deep">
+                  {isArabic ? "منشوراتنا" : "OUR PUBLICATIONS"}
+                </p>
 
-        <h2 className="text-xl font-semibold tracking-tight text-ubh-navy sm:text-2xl lg:text-3xl">
-          {isArabic
-            ? "إصدارات دار الكتاب الجامعي"
-            : "University Book House Publications"}
-        </h2>
+                <h2 className="text-xl font-semibold tracking-tight text-ubh-navy sm:text-2xl lg:text-3xl">
+                  {isArabic
+                    ? "إصدارات دار الكتاب الجامعي"
+                    : "University Book House Publications"}
+                </h2>
 
-        <p className="mt-1 text-sm leading-6 text-slate-500">
-          {isArabic
-            ? "اكتشف إصداراتنا الأكاديمية والمهنية"
-            : "Explore academic and professional knowledge."}
-        </p>
-      </div>
-    </div>
+                <p className="mt-1 text-sm leading-6 text-slate-500">
+                  {isArabic
+                    ? "اكتشف إصداراتنا الأكاديمية والمهنية"
+                    : "Explore academic and professional knowledge."}
+                </p>
+              </div>
+            </div>
 
-    <ProductCarousel
-      locale={locale}
-      products={ubhPublisherProducts}
-      title=""
-      viewAllHref={`/${locale}/shop/products?publisher=university-book-house`}
-      cardWidth={190}
-      cardHeight={370}
-      imageHeight={190}
-      gap={16}
-      autoPlay
-      autoPlaySpeed={36}
-      pauseOnHover
-    />
-  </div>
+            <ProductCarousel
+              locale={locale}
+              products={ubhPublisherProducts}
+              title=""
+              viewAllHref={`/${locale}/shop/products?publisher=university-book-house`}
+              cardWidth={190}
+              cardHeight={370}
+              imageHeight={190}
+              gap={16}
+              autoPlay
+              autoPlaySpeed={36}
+              pauseOnHover
+            />
+          </div>
 
-  {/* Featured Products */}
-  <div className="relative">
-    <div className="mb-5 flex items-center gap-3 sm:mb-7">
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-ubh-navy">
-        <Sparkles className="h-5 w-5" />
-      </div>
+          {/* Featured Products */}
+          <div className="relative">
+            <div className="mb-5 flex items-center gap-3 sm:mb-7">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-ubh-navy">
+                <Sparkles className="h-5 w-5" />
+              </div>
 
-      <div className="min-w-0 flex-1">
-        <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-ubh-gold-deep">
-          {isArabic ? "مختاراتنا" : "HANDPICKED FOR YOU"}
-        </p>
+              <div className="min-w-0 flex-1">
+                <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-ubh-gold-deep">
+                  {isArabic ? "مختاراتنا" : "HANDPICKED FOR YOU"}
+                </p>
 
-        <h2 className="text-xl font-semibold tracking-tight text-ubh-navy sm:text-2xl lg:text-3xl">
-          {isArabic ? "منتجات مميزة" : "Featured Products"}
-        </h2>
+                <h2 className="text-xl font-semibold tracking-tight text-ubh-navy sm:text-2xl lg:text-3xl">
+                  {isArabic ? "منتجات مميزة" : "Featured Products"}
+                </h2>
 
-        <p className="mt-1 text-sm leading-6 text-slate-500">
-          {isArabic
-            ? "اكتشف كتباً مختارة في مختلف التخصصات"
-            : "Discover standout books across popular subjects."}
-        </p>
-      </div>
-    </div>
+                <p className="mt-1 text-sm leading-6 text-slate-500">
+                  {isArabic
+                    ? "اكتشف كتباً مختارة في مختلف التخصصات"
+                    : "Discover standout books across popular subjects."}
+                </p>
+              </div>
+            </div>
 
-    <ProductCarousel
-      locale={locale}
-      products={productsForCarousel}
-      title=""
-      viewAllHref={`/${locale}/shop/products`}
-      cardWidth={190}
-      cardHeight={370}
-      imageHeight={190}
-      gap={16}
-      autoPlay
-      autoPlaySpeed={32}
-      pauseOnHover
-    />
-  </div>
-</section>
+            <ProductCarousel
+              locale={locale}
+              products={productsForCarousel}
+              title=""
+              viewAllHref={`/${locale}/shop/products`}
+              cardWidth={190}
+              cardHeight={370}
+              imageHeight={190}
+              gap={16}
+              autoPlay
+              autoPlaySpeed={32}
+              pauseOnHover
+            />
+          </div>
+        </section>
 
         <AboutStore locale={locale} />
       </Container>
