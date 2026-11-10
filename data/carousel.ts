@@ -306,7 +306,6 @@ export const bannersByLocale: Record<"en" | "ar", CarouselItem[]> = {
       buttonLink: "/ar/shop/demo-arabic-book-003",
       imageUrl: getCover(
   "marketing-management",
- 
    "9789948389415",
 ),
       price: 95,

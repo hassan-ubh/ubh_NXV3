@@ -189,11 +189,12 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
       {/* Main navigation bar */}
       <div
   className={`
-    border-b transition-all duration-300 ease-in-out
+    border-b border-white/[0.10]
+    transition-all duration-300 ease-in-out
     ${
       isScrolled
-        ? "border-white/[0.08] bg-[#041329] shadow-[0_8px_32px_rgba(0,0,0,0.25)]"
-        : "border-white/[0.08] bg-ubh-navy shadow-none"
+        ? "bg-[#041329]/95 shadow-[0_6px_24px_rgba(0,0,0,0.18)] backdrop-blur-md"
+        : "bg-[#061A37] shadow-none"
     }
   `}
 >
@@ -235,7 +236,17 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
                     key={item.href}
                     href={item.href!}
                     onClick={closeMenus}
-                    className="flex h-10 shrink-0 items-center whitespace-nowrap rounded-md px-1 text-[10px] font-semibold text-white/80 transition-colors hover:text-ubh-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold-light xl:px-1.5 xl:text-[12px] 2xl:px-2 2xl:text-[13px]"
+                    className="
+  relative flex h-10 shrink-0 items-center whitespace-nowrap
+  rounded-md px-1
+  text-[10px] font-semibold text-white/85
+  transition-colors duration-200
+  hover:text-[#DCAE57]
+  focus-visible:outline-none
+  focus-visible:ring-2 focus-visible:ring-[#DCAE57]
+  xl:px-1.5 xl:text-[12px]
+  2xl:px-2 2xl:text-[13px]
+"
                   >
                     {item.label}
                   </Link>

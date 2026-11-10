@@ -431,19 +431,53 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
   const [canScrollStart, setCanScrollStart] = useState(false);
   const [canScrollEnd, setCanScrollEnd] = useState(false);
 
+  // const updateNavScrollState = useCallback(() => {
+  //   const viewport = navScrollRef.current;
+  //   if (!viewport) return;
+
+  //   const maxScroll = viewport.scrollWidth - viewport.clientWidth;
+  //   const hasOverflow = maxScroll > 2;
+
+  //   // The scroll viewport uses LTR in both languages.
+  //   const currentScroll = Math.max(0, Math.min(viewport.scrollLeft, maxScroll));
+
+  //   setCanScrollStart(hasOverflow && currentScroll > 2);
+  //   setCanScrollEnd(hasOverflow && currentScroll < maxScroll - 2);
+  // }, []);
   const updateNavScrollState = useCallback(() => {
     const viewport = navScrollRef.current;
     if (!viewport) return;
 
+    const navRow = viewport.parentElement;
+    const content = viewport.firstElementChild as HTMLElement | null;
+
+    if (!navRow || !content) return;
+
+    // Check whether all categories fit in the full navigation row.
+    const hasOverflow =
+      content.getBoundingClientRect().width > navRow.clientWidth + 2;
+
+    if (!hasOverflow) {
+      setCanScrollStart(false);
+      setCanScrollEnd(false);
+      return;
+    }
+
+    // Actual scrollable distance after the arrows are displayed.
     const maxScroll = viewport.scrollWidth - viewport.clientWidth;
-    const hasOverflow = maxScroll > 2;
 
-    // The scroll viewport uses LTR in both languages.
-    const currentScroll = Math.max(0, Math.min(viewport.scrollLeft, maxScroll));
+    const currentScroll = isArabic
+      ? Math.abs(viewport.scrollLeft)
+      : viewport.scrollLeft;
 
-    setCanScrollStart(hasOverflow && currentScroll > 2);
-    setCanScrollEnd(hasOverflow && currentScroll < maxScroll - 2);
-  }, []);
+    if (isArabic) {
+      setCanScrollStart(currentScroll < maxScroll - 2);
+      setCanScrollEnd(currentScroll > 2);
+    } else {
+      setCanScrollStart(currentScroll > 2);
+      setCanScrollEnd(currentScroll < maxScroll - 2);
+    }
+  }, [isArabic]);
 
   useEffect(() => {
     const viewport = navScrollRef.current;
@@ -463,9 +497,17 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
         ? new ResizeObserver(measureOnNextFrame)
         : null;
 
+    const navRow = viewport.parentElement;
+
     observer?.observe(viewport);
-    if (viewport.firstElementChild)
+
+    if (navRow) {
+      observer?.observe(navRow);
+    }
+
+    if (viewport.firstElementChild) {
       observer?.observe(viewport.firstElementChild);
+    }
 
     viewport.addEventListener("scroll", measureOnNextFrame, { passive: true });
     window.addEventListener("resize", measureOnNextFrame, { passive: true });
@@ -479,6 +521,21 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
     };
   }, [updateNavScrollState, locale]);
 
+  // const scrollNavigation = useCallback((direction: "left" | "right") => {
+  //   const viewport = navScrollRef.current;
+  //   if (!viewport) return;
+
+  //   const distance = Math.max(220, Math.round(viewport.clientWidth * 0.7));
+
+  //   const reduceMotion = window.matchMedia(
+  //     "(prefers-reduced-motion: reduce)",
+  //   ).matches;
+
+  //   viewport.scrollBy({
+  //     left: direction === "left" ? -distance : distance,
+  //     behavior: reduceMotion ? "auto" : "smooth",
+  //   });
+  // }, []);
   const scrollNavigation = useCallback((direction: "left" | "right") => {
     const viewport = navScrollRef.current;
     if (!viewport) return;
@@ -494,6 +551,20 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
       behavior: reduceMotion ? "auto" : "smooth",
     });
   }, []);
+  useEffect(() => {
+    const viewport = navScrollRef.current;
+    if (!viewport) return;
+
+    const frameId = window.requestAnimationFrame(() => {
+      // Both LTR and RTL start at scrollLeft = 0.
+      // In RTL, this is the rightmost edge where Categories appears first.
+      viewport.scrollLeft = 0;
+
+      updateNavScrollState();
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [isArabic, updateNavScrollState]);
 
   const normalizeSearch = useCallback(
     (value: unknown) =>
@@ -1223,9 +1294,11 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
             </div>
 
             {/* Destination */}
-            <div className="hidden shrink-0 border-s border-slate-200 ps-3 text-xs text-slate-500 2xl:block 2xl:ps-4">
-              {t.destination}
-            </div>
+            <div className="hidden 2xl:flex shrink-0 items-center border-s border-slate-200 ps-4">
+  <span className="whitespace-pre-line text-[10px] font-medium leading-[1.5] tracking-wide text-[#061A37]">
+    {t.destination}
+  </span>
+</div>
 
             {/* Desktop / tablet search */}
             <SearchForm
@@ -1363,9 +1436,9 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
                   : "pointer-events-none border-t border-transparent opacity-0"
               }`}
             >
-              <div className="mx-auto w-full min-w-0 max-w-[1280px] px-3 sm:px-4 lg:px-6">
+              <div className="mx-auto w-full min-w-0 max-w-none px-3 sm:px-4 lg:px-6 2xl:px-10">
                 <div
-                  dir={isArabic ? "rtl" : "ltr"}
+                  dir="ltr"
                   className="flex w-full min-w-0 items-center gap-1 overflow-hidden"
                 >
                   {/* Physical left arrow: right side in Arabic */}
@@ -1388,20 +1461,16 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
                       className="flex h-9 w-6 items-center justify-center text-ubh-navy transition-colors duration-200 hover:text-ubh-gold-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold disabled:pointer-events-none"
                     >
                       {isArabic ? (
-                        <ChevronRight
+                        <ChevronLeft
                           size={22}
                           strokeWidth={2.5}
-                          className={`transition-transform duration-300 ease-in-out motion-reduce:transition-none ${
-                            canScrollStart ? "translate-x-0" : "translate-x-2"
-                          }`}
+                          className="transition-transform duration-300 ease-in-out motion-reduce:transition-none"
                         />
                       ) : (
                         <ChevronLeft
                           size={22}
                           strokeWidth={2.5}
-                          className={`transition-transform duration-300 ease-in-out motion-reduce:transition-none ${
-                            canScrollStart ? "translate-x-0" : "-translate-x-2"
-                          }`}
+                          className="transition-transform duration-300 ease-in-out motion-reduce:transition-none"
                         />
                       )}
                     </button>
@@ -1410,7 +1479,7 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
                   {/* Scrollable navigation: always LTR for consistent scrollLeft */}
                   <div
                     ref={navScrollRef}
-                    dir="ltr"
+                    dir={isArabic ? "rtl" : "ltr"}
                     onScroll={updateNavScrollState}
                     className="w-0 min-w-0 flex-1 overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                     style={{
@@ -1420,7 +1489,9 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
                   >
                     <div
                       dir={isArabic ? "rtl" : "ltr"}
-                      className="flex w-max min-w-max flex-nowrap items-center gap-1 px-1"
+                      className={`flex w-max min-w-max flex-nowrap items-center gap-1 px-1 ${
+                        !canScrollStart && !canScrollEnd ? "mx-auto" : ""
+                      }`}
                     >
                       {navItems.map((item) => {
                         const subItems = getSubItems(item.key);
@@ -1492,7 +1563,7 @@ export function StoreHeader({ locale }: StoreHeaderProps) {
                       className="flex h-9 w-6 items-center justify-center text-ubh-navy transition-colors duration-200 hover:text-ubh-gold-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold disabled:pointer-events-none"
                     >
                       {isArabic ? (
-                        <ChevronLeft
+                        <ChevronRight
                           size={22}
                           strokeWidth={2.5}
                           className={`transition-transform duration-300 ease-in-out motion-reduce:transition-none ${

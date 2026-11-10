@@ -24,6 +24,7 @@ import {
   getCategoryLabel,
   resolveCategorySlug,
 } from "@/lib/store/categories";
+import { HeroContainer } from "./ui/HeroContainer";
 
 
 type Collection =
@@ -818,9 +819,10 @@ export function ProductShow({ locale, initialFilters }: ProductShowProps) {
       className="min-h-[70vh] bg-ubh-canvas pb-16 pt-8 sm:pb-20 sm:pt-12"
     >
 
-       <div className="mb-5 px-3 sm:mb-7 sm:px-5 lg:px-6">
+<HeroContainer className="mb-5 sm:mb-7">
+
     <ProductListingHero locale={locale} />
-  </div>
+</HeroContainer >
       
       <Container>
         {/* <header className="relative overflow-hidden rounded-3xl bg-ubh-navy px-5 py-8 text-white sm:px-9 sm:py-10 lg:px-12 lg:py-12">
