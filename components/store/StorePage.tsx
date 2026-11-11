@@ -24,6 +24,7 @@ import {
   Unlock,
   Library,
   BookMarked,
+  Zap,
   type LucideIcon,
 } from "lucide-react";
 
@@ -564,9 +565,7 @@ export function PromoCard({
           aria-hidden="true"
           className={`pointer-events-none absolute ${
             isArabic ? "left-7" : "right-7"
-          } top-6 -z-10 ${
-            isEbook ? "text-white/10" : "text-ubh-gold-deep/15"
-          }`}
+          } top-6 -z-10 ${isEbook ? "text-white/10" : "text-ubh-gold-deep/15"}`}
         >
           <DecorativeIcon size={76} strokeWidth={0.8} />
         </div>
@@ -575,21 +574,15 @@ export function PromoCard({
       {/* Main icon */}
       <span
         className={`inline-flex h-10 w-10 items-center justify-center rounded-lg ${
-          isEbook
-            ? "bg-white/10 text-[#e0b56b]"
-            : "bg-[#fbf5e9] text-[#a87529]"
+          isEbook ? "bg-white/10 text-[#e0b56b]" : "bg-[#fbf5e9] text-[#a87529]"
         }`}
       >
         <Icon size={22} strokeWidth={1.6} aria-hidden="true" />
       </span>
 
-      <h2 className={`mt-4 font-serif ${titleSize ?? "text-2xl"}`}>
-        {title}
-      </h2>
+      <h2 className={`mt-4 font-serif ${titleSize ?? "text-2xl"}`}>{title}</h2>
 
-      <p className={`mt-3 ${descriptionSize ?? "text-sm"}`}>
-        {description}
-      </p>
+      <p className={`mt-3 ${descriptionSize ?? "text-sm"}`}>{description}</p>
 
       <Link
         href={href}
@@ -609,8 +602,6 @@ export function PromoCard({
     </section>
   );
 }
-
-
 
 // function Promotions({ locale, t }: { locale: Locale; t: StoreCopy }) {
 //   return (
@@ -977,6 +968,92 @@ function InstitutionalServices({ locale }: { locale: Locale }) {
   );
 }
 
+const FLASH_SALE_END_DATE = "2026-11-31T23:59:59+04:00";
+
+function FlashSaleCountdown({ locale }: { locale: Locale }) {
+  const isArabic = locale === "ar";
+
+  const [remaining, setRemaining] = useState<number | null>(null);
+
+  useEffect(() => {
+    const endTime = new Date(FLASH_SALE_END_DATE).getTime();
+
+    const updateCountdown = () => {
+      const difference = Math.max(0, endTime - Date.now());
+      setRemaining(difference);
+    };
+
+    updateCountdown();
+
+    const interval = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  if (remaining === null) {
+    return <div className="h-16" aria-hidden="true" />;
+  }
+
+  if (remaining <= 0) {
+    return (
+      <div className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-500">
+        {isArabic ? "انتهى العرض" : "Sale has ended"}
+      </div>
+    );
+  }
+
+  const totalSeconds = Math.floor(remaining / 1000);
+
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  const units = [
+    {
+      value: days,
+      label: isArabic ? "يوم" : "Days",
+    },
+    {
+      value: hours,
+      label: isArabic ? "ساعة" : "Hours",
+    },
+    {
+      value: minutes,
+      label: isArabic ? "دقيقة" : "Minutes",
+    },
+    {
+      value: seconds,
+      label: isArabic ? "ثانية" : "Seconds",
+    },
+  ];
+
+  return (
+    <div
+      className="flex items-center gap-2 sm:gap-3"
+      dir={isArabic ? "rtl" : "ltr"}
+      aria-label={
+        isArabic ? "الوقت المتبقي للعرض" : "Time remaining for the sale"
+      }
+    >
+      {units.map((unit) => (
+        <div
+          key={unit.label}
+          className="flex min-w-[48px] flex-col items-center justify-center rounded-lg border border-amber-200/80 bg-white px-2 py-2 shadow-sm sm:min-w-[58px] sm:px-3"
+        >
+          <span className="font-mono text-lg font-bold tabular-nums text-ubh-navy sm:text-xl">
+            {String(unit.value).padStart(2, "0")}
+          </span>
+
+          <span className="text-[9px] font-medium text-slate-500 sm:text-[10px]">
+            {unit.label}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function StorePage({ locale }: StorePageProps) {
   const t = copy[locale].store;
   const isArabic = locale === "ar";
@@ -991,6 +1068,15 @@ export function StorePage({ locale }: StorePageProps) {
     ? featuredProducts
     : products;
 
+  const flashSaleProducts = products
+    .filter(
+      (product) =>
+        product.stock > 0 &&
+        typeof product.oldPrice === "number" &&
+        product.oldPrice > product.price,
+    )
+    .slice(0, 12);
+
   return (
     <main
       lang={locale}
@@ -998,17 +1084,17 @@ export function StorePage({ locale }: StorePageProps) {
       className="min-h-screen bg-[#fbfbfa] text-ubh-ink"
     >
       {/* Hero and Banner */}
-       <HeroContainer className="space-y-3 pt-3 sm:space-y-4 sm:pt-4">
-      <StoreHeroSection
-        locale={locale}
-        title={t.destination}
-        description={t.description}
-        shopLabel={t.shop}
-        ebooksLabel={t.ebooks}
-      />
+      <HeroContainer className="space-y-3 pt-3 sm:space-y-4 sm:pt-4">
+        <StoreHeroSection
+          locale={locale}
+          title={t.destination}
+          description={t.description}
+          shopLabel={t.shop}
+          ebooksLabel={t.ebooks}
+        />
 
-      <BannerCarousel items={bannersByLocale[locale]} />
-    </HeroContainer>
+        <BannerCarousel items={bannersByLocale[locale]} />
+      </HeroContainer>
       <Container className="space-y-5 py-5 sm:space-y-7 sm:py-6">
         {/* Hero */}
         {/* <StoreHeroSection
@@ -1032,90 +1118,291 @@ export function StorePage({ locale }: StorePageProps) {
 
         <StoreCollectionBenefits locale={locale} t={t} />
 
-        <section
-          aria-label={isArabic ? "المنتجات المميزة" : "Featured products"}
-          className="space-y-12 py-8 sm:space-y-16 sm:py-12"
+        
+<section
+  aria-label={isArabic ? "المنتجات المميزة" : "Featured products"}
+  dir={isArabic ? "rtl" : "ltr"}
+  className="space-y-14 py-8 sm:space-y-20 sm:py-12"
+>
+  {/* ==========================================
+      UBH PUBLICATIONS
+  ========================================== */}
+  <section className="relative">
+    <div className="mb-6 flex items-end justify-between gap-4 sm:mb-8">
+      <div className="min-w-0">
+        <div className="mb-3 flex items-center gap-2">
+          <span className="h-[2px] w-8 bg-ubh-gold" />
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-ubh-gold-deep sm:text-xs">
+            {isArabic ? "منشوراتنا" : "THE UBH COLLECTION"}
+          </span>
+        </div>
+
+        <h2 className="text-2xl font-bold tracking-tight text-ubh-navy sm:text-3xl">
+          {isArabic
+            ? "إصدارات دار الكتاب الجامعي"
+            : "University Book House"}
+        </h2>
+
+        <p className="mt-2 max-w-xl text-xs leading-6 text-slate-500 sm:text-sm">
+          {isArabic
+            ? "معرفة أكاديمية ومهنية من إصداراتنا المختارة."
+            : "Academic excellence and professional knowledge from our own publications."}
+        </p>
+      </div>
+
+      <Link
+        href={`/${locale}/shop/products?publisher=university-book-house`}
+        className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-ubh-navy/15 px-4 py-2.5 text-xs font-semibold text-ubh-navy transition-all duration-300 hover:border-ubh-gold hover:bg-ubh-navy hover:text-white sm:px-5 sm:text-sm"
+      >
+        {isArabic ? "عرض الكل" : "Explore all"}
+        <span className="transition-transform duration-300 group-hover:-translate-y-0.5">
+          ↗
+        </span>
+      </Link>
+    </div>
+
+    <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-br from-[#f7f9fc] via-white to-[#f5f1e9] p-3 sm:p-5 lg:p-6">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -end-20 -top-24 h-64 w-64 rounded-full bg-ubh-gold/10 blur-3xl"
+      />
+
+      <div className="relative">
+        <ProductCarousel
+          locale={locale}
+          products={ubhPublisherProducts}
+          title=""
+          viewAllHref={`/${locale}/shop/products?publisher=university-book-house`}
+          cardWidth={190}
+          cardHeight={370}
+          imageHeight={190}
+          gap={16}
+        />
+      </div>
+    </div>
+  </section>
+
+
+  {/* ==========================================
+      FLASH DEALS - MAIN PROMOTIONAL FEATURE
+  ========================================== */}
+ 
+{/* ==========================================
+    FLASH DEALS - PREMIUM LIGHT GOLD THEME
+========================================== */}
+
+{/* FLASH DEALS */}
+{flashSaleProducts.length > 0 && (
+  <section className="relative isolate overflow-hidden rounded-[24px] border border-[#dfc18a] bg-gradient-to-br from-[#f8efd9] via-[#f3e2bf] to-[#e9c991] shadow-[0_16px_45px_-26px_rgba(130,91,35,0.38)]">
+
+    {/* Background decorations */}
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
+    >
+      <div className="absolute -end-20 -top-28 h-80 w-80 rounded-full bg-[#e5b85f]/25 blur-[85px]" />
+
+      <div className="absolute -start-24 bottom-0 h-64 w-64 rounded-full bg-[#fffaf0]/70 blur-[75px]" />
+
+      <div
+        className="absolute inset-0 opacity-[0.12]"
+        style={{
+          backgroundImage:
+            "radial-gradient(#a77b36 0.7px, transparent 0.7px)",
+          backgroundSize: "22px 22px",
+        }}
+      />
+    </div>
+
+    {/* Header */}
+    <div className="relative z-10 px-4 pb-5 pt-6 sm:px-7 sm:pb-7 sm:pt-8 lg:px-9">
+
+      <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
+
+        {/* Promotional content */}
+        <div className="min-w-0 flex-1">
+
+          <div className="mb-4 flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#d8b776] bg-white/70 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-[#886329] sm:text-xs">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#bd852e]" />
+              {isArabic ? "عروض لفترة محدودة" : "LIMITED TIME OFFERS"}
+            </span>
+
+            <span className="text-[10px] font-semibold uppercase tracking-widest text-[#92774b]">
+              {isArabic ? "عروض حصرية" : "EXCLUSIVE UBH DEALS"}
+            </span>
+          </div>
+
+          <div className="flex items-start gap-3">
+
+            <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-[#e1c58f] bg-white/75 text-3xl text-[#b68132] shadow-sm sm:flex">
+              ⚡
+            </div>
+
+            <div className="min-w-0">
+              <h2 className="text-3xl font-extrabold tracking-tight text-[#061a37] sm:text-4xl lg:text-[42px]">
+                {isArabic ? "عروض خاطفة" : "Flash Deals"}
+              </h2>
+
+              <p className="mt-2 text-sm font-bold text-[#976b2b] sm:text-base">
+                {isArabic
+                  ? "كتب مميزة. أسعار استثنائية."
+                  : "Exceptional books. Special prices."}
+              </p>
+
+              <p className="mt-2 max-w-lg text-xs leading-6 text-[#69583d] sm:text-sm">
+                {isArabic
+                  ? "اكتشف عروضاً مميزة على مجموعة مختارة من الكتب الأكاديمية والمهنية."
+                  : "Discover exclusive offers on selected academic and professional titles."}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Countdown */}
+        <div className="relative shrink-0 rounded-2xl border border-[#dfc99f] bg-[#fffdf8]/90 p-4 shadow-[0_8px_24px_-15px_rgba(110,75,25,0.3)] sm:min-w-[270px] sm:p-5">
+
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#80602c] sm:text-xs">
+              {isArabic ? "ينتهي العرض خلال" : "OFFER ENDS IN"}
+            </p>
+
+            <span className="text-xl text-[#b68132]">◷</span>
+          </div>
+
+          <div className="rounded-xl border border-[#eee1c6] bg-[#f8efdf] p-2.5 sm:p-3">
+            <FlashSaleCountdown locale={locale} />
+          </div>
+
+          <p className="mt-3 text-center text-[10px] text-[#806e52]">
+            {isArabic
+              ? "لا تفوّت فرصة الاستفادة من العروض"
+              : "Don't miss these exclusive offers."}
+          </p>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-[#d9c49c]/80 pt-4">
+
+        <div className="flex items-center gap-2 text-xs font-medium text-[#715c3b]">
+          <span className="text-[#a77b32]">✦</span>
+          {isArabic
+            ? "مجموعة مختارة من الكتب بأسعار خاصة"
+            : "Handpicked titles at special prices"}
+        </div>
+
+        <Link
+          href={`/${locale}/shop/products?collection=offers`}
+          className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#a9782e] to-[#c69645] px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-[#936522]/15 transition-all duration-300 hover:-translate-y-0.5 hover:from-[#956522] hover:to-[#b58336] hover:shadow-lg sm:text-sm"
         >
-          {/* University Book House Publications */}
-          <div className="relative">
-            <div className="mb-5 flex items-center gap-3 sm:mb-7">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ubh-navy text-ubh-gold-light">
-                <BookOpen className="h-5 w-5" />
-              </div>
+          {isArabic ? "تسوق العروض" : "Shop deals"}
+          <span className="transition-transform duration-300 group-hover:-translate-y-0.5">
+            ↗
+          </span>
+        </Link>
+      </div>
+    </div>
 
-              <div className="min-w-0 flex-1">
-                <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-ubh-gold-deep">
-                  {isArabic ? "منشوراتنا" : "OUR PUBLICATIONS"}
-                </p>
+    {/* Product showcase */}
+    <div className="relative z-10 border-t border-[#ddc69e] bg-[#fffaf1]/95 px-3 pb-5 pt-5 sm:px-6 sm:pb-7 sm:pt-6 lg:px-8">
 
-                <h2 className="text-xl font-semibold tracking-tight text-ubh-navy sm:text-2xl lg:text-3xl">
-                  {isArabic
-                    ? "إصدارات دار الكتاب الجامعي"
-                    : "University Book House Publications"}
-                </h2>
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <div>
+          <h3 className="text-sm font-bold text-[#061a37] sm:text-base">
+            {isArabic ? "تسوق الكتب المخفضة" : "Explore the deals"}
+          </h3>
 
-                <p className="mt-1 text-sm leading-6 text-slate-500">
-                  {isArabic
-                    ? "اكتشف إصداراتنا الأكاديمية والمهنية"
-                    : "Explore academic and professional knowledge."}
-                </p>
-              </div>
-            </div>
+          <p className="mt-1 text-[10px] text-slate-500 sm:text-xs">
+            {isArabic
+              ? "اكتشف الكتب المتاحة ضمن العروض"
+              : "Discover books included in this promotion."}
+          </p>
+        </div>
 
-            <ProductCarousel
-              locale={locale}
-              products={ubhPublisherProducts}
-              title=""
-              viewAllHref={`/${locale}/shop/products?publisher=university-book-house`}
-              cardWidth={190}
-              cardHeight={370}
-              imageHeight={190}
-              gap={16}
-              autoPlay
-              autoPlaySpeed={36}
-              pauseOnHover
-            />
-          </div>
+        <span className="shrink-0 rounded-full border border-[#e4cfaa] bg-white px-3 py-1.5 text-[10px] font-bold text-[#8e682d] sm:text-xs">
+          {flashSaleProducts.length} {isArabic ? "منتجات" : "DEALS"}
+        </span>
+      </div>
 
-          {/* Featured Products */}
-          <div className="relative">
-            <div className="mb-5 flex items-center gap-3 sm:mb-7">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-ubh-navy">
-                <Sparkles className="h-5 w-5" />
-              </div>
+      <div className="rounded-xl border border-[#e9dfcd] bg-white p-2 shadow-[0_4px_18px_-12px_rgba(50,40,20,0.2)] sm:p-4">
+        <ProductCarousel
+          locale={locale}
+          products={flashSaleProducts}
+          title=""
+          viewAllHref={`/${locale}/shop/products?collection=offers`}
+          cardWidth={190}
+          cardHeight={370}
+          imageHeight={190}
+          gap={16}
+          autoPlay={true}
+          showViewAll={false}
+          showOldPrice
+          showDiscountBadge
+        />
+      </div>
+    </div>
+  </section>
+)}
 
-              <div className="min-w-0 flex-1">
-                <p className="mb-1 text-xs font-semibold uppercase tracking-[0.16em] text-ubh-gold-deep">
-                  {isArabic ? "مختاراتنا" : "HANDPICKED FOR YOU"}
-                </p>
 
-                <h2 className="text-xl font-semibold tracking-tight text-ubh-navy sm:text-2xl lg:text-3xl">
-                  {isArabic ? "منتجات مميزة" : "Featured Products"}
-                </h2>
 
-                <p className="mt-1 text-sm leading-6 text-slate-500">
-                  {isArabic
-                    ? "اكتشف كتباً مختارة في مختلف التخصصات"
-                    : "Discover standout books across popular subjects."}
-                </p>
-              </div>
-            </div>
+  {/* ==========================================
+      FEATURED PRODUCTS
+  ========================================== */}
+  <section className="relative">
 
-            <ProductCarousel
-              locale={locale}
-              products={productsForCarousel}
-              title=""
-              viewAllHref={`/${locale}/shop/products`}
-              cardWidth={190}
-              cardHeight={370}
-              imageHeight={190}
-              gap={16}
-              autoPlay
-              autoPlaySpeed={32}
-              pauseOnHover
-            />
-          </div>
-        </section>
+    <div className="mb-6 flex items-end justify-between gap-4 sm:mb-8">
+      <div className="min-w-0">
+        <div className="mb-3 flex items-center gap-2">
+          <span className="h-[2px] w-8 bg-ubh-gold" />
+
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-ubh-gold-deep sm:text-xs">
+            {isArabic ? "مختاراتنا" : "CURATED FOR YOU"}
+          </span>
+        </div>
+
+        <h2 className="text-2xl font-bold tracking-tight text-ubh-navy sm:text-3xl">
+          {isArabic ? "منتجات مميزة" : "Featured Products"}
+        </h2>
+
+        <p className="mt-2 max-w-xl text-xs leading-6 text-slate-500 sm:text-sm">
+          {isArabic
+            ? "اكتشف كتباً مختارة بعناية في مختلف التخصصات."
+            : "Explore carefully selected books across leading academic and professional subjects."}
+        </p>
+      </div>
+
+      <Link
+        href={`/${locale}/shop/products`}
+        className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-ubh-navy/15 px-4 py-2.5 text-xs font-semibold text-ubh-navy transition-all duration-300 hover:border-ubh-gold hover:bg-ubh-navy hover:text-white sm:px-5 sm:text-sm"
+      >
+        {isArabic ? "تصفح الكل" : "Explore all"}
+        <span className="transition-transform duration-300 group-hover:-translate-y-0.5">
+          ↗
+        </span>
+      </Link>
+    </div>
+
+    <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-3 shadow-sm shadow-slate-200/30 sm:p-5 lg:p-6">
+      <div className="pointer-events-none absolute -end-24 -top-24 h-64 w-64 rounded-full bg-blue-50/80 blur-3xl" />
+
+      <div className="relative">
+        <ProductCarousel
+          locale={locale}
+          products={productsForCarousel}
+          title=""
+          viewAllHref={`/${locale}/shop/products`}
+          cardWidth={190}
+          cardHeight={370}
+          imageHeight={190}
+          gap={16}
+        />
+      </div>
+    </div>
+  </section>
+</section>
+
 
         <AboutStore locale={locale} />
       </Container>

@@ -36,6 +36,7 @@ type ProductCarouselProps = {
   pauseOnHover?: boolean;
   imageBackground?: string;
   className?: string;
+  showDiscountBadge?: boolean;
 };
 
 const CART_FEEDBACK_MS = 1800;
@@ -63,11 +64,12 @@ export function ProductCarousel({
   showOldPrice = false,
   showViewAll = true,
   showArrows = true,
-  autoPlay = true,
+  autoPlay = false,
   autoPlaySpeed = 28,
   pauseOnHover = true,
-  imageBackground = "#f8f7f4",
+  imageBackground = "#f8f7f3",
   className = "",
+  showDiscountBadge = false,
 }: ProductCarouselProps) {
   const isArabic = locale === "ar";
   const { addToCart } = useCart();
@@ -339,11 +341,25 @@ export function ProductCarousel({
     const isAdded = addedProductIds.has(productId);
     const authors = getAuthors(product);
 
+
+    const currentPrice = Number(product.price);
+const originalPrice = Number(product.oldPrice);
+
+const discountPercentage =
+  Number.isFinite(currentPrice) &&
+  Number.isFinite(originalPrice) &&
+  originalPrice > currentPrice &&
+  originalPrice > 0
+    ? Math.round(
+        ((originalPrice - currentPrice) / originalPrice) * 100,
+      )
+    : 0;
+
     return (
       <article
         key={`${duplicate ? "copy" : "item"}-${productId}-${index}`}
         aria-hidden={duplicate || undefined}
-        className="group relative flex shrink-0 flex-col overflow-hidden rounded-xl border border-slate-200/80 bg-white transition-[transform,border-color,box-shadow] duration-300 hover:border-ubh-gold/50 hover:shadow-lg"
+        className="group relative flex shrink-0 flex-col overflow-hidden rounded-xl border border-slate-200/80 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-[#d6b46f] hover:shadow-[0_12px_28px_-12px_rgba(90,65,30,0.2)]"
         style={{
           width: `${cardWidth}px`,
           height: `${Math.max(cardHeight, imageHeight + 185)}px`,
@@ -357,6 +373,17 @@ export function ProductCarousel({
           className="relative block shrink-0 overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ubh-gold"
           style={{ height: `${imageHeight}px`, backgroundColor: imageBackground }}
         >
+          {showDiscountBadge && discountPercentage > 0 && (
+  <span
+    className={`absolute top-2 ${
+      isArabic ? "right-2" : "left-2"
+    } z-10 rounded-md bg-[#a9782e] px-2.5 py-1.5 text-[10px] font-bold text-white shadow-sm`}
+  >
+    {isArabic
+      ? `خصم ${discountPercentage}%`
+      : `-${discountPercentage}%`}
+  </span>
+)}
           {product.cover ? (
             <Image
               src={product.cover}
@@ -364,7 +391,7 @@ export function ProductCarousel({
               fill
               sizes={`${cardWidth}px`}
               draggable={false}
-              className="object-contain p-3 transition-transform duration-500 group-hover:scale-[1.04]"
+              className="object-contain p-3 transition-transform duration-500 ease-out group-hover:scale-[1.05]"
             />
           ) : (
             <div className="flex h-full items-center justify-center text-sm text-slate-400">
@@ -414,16 +441,20 @@ export function ProductCarousel({
           )}
 
           <div className="mt-auto pt-3">
-            <div className="flex min-h-5 flex-wrap items-center gap-x-2 gap-y-1">
-              <span className="font-bold leading-5 text-ubh-navy" style={{ fontSize: priceSize }}>
-                {formatPrice(product.price, product.currency)}
-              </span>
-              {showOldPrice && product.oldPrice != null && (
-                <span className="text-xs leading-5 text-slate-400 line-through">
-                  {formatPrice(product.oldPrice, product.currency)}
-                </span>
-              )}
-            </div>
+            <div className="flex min-h-6 flex-wrap items-center gap-x-2 gap-y-1">
+  <span
+    className="font-extrabold leading-5 text-[#061a37]"
+    style={{ fontSize: priceSize }}
+  >
+    {formatPrice(product.price, product.currency)}
+  </span>
+
+  {showOldPrice && product.oldPrice != null && (
+    <span className="text-xs font-medium leading-5 text-slate-400 line-through">
+      {formatPrice(product.oldPrice, product.currency)}
+    </span>
+  )}
+</div>
 
             <button
               type="button"
