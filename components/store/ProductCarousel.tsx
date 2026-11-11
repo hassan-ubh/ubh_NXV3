@@ -64,7 +64,7 @@ export function ProductCarousel({
   showOldPrice = false,
   showViewAll = true,
   showArrows = true,
-  autoPlay = false,
+  autoPlay = true,
   autoPlaySpeed = 28,
   pauseOnHover = true,
   imageBackground = "#f8f7f3",
