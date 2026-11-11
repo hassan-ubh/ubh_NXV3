@@ -65,6 +65,8 @@ export type PromoCardProps = {
   padding?: string;
   titleSize?: string;
   descriptionSize?: string;
+  image?: string;
+imageAlt?: string;
 };
 
 const CATEGORY_ICONS: LucideIcon[] = [
@@ -518,6 +520,8 @@ function BestSellersPanel({ locale, t }: { locale: Locale; t: StoreCopy }) {
   );
 }
 
+
+
 export function PromoCard({
   locale,
   title,
@@ -526,82 +530,172 @@ export function PromoCard({
   href,
   kind,
   icon: Icon,
-  decorativeIcon: DecorativeIcon,
+  image,
+  imageAlt = "",
   height,
   minHeight,
   padding,
   titleSize,
   descriptionSize,
 }: PromoCardProps) {
-  const isEbook = kind === "ebook";
   const isArabic = locale === "ar";
+  const isEbook = kind === "ebook";
 
   return (
     <section
       dir={isArabic ? "rtl" : "ltr"}
-      className={`relative isolate overflow-hidden rounded-xl border ${
-        height ?? minHeight ?? "min-h-[220px]"
-      } ${padding ?? "p-6 sm:p-7"} ${
-        isEbook
-          ? "border-ubh-navy bg-ubh-navy text-white"
-          : "border-slate-200 bg-white text-ubh-navy"
-      }`}
+      className={`
+        relative isolate flex min-h-0 min-w-0 flex-col
+        overflow-hidden rounded-2xl border
+        ${height ?? minHeight ?? "min-h-[190px]"}
+        ${padding ?? "p-4 sm:p-5"}
+        ${
+          isEbook
+            ? "border-[#142b4a] bg-[#061a37] text-white"
+            : "border-[#e9e4da] bg-white text-ubh-navy"
+        }
+      `}
     >
-      {/* Large decorative artwork */}
+      {/* Subtle gold accent */}
       <div
         aria-hidden="true"
-        className={`pointer-events-none absolute -bottom-5 ${
-          isArabic ? "left-0" : "right-0"
-        } -z-10 opacity-20 ${
-          isEbook ? "text-[#d9b36d]" : "text-ubh-gold-deep"
-        }`}
-      >
-        <Icon size={142} strokeWidth={0.8} />
-      </div>
+        className={`
+          absolute inset-x-0 top-0 h-[2px]
+          ${isEbook ? "bg-[#c89438]" : "bg-[#d9b777]"}
+        `}
+      />
 
-      {/* Secondary decorative artwork */}
-      {DecorativeIcon && (
+      {/* Soft decorative background */}
+      <div
+        aria-hidden="true"
+        className={`
+          pointer-events-none absolute
+          -bottom-16 h-48 w-48 rounded-full blur-3xl
+          ${
+            isArabic ? "-left-20" : "-right-20"
+          }
+          ${
+            isEbook
+              ? "bg-[#c89438]/10"
+              : "bg-[#c89438]/[0.07]"
+          }
+        `}
+      />
+
+      {/* Illustration */}
+      {image && (
         <div
           aria-hidden="true"
-          className={`pointer-events-none absolute ${
-            isArabic ? "left-7" : "right-7"
-          } top-6 -z-10 ${isEbook ? "text-white/10" : "text-ubh-gold-deep/15"}`}
+          className={`
+            pointer-events-none absolute z-0
+            bottom-0
+            h-[82%] w-[46%]
+            max-w-[190px]
+            ${
+              isArabic
+                ? "-left-1"
+                : "-right-1"
+            }
+          `}
         >
-          <DecorativeIcon size={76} strokeWidth={0.8} />
+          <Image
+            src={image}
+            alt={imageAlt}
+            fill
+            sizes="(max-width: 640px) 42vw, 190px"
+            className={`
+              object-contain object-bottom
+              ${isArabic ? "-scale-x-100" : ""}
+            `}
+          />
         </div>
       )}
 
-      {/* Main icon */}
-      <span
-        className={`inline-flex h-10 w-10 items-center justify-center rounded-lg ${
-          isEbook ? "bg-white/10 text-[#e0b56b]" : "bg-[#fbf5e9] text-[#a87529]"
-        }`}
-      >
-        <Icon size={22} strokeWidth={1.6} aria-hidden="true" />
-      </span>
+      {/* Main content */}
+      <div className="relative z-10 flex min-h-0 flex-1 flex-col">
 
-      <h2 className={`mt-4 font-serif ${titleSize ?? "text-2xl"}`}>{title}</h2>
+        {/* Icon */}
+        <div
+          className={`
+            flex h-10 w-10 shrink-0 items-center justify-center
+            rounded-xl border
+            ${
+              isEbook
+                ? "border-white/10 bg-white/[0.08] text-[#e5bb73]"
+                : "border-[#ead8b6] bg-[#fbf7ef] text-[#a87529]"
+            }
+          `}
+        >
+          <Icon
+            size={21}
+            strokeWidth={1.65}
+            aria-hidden="true"
+          />
+        </div>
 
-      <p className={`mt-3 ${descriptionSize ?? "text-sm"}`}>{description}</p>
+        {/* Heading and description */}
+        <div className="mt-3 max-w-[76%] sm:max-w-[78%]">
+          <h2
+            className={`
+              font-serif font-semibold tracking-tight
+              leading-snug
+              ${titleSize ?? "text-lg"}
+            `}
+          >
+            {title}
+          </h2>
 
-      <Link
-        href={href}
-        className={`mt-5 inline-flex min-h-10 items-center gap-2 rounded-md border px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold ${
-          isEbook
-            ? "border-white/50 text-white hover:bg-white/10"
-            : "border-slate-300 text-ubh-navy hover:border-ubh-gold hover:bg-[#fffdfa]"
-        }`}
-      >
-        {action}
-        <ArrowRight
-          size={15}
-          aria-hidden="true"
-          className={isArabic ? "rotate-180" : undefined}
-        />
-      </Link>
+          <p
+            className={`
+              mt-1.5 leading-relaxed
+              ${descriptionSize ?? "text-xs sm:text-sm"}
+              ${
+                isEbook
+                  ? "text-slate-300"
+                  : "text-slate-500"
+              }
+            `}
+          >
+            {description}
+          </p>
+        </div>
+
+        {/* Action */}
+        <div className="relative z-20 mt-auto pt-4">
+          <Link
+            href={href}
+            className={`
+              inline-flex min-h-9 max-w-full
+              items-center justify-center gap-2
+              rounded-lg px-3.5 py-2
+              text-xs font-semibold
+              transition-colors duration-200
+              focus-visible:outline-none
+              focus-visible:ring-2
+              focus-visible:ring-offset-2
+              ${
+                isEbook
+                  ? "bg-white/10 text-white hover:bg-white/15 focus-visible:ring-[#d9b777] focus-visible:ring-offset-[#061a37]"
+                  : "bg-[#f8f3e9] text-[#90621e] hover:bg-[#f1e8d7] focus-visible:ring-[#c89438] focus-visible:ring-offset-white"
+              }
+            `}
+          >
+            <span className="truncate">{action}</span>
+
+            <ArrowRight
+              size={15}
+              className={`shrink-0 ${
+                isArabic ? "rotate-180" : ""
+              }`}
+              aria-hidden="true"
+            />
+          </Link>
+        </div>
+      </div>
     </section>
   );
 }
+
 
 // function Promotions({ locale, t }: { locale: Locale; t: StoreCopy }) {
 //   return (
@@ -650,6 +744,8 @@ export function PromoCard({
 function Promotions({ locale, t }: { locale: Locale; t: StoreCopy }) {
   return (
     <aside className="grid h-full min-h-0 min-w-0 grid-rows-3 gap-3 sm:gap-4">
+
+      {/* E-books */}
       <PromoCard
         locale={locale}
         title={t.ebooksLibrary}
@@ -658,13 +754,14 @@ function Promotions({ locale, t }: { locale: Locale; t: StoreCopy }) {
         href={`/${locale}/shop/products?type=ebook`}
         kind="ebook"
         icon={BookOpen}
-        decorativeIcon={Library}
+        image="/images/promotions/ebook1.png"
         minHeight="min-h-0"
-        padding="p-3 sm:p-4"
+        padding="p-3.5 sm:p-4 lg:p-5"
         titleSize="text-base sm:text-lg"
-        descriptionSize="text-xs leading-4 sm:leading-5"
+        descriptionSize="text-xs leading-5"
       />
 
+      {/* Institutions */}
       <PromoCard
         locale={locale}
         title={t.institutionsTitle}
@@ -673,13 +770,14 @@ function Promotions({ locale, t }: { locale: Locale; t: StoreCopy }) {
         href={`/${locale}/institutions`}
         kind="institutions"
         icon={Building2}
-        decorativeIcon={Landmark}
+        image="/images/promotions/institution.png"
         minHeight="min-h-0"
-        padding="p-3 sm:p-4"
+        padding="p-3.5 sm:p-4 lg:p-5"
         titleSize="text-base sm:text-lg"
-        descriptionSize="text-xs leading-4 sm:leading-5"
+        descriptionSize="text-xs leading-5"
       />
 
+      {/* Open Access */}
       <PromoCard
         locale={locale}
         title={t.openAccessTitle}
@@ -688,15 +786,17 @@ function Promotions({ locale, t }: { locale: Locale; t: StoreCopy }) {
         href={`/${locale}/shop/products?collection=open-access`}
         kind="open-access"
         icon={Unlock}
-        decorativeIcon={BookMarked}
+       
         minHeight="min-h-0"
-        padding="p-3 sm:p-4"
+        padding="p-3.5 sm:p-4 lg:p-5"
         titleSize="text-base sm:text-lg"
-        descriptionSize="text-xs leading-4 sm:leading-5"
+        descriptionSize="text-xs leading-5"
       />
+
     </aside>
   );
 }
+
 
 function StoreCollectionBenefits({
   locale,
