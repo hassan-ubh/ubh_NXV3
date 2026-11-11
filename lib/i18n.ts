@@ -288,6 +288,10 @@ store: {
   },
 
   // Main sections
+  openAccessTitle: "Open Access Books",
+openAccessDescriptionPromo: "Explore academic publications available with open access.",
+exploreOpenAccess: "Explore Collection",
+
   ebooksLibrary: "eBooks Library",
   ebooksLibraryDescription:
     "Explore thousands of eBooks anytime, anywhere.",
@@ -1053,6 +1057,10 @@ store: {
   },
 
   // Main sections
+  openAccessTitle: "كتب الوصول المفتوح",
+openAccessDescriptionPromo: "اكتشف مجموعة من المنشورات الأكاديمية المتاحة للوصول المفتوح.",
+exploreOpenAccess: "استكشف المجموعة",
+
   ebooksLibrary: "مكتبة الكتب الإلكترونية",
 
   ebooksLibraryDescription:

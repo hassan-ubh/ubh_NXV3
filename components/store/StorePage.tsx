@@ -21,8 +21,12 @@ import {
   LibraryBig,
   BriefcaseBusiness,
   Sparkles,
+  Unlock,
+  Library,
+  BookMarked,
   type LucideIcon,
 } from "lucide-react";
+
 import { useState, useEffect } from "react";
 
 import { Container } from "@/components/shared/Container";
@@ -46,15 +50,15 @@ type Feature = {
   description: string;
 };
 
-type PromoCardProps = {
+export type PromoCardProps = {
   locale: Locale;
   title: string;
   description: string;
   action: string;
   href: string;
-  kind: "ebook" | "institutions";
-
-  // Optional sizing props — existing style remains the default
+  kind?: "ebook" | "institutions" | "open-access";
+  icon: LucideIcon;
+  decorativeIcon?: LucideIcon;
   height?: string;
   minHeight?: string;
   padding?: string;
@@ -520,6 +524,8 @@ export function PromoCard({
   action,
   href,
   kind,
+  icon: Icon,
+  decorativeIcon: DecorativeIcon,
   height,
   minHeight,
   padding,
@@ -528,13 +534,11 @@ export function PromoCard({
 }: PromoCardProps) {
   const isEbook = kind === "ebook";
   const isArabic = locale === "ar";
-  const Icon = isEbook ? BookOpen : GraduationCap;
 
   return (
     <section
       dir={isArabic ? "rtl" : "ltr"}
       className={`relative isolate overflow-hidden rounded-xl border ${
-        // Preserve the original default sizing.
         height ?? minHeight ?? "min-h-[220px]"
       } ${padding ?? "p-6 sm:p-7"} ${
         isEbook
@@ -547,36 +551,45 @@ export function PromoCard({
         aria-hidden="true"
         className={`pointer-events-none absolute -bottom-5 ${
           isArabic ? "left-0" : "right-0"
-        } -z-10 opacity-20 ${isEbook ? "text-[#d9b36d]" : "text-ubh-gold-deep"}`}
+        } -z-10 opacity-20 ${
+          isEbook ? "text-[#d9b36d]" : "text-ubh-gold-deep"
+        }`}
       >
-        <Icon size={isEbook ? 150 : 142} strokeWidth={0.8} />
+        <Icon size={142} strokeWidth={0.8} />
       </div>
 
       {/* Secondary decorative artwork */}
-      <div
-        aria-hidden="true"
-        className={`pointer-events-none absolute ${
-          isArabic ? "left-7" : "right-7"
-        } top-6 -z-10 ${isEbook ? "text-white/10" : "text-ubh-gold-deep/15"}`}
-      >
-        {isEbook ? (
-          <BookOpen size={78} strokeWidth={0.8} />
-        ) : (
-          <Landmark size={76} strokeWidth={0.8} />
-        )}
-      </div>
+      {DecorativeIcon && (
+        <div
+          aria-hidden="true"
+          className={`pointer-events-none absolute ${
+            isArabic ? "left-7" : "right-7"
+          } top-6 -z-10 ${
+            isEbook ? "text-white/10" : "text-ubh-gold-deep/15"
+          }`}
+        >
+          <DecorativeIcon size={76} strokeWidth={0.8} />
+        </div>
+      )}
 
+      {/* Main icon */}
       <span
         className={`inline-flex h-10 w-10 items-center justify-center rounded-lg ${
-          isEbook ? "bg-white/10 text-[#e0b56b]" : "bg-[#fbf5e9] text-[#a87529]"
+          isEbook
+            ? "bg-white/10 text-[#e0b56b]"
+            : "bg-[#fbf5e9] text-[#a87529]"
         }`}
       >
         <Icon size={22} strokeWidth={1.6} aria-hidden="true" />
       </span>
 
-      <h2 className={`mt-4 font-serif ${titleSize ?? "text-2xl"}`}>{title}</h2>
+      <h2 className={`mt-4 font-serif ${titleSize ?? "text-2xl"}`}>
+        {title}
+      </h2>
 
-      <p className={`mt-3 ${descriptionSize ?? "text-sm"}`}>{description}</p>
+      <p className={`mt-3 ${descriptionSize ?? "text-sm"}`}>
+        {description}
+      </p>
 
       <Link
         href={href}
@@ -596,9 +609,56 @@ export function PromoCard({
     </section>
   );
 }
+
+
+
+// function Promotions({ locale, t }: { locale: Locale; t: StoreCopy }) {
+//   return (
+//     <aside className="grid h-full min-w-0 grid-rows-2 gap-4">
+//       <PromoCard
+//         locale={locale}
+//         title={t.ebooksLibrary}
+//         description={t.ebooksLibraryDescription}
+//         action={t.exploreEbooks}
+//         href={`/${locale}/shop/products?type=ebook`}
+//         kind="ebook"
+//         minHeight="min-h-0"
+//         padding="p-4 sm:p-5"
+//         titleSize="text-lg sm:text-xl"
+//         descriptionSize="text-xs leading-5"
+//       />
+
+//       <PromoCard
+//         locale={locale}
+//         title={t.institutionsTitle}
+//         description={t.institutionsDescription}
+//         action={t.learnMore}
+//         href={`/${locale}/institutions`}
+//         kind="institutions"
+//         minHeight="min-h-0"
+//         padding="p-4 sm:p-5"
+//         titleSize="text-lg sm:text-xl"
+//         descriptionSize="text-xs leading-5"
+//       />
+//       <PromoCard
+//   locale={locale}
+//   title={t.openAccessTitle}
+//   description={t.openAccessDescription}
+//   action={t.exploreOpenAccess}
+//   href={`/${locale}/shop/products?collection=open-access`}
+//   kind="open-access"
+//   minHeight="min-h-0"
+//   padding="p-4 sm:p-5"
+//   titleSize="text-lg sm:text-xl"
+//   descriptionSize="text-xs leading-5"
+// />
+//     </aside>
+//   );
+// }
+
 function Promotions({ locale, t }: { locale: Locale; t: StoreCopy }) {
   return (
-    <aside className="grid h-full min-w-0 grid-rows-2 gap-4">
+    <aside className="grid h-full min-h-0 min-w-0 grid-rows-3 gap-3 sm:gap-4">
       <PromoCard
         locale={locale}
         title={t.ebooksLibrary}
@@ -606,10 +666,12 @@ function Promotions({ locale, t }: { locale: Locale; t: StoreCopy }) {
         action={t.exploreEbooks}
         href={`/${locale}/shop/products?type=ebook`}
         kind="ebook"
+        icon={BookOpen}
+        decorativeIcon={Library}
         minHeight="min-h-0"
-        padding="p-4 sm:p-5"
-        titleSize="text-lg sm:text-xl"
-        descriptionSize="text-xs leading-5"
+        padding="p-3 sm:p-4"
+        titleSize="text-base sm:text-lg"
+        descriptionSize="text-xs leading-4 sm:leading-5"
       />
 
       <PromoCard
@@ -619,10 +681,27 @@ function Promotions({ locale, t }: { locale: Locale; t: StoreCopy }) {
         action={t.learnMore}
         href={`/${locale}/institutions`}
         kind="institutions"
+        icon={Building2}
+        decorativeIcon={Landmark}
         minHeight="min-h-0"
-        padding="p-4 sm:p-5"
-        titleSize="text-lg sm:text-xl"
-        descriptionSize="text-xs leading-5"
+        padding="p-3 sm:p-4"
+        titleSize="text-base sm:text-lg"
+        descriptionSize="text-xs leading-4 sm:leading-5"
+      />
+
+      <PromoCard
+        locale={locale}
+        title={t.openAccessTitle}
+        description={t.openAccessDescription}
+        action={t.exploreOpenAccess}
+        href={`/${locale}/shop/products?collection=open-access`}
+        kind="open-access"
+        icon={Unlock}
+        decorativeIcon={BookMarked}
+        minHeight="min-h-0"
+        padding="p-3 sm:p-4"
+        titleSize="text-base sm:text-lg"
+        descriptionSize="text-xs leading-4 sm:leading-5"
       />
     </aside>
   );
