@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   Clock3,
@@ -227,7 +228,7 @@ export default async function ContactUsPage({
       className="min-h-screen overflow-hidden bg-ubh-canvas text-ubh-navy"
     >
       {/* Hero */}
-      <section className="relative isolate overflow-hidden bg-ubh-navy">
+      {/* <section className="relative isolate overflow-hidden bg-ubh-navy">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 overflow-hidden"
@@ -256,7 +257,60 @@ export default async function ContactUsPage({
             </div>
           </div>
         </Container>
-      </section>
+      </section> */}
+      {/* Hero */}
+<section className="relative isolate overflow-hidden bg-ubh-navy">
+
+  {/* Background image */}
+  <Image
+    src="/images/main_images/lib_im_1.jpg"
+    alt=""
+    fill
+    priority
+    sizes="100vw"
+    className="object-cover object-center"
+  />
+
+  {/* Dark overlay for readability */}
+  <div
+    aria-hidden="true"
+    className="absolute inset-0 bg-gradient-to-r from-ubh-navy/95 via-ubh-navy/85 to-ubh-navy/65"
+  />
+
+  {/* Decorative background effects */}
+  <div
+    aria-hidden="true"
+    className="pointer-events-none absolute inset-0 overflow-hidden"
+  >
+    <div className="absolute -right-28 -top-36 h-80 w-80 rounded-full bg-ubh-gold/15 blur-3xl md:h-[28rem] md:w-[28rem]" />
+    <div className="absolute -bottom-48 -left-20 h-96 w-96 rounded-full bg-[#17477e]/40 blur-3xl" />
+    <div className="absolute inset-0 bg-[linear-gradient(115deg,transparent_55%,rgba(255,255,255,0.035)_55%,transparent_75%)]" />
+  </div>
+
+  <Container className="relative z-10">
+    <div className="grid min-h-[320px] items-center gap-8 py-16 sm:py-20 lg:min-h-[370px] lg:grid-cols-[1fr_auto] lg:py-24">
+
+      <div className="max-w-3xl">
+        <SectionLabel>{t.eyebrow}</SectionLabel>
+
+        <h1 className="mt-5 max-w-3xl font-serif text-4xl leading-[1.13] tracking-tight text-white sm:text-5xl md:text-6xl">
+          {t.title}
+        </h1>
+
+        <p className="mt-6 max-w-2xl text-sm leading-7 text-white/70 sm:text-base sm:leading-8">
+          {t.description}
+        </p>
+      </div>
+
+      <div className="hidden h-32 w-32 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] lg:flex">
+        <div className="flex h-20 w-20 items-center justify-center rounded-full border border-ubh-gold-light/50 text-ubh-gold-light">
+          <Mail size={34} strokeWidth={1.4} />
+        </div>
+      </div>
+
+    </div>
+  </Container>
+</section>
 
       {/* Form and contact details */}
       <section className="relative py-10 sm:py-14 lg:py-20">

@@ -18,6 +18,8 @@ import { SafeImage } from "@/components/shared/SafeImage";
 import { BackButton } from "@/components/shared/BackButton";
 import { ProductCard } from "@/components/store/StorePage";
 import { products } from "@/lib/store/catalog";
+import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
+import { websiteBreadcrumbs } from "@/components/shared/breadcrumb-config";
 
 /* -------------------------------------------------------------------------- */
 /* Publisher Data                                                             */
@@ -620,7 +622,7 @@ const subjectLabels: Record<string, string> = {
         <Container className="relative z-10">
           <div className="min-h-[410px] pb-12 pt-7 md:min-h-[430px]">
             {/* Breadcrumb */}
-            <div className="flex items-center gap-2 text-[10px] text-white/70">
+            {/* <div className="flex items-center gap-2 text-[10px] text-white/70">
               <Link
                 href={`/${locale}`}
                 className="transition-colors hover:text-white"
@@ -642,7 +644,14 @@ const subjectLabels: Record<string, string> = {
               <span className="max-w-[180px] truncate text-white">
                 {publisher.name}
               </span>
-            </div>
+            </div> */}<div className="mb-7">
+  <Breadcrumbs
+    locale={locale}
+    items={websiteBreadcrumbs(locale, "digitalSolutions")}
+    variant="dark"
+  />
+</div>
+            
 
             {/* Hero */}
             <div className="mt-12 grid gap-10 md:grid-cols-[190px_1fr] md:items-center">

@@ -7,6 +7,8 @@ import { copy, isLocale } from "@/lib/i18n";
 import { Container } from "@/components/shared/Container";
 import { publishers } from "@/data/publishers";
 import { PublisherDirectory } from "@/components/publishers/PublisherDirectory";
+import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
+import { websiteBreadcrumbs } from "@/components/shared/breadcrumb-config";
 
 export default async function Page({
   params,
@@ -61,6 +63,14 @@ export default async function Page({
   <Container className="relative z-10">
     <div className="flex min-h-[340px] flex-col justify-center pb-10 pt-24 sm:min-h-[400px] sm:pb-12 md:min-h-[440px] md:pt-[105px]">
       {/* Breadcrumb */}
+      {/* Premium Breadcrumb */}
+{/* <div className="mb-7">
+  <Breadcrumbs
+    locale={locale}
+    items={websiteBreadcrumbs(locale, "publishers")}
+    variant="dark"
+  />
+</div> */}
       {/* <nav
         aria-label={isArabic ? "مسار التنقل" : "Breadcrumb"}
         className="flex items-center gap-2 text-[11px] text-white/75 sm:text-xs"
