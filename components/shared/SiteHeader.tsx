@@ -86,20 +86,19 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
     setSearchOpen(false);
   }, []);
 
-
   useEffect(() => {
-  const handleScroll = () => {
-    setIsScrolled(window.scrollY > 20);
-  };
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
 
-  handleScroll();
+    handleScroll();
 
-  window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
-  return () => {
-    window.removeEventListener("scroll", handleScroll);
-  };
-}, []);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     closeMenus();
@@ -180,128 +179,185 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
     setMobileOpen((current) => !current);
   };
 
-  return (
-    <header
-      ref={headerRef}
-      dir={isArabic ? "rtl" : "ltr"}
-      className="fixed inset-x-0 top-0 z-[100]"
+ return (
+  <header
+    ref={headerRef}
+    dir={isArabic ? "rtl" : "ltr"}
+    className="fixed inset-x-0 top-0 z-[100]"
+  >
+    {/* Premium Main Navigation */}
+    <div
+      className={`
+        relative isolate border-b border-white/[0.08]
+        transition-all duration-300 ease-in-out
+        ${
+          isScrolled
+            ? "bg-[#041329]/95 shadow-[0_8px_30px_rgba(0,0,0,0.25)] backdrop-blur-xl"
+            : "bg-gradient-to-r from-[#06172F] via-[#0A2343] to-[#071A34] shadow-[0_4px_20px_rgba(0,0,0,0.12)]"
+        }
+      `}
     >
-      {/* Main navigation bar */}
+      {/* Refined background details */}
       <div
-  className={`
-    border-b border-white/[0.10]
-    transition-all duration-300 ease-in-out
-    ${
-      isScrolled
-        ? "bg-[#041329]/95 shadow-[0_6px_24px_rgba(0,0,0,0.18)] backdrop-blur-md"
-        : "bg-[#061A37] shadow-none"
-    }
-  `}
->
-        <Container className="px-3 sm:px-4 lg:px-5 2xl:px-7 py-2">
-          <div
-  className={`
-    flex items-center gap-2 transition-all duration-300 ease-in-out
-    lg:gap-2 xl:gap-3 2xl:gap-4
-    ${isScrolled ? "h-[72px]" : "h-[77px]"}
-  `}
->
-            {/* Logo: reserve only the space it needs */}
-            <div className="flex w-[105px] shrink-0 items-center sm:w-[125px] lg:w-[115px] xl:w-[145px] 2xl:w-[170px]">
-              <Logo size="header" />
-            </div>
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
+        {/* Soft blue lighting */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/[0.035] via-transparent to-black/[0.12]" />
 
-            {/* Desktop / tablet landscape navigation */}
+        {/* Subtle side illumination */}
+        <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#16416A]/15 to-transparent" />
 
-            <nav
-              aria-label={t.menu}
-              className="hidden min-w-0 flex-1 items-center justify-between gap-0 lg:flex"
-            >
-              {navigation.map((item) =>
-                item.children ? (
-                  <DesktopDropdown
-                    key={item.label}
-                    item={item}
-                    open={openDropdown === item.label}
-                    isArabic={isArabic}
-                    onToggle={() =>
-                      setOpenDropdown((current) =>
-                        current === item.label ? null : item.label,
-                      )
-                    }
-                    onNavigate={closeMenus}
-                  />
-                ) : (
-                  <Link
-                    key={item.href}
-                    href={item.href!}
-                    onClick={closeMenus}
-                    className="
-  relative flex h-10 shrink-0 items-center whitespace-nowrap
-  rounded-md px-1
-  text-[10px] font-semibold text-white/85
-  transition-colors duration-200
-  hover:text-[#DCAE57]
-  focus-visible:outline-none
-  focus-visible:ring-2 focus-visible:ring-[#DCAE57]
-  xl:px-1.5 xl:text-[12px]
-  2xl:px-2 2xl:text-[13px]
-"
-                  >
-                    {item.label}
-                  </Link>
-                ),
-              )}
-            </nav>
-
-            {/* Right-side actions */}
-            <div className="ms-auto flex shrink-0 items-center gap-1 sm:gap-1.5">
-              <div className="hidden shrink-0 xl:block">
-                <LanguageSwitcher locale={locale} />
-              </div>
-
-              <button
-                type="button"
-                onClick={toggleSearch}
-                aria-label={
-                  searchOpen
-                    ? isArabic
-                      ? "إغلاق البحث"
-                      : "Close search"
-                    : t.search
-                }
-                aria-expanded={searchOpen}
-                aria-controls="site-search-panel"
-                className="flex size-9 shrink-0 items-center justify-center rounded-full text-white/85 transition-colors hover:bg-white/10 hover:text-ubh-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold-light"
-              >
-                {searchOpen ? <X size={19} /> : <Search size={19} />}
-              </button>
-
-              {/* Institutions CTA remains visible on desktop */}
-              <Link
-                href={`/${locale}/institutions`}
-                onClick={closeMenus}
-                className="hidden lg:inline-flex min-h-9 shrink-0 items-center justify-center gap-1 rounded-md border border-ubh-gold/70 bg-ubh-gold/[0.08] px-2 text-[10px] font-semibold text-white whitespace-nowrap transition-colors hover:border-ubh-gold-light hover:bg-ubh-gold-light hover:text-ubh-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold-light xl:px-3 xl:text-xs"
-              >
-                <span>{t.institutionCta}</span>
-                <ArrowUpRight size={13} />
-              </Link>
-
-              {/* Mobile / tablet portrait menu */}
-              <button
-                type="button"
-                onClick={toggleMobileMenu}
-                aria-label={mobileOpen ? t.closeMenu : t.openMenu}
-                aria-expanded={mobileOpen}
-                aria-controls="site-mobile-menu"
-                className="flex size-9 shrink-0 items-center justify-center rounded-full border border-white/10 text-white transition-colors hover:border-ubh-gold/60 hover:text-ubh-gold-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold-light lg:hidden"
-              >
-                {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-              </button>
-            </div>
-          </div>
-        </Container>
+        {/* Fine gold bottom accent */}
+        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#DCAE57]/60 to-transparent" />
       </div>
+
+      <Container className="relative px-3 py-2 sm:px-4 lg:px-5 2xl:px-7">
+        <div
+          className={`
+            flex items-center gap-2
+            transition-all duration-300 ease-in-out
+            lg:gap-2 xl:gap-3 2xl:gap-4
+            ${isScrolled ? "h-[72px]" : "h-[77px]"}
+          `}
+        >
+          {/* Logo */}
+          <div className="flex w-[105px] shrink-0 items-center sm:w-[125px] lg:w-[115px] xl:w-[145px] 2xl:w-[170px]">
+            <Logo size="header" />
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav
+            aria-label={t.menu}
+            className="hidden min-w-0 flex-1 items-center justify-between gap-0 lg:flex"
+          >
+            {navigation.map((item) =>
+              item.children ? (
+                <DesktopDropdown
+                  key={item.label}
+                  item={item}
+                  open={openDropdown === item.label}
+                  isArabic={isArabic}
+                  onToggle={() =>
+                    setOpenDropdown((current) =>
+                      current === item.label ? null : item.label
+                    )
+                  }
+                  onNavigate={closeMenus}
+                />
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href!}
+                  onClick={closeMenus}
+                  className="
+                    group relative flex h-10 shrink-0 items-center
+                    whitespace-nowrap rounded-md px-1
+                    text-[10px] font-semibold text-white/85
+                    transition-colors duration-200
+                    hover:text-[#E5BC70]
+                    focus-visible:outline-none
+                    focus-visible:ring-2 focus-visible:ring-[#DCAE57]
+                    xl:px-1.5 xl:text-[12px]
+                    2xl:px-2 2xl:text-[13px]
+                  "
+                >
+                  {item.label}
+
+                  <span className="
+                    absolute inset-x-1 bottom-0 h-[2px]
+                    origin-center scale-x-0 rounded-full
+                    bg-[#DCAE57]
+                    transition-transform duration-200
+                    group-hover:scale-x-100
+                  " />
+                </Link>
+              )
+            )}
+          </nav>
+
+          {/* Right-side Actions */}
+          <div className="ms-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
+
+            {/* Language Switcher */}
+            <div className="hidden shrink-0 items-center lg:flex">
+              <LanguageSwitcher locale={locale} />
+            </div>
+
+            {/* Search */}
+            <button
+              type="button"
+              onClick={toggleSearch}
+              aria-label={
+                searchOpen
+                  ? isArabic ? "إغلاق البحث" : "Close search"
+                  : t.search
+              }
+              aria-expanded={searchOpen}
+              aria-controls="site-search-panel"
+              className="
+                flex size-9 shrink-0 items-center justify-center
+                rounded-full border border-white/[0.08]
+                text-white/85 transition-all duration-200
+                hover:border-[#DCAE57]/40
+                hover:bg-[#DCAE57]/10
+                hover:text-[#E5BC70]
+                focus-visible:outline-none
+                focus-visible:ring-2 focus-visible:ring-[#DCAE57]
+              "
+            >
+              {searchOpen ? <X size={19} /> : <Search size={19} />}
+            </button>
+
+            {/* Institutions CTA */}
+            <Link
+              href={`/${locale}/institutions`}
+              onClick={closeMenus}
+              className="
+                hidden min-h-9 shrink-0 items-center justify-center
+                gap-1.5 rounded-md
+                border border-[#DCAE57]/70
+                bg-gradient-to-b from-[#DCAE57]/15 to-[#DCAE57]/[0.05]
+                px-2.5 text-[10px] font-semibold text-[#F3D79F]
+                whitespace-nowrap transition-all duration-200
+                hover:border-[#E8C77F]
+                hover:bg-[#DCAE57]
+                hover:text-[#061A37]
+                focus-visible:outline-none
+                focus-visible:ring-2 focus-visible:ring-[#DCAE57]
+                lg:inline-flex xl:px-3 xl:text-xs
+              "
+            >
+              <span>{t.institutionCta}</span>
+              <ArrowUpRight size={13} />
+            </Link>
+
+            {/* Mobile Menu */}
+            <button
+              type="button"
+              onClick={toggleMobileMenu}
+              aria-label={mobileOpen ? t.closeMenu : t.openMenu}
+              aria-expanded={mobileOpen}
+              aria-controls="site-mobile-menu"
+              className="
+                flex size-9 shrink-0 items-center justify-center
+                rounded-full border border-white/10
+                text-white transition-all duration-200
+                hover:border-[#DCAE57]/60
+                hover:bg-white/[0.06]
+                hover:text-[#E5BC70]
+                focus-visible:outline-none
+                focus-visible:ring-2 focus-visible:ring-[#DCAE57]
+                lg:hidden
+              "
+            >
+              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+
+          </div>
+        </div>
+      </Container>
+    </div>
 
       {/* Search panel */}
       <div
