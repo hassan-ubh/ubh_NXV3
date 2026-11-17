@@ -31,6 +31,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "mitpress.mit.edu",
       },
+       {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
     ],
   },
 

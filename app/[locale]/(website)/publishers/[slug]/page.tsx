@@ -12,7 +12,6 @@ import {
 
 import { copy, isLocale, type Locale } from "@/lib/i18n";
 
-
 import { Container } from "@/components/shared/Container";
 import { SafeImage } from "@/components/shared/SafeImage";
 import { BackButton } from "@/components/shared/BackButton";
@@ -38,7 +37,6 @@ type PublisherProfile = {
 };
 
 const publishers: Record<string, PublisherProfile> = {
-  
   "cambridge-university-press": {
     name: "Cambridge University Press",
     logo: "/images/publishers/cambridge-university-press-logo-vector.png",
@@ -79,7 +77,7 @@ const publishers: Record<string, PublisherProfile> = {
     booksCount: "1,000+",
   },
 
-  "springer": {
+  springer: {
     name: "Springer Nature",
     logo: "/images/publishers/springer.png",
     country: "Germany",
@@ -87,13 +85,7 @@ const publishers: Record<string, PublisherProfile> = {
       "Publishing high-quality research and innovative solutions for a better tomorrow.",
     longDescription:
       "Springer Nature is a global publisher serving researchers, educators and professionals through academic books, journals and digital research resources.",
-    subjects: [
-      "Science",
-      "Technology",
-      "Medicine",
-      "Engineering",
-      "Research",
-    ],
+    subjects: ["Science", "Technology", "Medicine", "Engineering", "Research"],
     founded: "2015",
     website: "https://www.springernature.com/",
     booksCount: "1,000+",
@@ -123,8 +115,7 @@ const publishers: Record<string, PublisherProfile> = {
     name: "Pearson",
     logo: "/images/publishers/pearson.png",
     country: "United Kingdom",
-    description:
-      "World-class learning solutions for every stage of life.",
+    description: "World-class learning solutions for every stage of life.",
     longDescription:
       "Pearson provides educational content, assessment and learning solutions supporting students, educators and institutions across a wide range of disciplines.",
     subjects: [
@@ -147,13 +138,7 @@ const publishers: Record<string, PublisherProfile> = {
       "Advancing knowledge and innovation through research, books and digital learning.",
     longDescription:
       "Wiley is a global academic publisher providing research publications, books and digital learning resources for students, researchers, educators and professionals.",
-    subjects: [
-      "Science",
-      "Medicine",
-      "Engineering",
-      "Business",
-      "Technology",
-    ],
+    subjects: ["Science", "Medicine", "Engineering", "Business", "Technology"],
     founded: "1807",
     website: "https://www.wiley.com/",
     booksCount: "1,000+",
@@ -227,13 +212,7 @@ const publishers: Record<string, PublisherProfile> = {
       "Bridging the past and future through exceptional research and academic publishing.",
     longDescription:
       "Brill is an international academic publisher specializing in scholarly publications across the humanities, social sciences, law and related disciplines.",
-    subjects: [
-      "Law",
-      "Humanities",
-      "Social Sciences",
-      "History",
-      "Languages",
-    ],
+    subjects: ["Law", "Humanities", "Social Sciences", "History", "Languages"],
     founded: "1683",
     website: "https://brill.com/",
     booksCount: "1,000+",
@@ -243,8 +222,7 @@ const publishers: Record<string, PublisherProfile> = {
     name: "Bloomsbury",
     logo: "/images/publishers/bloomsbury.png",
     country: "United Kingdom",
-    description:
-      "Publishing for a creative, connected and curious world.",
+    description: "Publishing for a creative, connected and curious world.",
     longDescription:
       "Bloomsbury publishes books and digital resources across academic, professional, educational and creative fields.",
     subjects: [
@@ -258,14 +236,12 @@ const publishers: Record<string, PublisherProfile> = {
     website: "https://www.bloomsbury.com/",
     booksCount: "1,000+",
   },
-  
 
   ieee: {
     name: "IEEE",
     logo: "/images/publishers/ieee.png",
     country: "United States",
-    description:
-      "Advancing technology for a better tomorrow.",
+    description: "Advancing technology for a better tomorrow.",
     longDescription:
       "IEEE provides technical and scientific publications, standards and educational resources supporting research and innovation in engineering and technology.",
     subjects: [
@@ -304,8 +280,7 @@ const publishers: Record<string, PublisherProfile> = {
     name: "SAGE Publications",
     logo: "/images/publishers/sage.png",
     country: "United States",
-    description:
-      "Quality research, teaching and learning for a better future.",
+    description: "Quality research, teaching and learning for a better future.",
     longDescription:
       "SAGE publishes research, educational materials and digital resources supporting teaching, learning and scholarly communication.",
     subjects: [
@@ -359,7 +334,7 @@ const publishers: Record<string, PublisherProfile> = {
     website: "https://www.hogrefe.com/",
     booksCount: "1,000+",
   },
-  
+
   "mit-press": {
     name: "MIT Press",
     logo: "/images/publishers/mit-press.svg",
@@ -368,13 +343,7 @@ const publishers: Record<string, PublisherProfile> = {
       "Academic publishing across science, technology, design, and the humanities.",
     longDescription:
       "The MIT Press publishes scholarly books and other works across science, technology, design, architecture, and the humanities.",
-    subjects: [
-      "Science",
-      "Technology",
-      "Engineering",
-      "Arts",
-      "Humanities",
-    ],
+    subjects: ["Science", "Technology", "Engineering", "Arts", "Humanities"],
     founded: "1962",
     website: "https://mitpress.mit.edu/",
     booksCount: "See catalogue",
@@ -388,16 +357,20 @@ const publishers: Record<string, PublisherProfile> = {
       "University Book House publishes and distributes academic knowledge and learning resources across the Arab world.",
     longDescription:
       "University Book House is our own publishing and academic books brand. Explore selected UBH publications and learning resources available in the catalogue.",
-    subjects: ["Education", "Academic Publishing", "Medicine", "Business", "Humanities"],
+    subjects: [
+      "Education",
+      "Academic Publishing",
+      "Medicine",
+      "Business",
+      "Humanities",
+    ],
     founded: "",
     website: "https://www.ubh.ae/",
     booksCount: "UBH catalogue",
   },
-
 };
 
 type Publisher = PublisherProfile;
-
 
 /* -------------------------------------------------------------------------- */
 /* Related Publishers                                                         */
@@ -478,124 +451,135 @@ export default async function PublisherDetailsPage({
 
   const firstProduct = publisherProducts[0];
   const derivedSubjects = Array.from(
-    new Set(publisherProducts.flatMap((product) => product.subjects ?? []).filter(Boolean)),
+    new Set(
+      publisherProducts
+        .flatMap((product) => product.subjects ?? [])
+        .filter(Boolean),
+    ),
   );
 
-  const publisher: Publisher | undefined = knownPublisher ?? (firstProduct ? {
-    name: firstProduct.publisher || slug.replace(/-/g, " "),
-    logo: firstProduct.publisherLogo ?? "",
-    country: "",
-    description: `Explore books and academic publications from ${firstProduct.publisher}.`,
-    longDescription: `Browse the available catalogue from ${firstProduct.publisher}. Publisher information will be expanded as verified details become available.`,
-    subjects: derivedSubjects.length ? derivedSubjects : ["Academic Publishing"],
-    founded: "",
-    website: firstProduct.website ?? "",
-    booksCount: String(publisherProducts.length),
-  } : undefined);
+  const publisher: Publisher | undefined =
+    knownPublisher ??
+    (firstProduct
+      ? {
+          name: firstProduct.publisher || slug.replace(/-/g, " "),
+          logo: firstProduct.publisherLogo ?? "",
+          country: "",
+          description: `Explore books and academic publications from ${firstProduct.publisher}.`,
+          longDescription: `Browse the available catalogue from ${firstProduct.publisher}. Publisher information will be expanded as verified details become available.`,
+          subjects: derivedSubjects.length
+            ? derivedSubjects
+            : ["Academic Publishing"],
+          founded: "",
+          website: firstProduct.website ?? "",
+          booksCount: String(publisherProducts.length),
+        }
+      : undefined);
 
-if (!publisher) {
-  const isArabic = locale === "ar";
+  if (!publisher) {
+    const isArabic = locale === "ar";
 
-  return (
-    <main
-      dir={isArabic ? "rtl" : "ltr"}
-      className="min-h-[60vh] bg-ubh-canvas px-4 py-20"
-    >
-      <div className="mx-auto flex max-w-xl flex-col items-center text-center">
-        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-ubh-navy/5 text-ubh-navy">
-          <span className="text-3xl" aria-hidden="true">
-            !
-          </span>
+    return (
+      <main
+        dir={isArabic ? "rtl" : "ltr"}
+        className="min-h-[60vh] bg-ubh-canvas px-4 py-20"
+      >
+        <div className="mx-auto flex max-w-xl flex-col items-center text-center">
+          <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-ubh-navy/5 text-ubh-navy">
+            <span className="text-3xl" aria-hidden="true">
+              !
+            </span>
+          </div>
+
+          <h1 className="text-3xl font-semibold tracking-tight text-ubh-navy">
+            {isArabic ? "الناشر غير موجود" : "Publisher Not Found"}
+          </h1>
+
+          <p className="mt-4 max-w-md text-sm leading-7 text-slate-600">
+            {isArabic
+              ? "عذراً، لم نتمكن من العثور على الناشر الذي تبحث عنه. ربما تم نقل الرابط أو إزالته."
+              : "Sorry, we couldn't find the publisher you're looking for. The publisher may have been moved, removed, or the link may be incorrect."}
+          </p>
+
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <a
+              href={`/${locale}/publishers`}
+              className="inline-flex min-h-11 items-center justify-center rounded-md bg-ubh-navy px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#0b2b55] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold focus-visible:ring-offset-2"
+            >
+              {isArabic ? "تصفح جميع الناشرين" : "Browse All Publishers"}
+            </a>
+
+            <a
+              href={`/${locale}`}
+              className="inline-flex min-h-11 items-center justify-center rounded-md border border-slate-200 bg-white px-6 py-3 text-sm font-medium text-ubh-navy transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold focus-visible:ring-offset-2"
+            >
+              {isArabic ? "العودة إلى الرئيسية" : "Back to Home"}
+            </a>
+          </div>
         </div>
+      </main>
+    );
+  }
 
-        <h1 className="text-3xl font-semibold tracking-tight text-ubh-navy">
-          {isArabic ? "الناشر غير موجود" : "Publisher Not Found"}
-        </h1>
-
-        <p className="mt-4 max-w-md text-sm leading-7 text-slate-600">
-          {isArabic
-            ? "عذراً، لم نتمكن من العثور على الناشر الذي تبحث عنه. ربما تم نقل الرابط أو إزالته."
-            : "Sorry, we couldn't find the publisher you're looking for. The publisher may have been moved, removed, or the link may be incorrect."}
-        </p>
-
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <a
-            href={`/${locale}/publishers`}
-            className="inline-flex min-h-11 items-center justify-center rounded-md bg-ubh-navy px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#0b2b55] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold focus-visible:ring-offset-2"
-          >
-            {isArabic ? "تصفح جميع الناشرين" : "Browse All Publishers"}
-          </a>
-
-          <a
-            href={`/${locale}`}
-            className="inline-flex min-h-11 items-center justify-center rounded-md border border-slate-200 bg-white px-6 py-3 text-sm font-medium text-ubh-navy transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold focus-visible:ring-offset-2"
-          >
-            {isArabic ? "العودة إلى الرئيسية" : "Back to Home"}
-          </a>
-        </div>
-      </div>
-    </main>
-  );
-}
-
-const t = copy[locale].publishers;
-const details = t.details;
-const publisherTranslation =
-  t.publisherDescriptions[publisherKey as keyof typeof t.publisherDescriptions] ?? {
+  const t = copy[locale].publishers;
+  const details = t.details;
+  const publisherTranslation = t.publisherDescriptions[
+    publisherKey as keyof typeof t.publisherDescriptions
+  ] ?? {
     description: publisher.description,
     longDescription: publisher.longDescription,
   };
-const countryLabels: Record<string, string> = {
-  "United Kingdom": t.countries.uk,
-  "United States": t.countries.us,
-  Canada: t.countries.canada,
-  Germany: t.countries.germany,
-  France: t.countries.france,
-  Australia: t.countries.australia,
-  Netherlands: t.countries.netherlands,
-  Others: t.countries.others,
-};
+  const countryLabels: Record<string, string> = {
+    "United Kingdom": t.countries.uk,
+    "United States": t.countries.us,
+    Canada: t.countries.canada,
+    Germany: t.countries.germany,
+    France: t.countries.france,
+    Australia: t.countries.australia,
+    Netherlands: t.countries.netherlands,
+    Others: t.countries.others,
+  };
 
-const subjectLabels: Record<string, string> = {
-  Business: t.subjects.business,
-  "Business & Economics": t.subjects.business,
+  const subjectLabels: Record<string, string> = {
+    Business: t.subjects.business,
+    "Business & Economics": t.subjects.business,
 
-  "Computer Science": t.subjects.computerScience,
-  "Computer Science & IT": t.subjects.computerScience,
+    "Computer Science": t.subjects.computerScience,
+    "Computer Science & IT": t.subjects.computerScience,
 
-  Education: t.subjects.education,
-  "Education & Teaching": t.subjects.education,
+    Education: t.subjects.education,
+    "Education & Teaching": t.subjects.education,
 
-  Engineering: t.subjects.engineering,
-  "Engineering & Technology": t.subjects.engineering,
+    Engineering: t.subjects.engineering,
+    "Engineering & Technology": t.subjects.engineering,
 
-  Medicine: t.subjects.medicine,
-  Healthcare: t.subjects.medicine,
-  "Health & Medicine": t.subjects.medicine,
+    Medicine: t.subjects.medicine,
+    Healthcare: t.subjects.medicine,
+    "Health & Medicine": t.subjects.medicine,
 
-  Humanities: t.subjects.humanities,
-  "Humanities & Social Sciences": t.subjects.humanities,
+    Humanities: t.subjects.humanities,
+    "Humanities & Social Sciences": t.subjects.humanities,
 
-  Science: t.subjects.science,
-  "Science & Mathematics": t.subjects.science,
+    Science: t.subjects.science,
+    "Science & Mathematics": t.subjects.science,
 
-  Law: t.subjects.law,
-  Arts: t.subjects.arts,
+    Law: t.subjects.law,
+    Arts: t.subjects.arts,
 
-  Technology: t.subjects.computerScience,
-  Mathematics: t.subjects.science,
-  "Social Sciences": t.subjects.humanities,
-  Research: t.subjects.science,
-  Psychology: t.subjects.humanities,
-  History: t.subjects.humanities,
-  Languages: t.subjects.humanities,
-  Literature: t.subjects.humanities,
-  Politics: t.subjects.humanities,
-  Electronics: t.subjects.engineering,
-  "Professional Studies": t.subjects.business,
-  "Mental Health": t.subjects.medicine,
-  "General Reading": t.subjects.humanities,
-};
+    Technology: t.subjects.computerScience,
+    Mathematics: t.subjects.science,
+    "Social Sciences": t.subjects.humanities,
+    Research: t.subjects.science,
+    Psychology: t.subjects.humanities,
+    History: t.subjects.humanities,
+    Languages: t.subjects.humanities,
+    Literature: t.subjects.humanities,
+    Politics: t.subjects.humanities,
+    Electronics: t.subjects.engineering,
+    "Professional Studies": t.subjects.business,
+    "Mental Health": t.subjects.medicine,
+    "General Reading": t.subjects.humanities,
+  };
 
   return (
     <>
@@ -603,114 +587,139 @@ const subjectLabels: Record<string, string> = {
       {/* HERO                                                               */}
       {/* ================================================================== */}
 
-      <section className="relative overflow-hidden bg-ubh-navy text-white">
-<div className="absolute inset-0">
-  <div className="absolute inset-0">
-    <SafeImage
-      src={publisher.logo}
-      alt={`${publisher.name} logo`}
-      width={180}
-      height={100}
-      className="absolute left-6 top-1/2 max-h-[100px] max-w-[160px] -translate-y-1/2 object-contain"
+   
+<section className="relative isolate min-h-[420px] overflow-hidden border-b border-slate-200 bg-[#F5F8FC] text-[#102B4E] md:min-h-[460px] lg:min-h-[490px]">
+
+  {/* Light UBH2 Background */}
+  <div
+    aria-hidden="true"
+    className="pointer-events-none absolute inset-0 overflow-hidden"
+  >
+    {/* Soft background gradient */}
+    <div className="absolute inset-0 bg-gradient-to-br from-white via-[#F4F8FC] to-[#EAF1F8]" />
+
+    {/* Ambient lighting */}
+    <div className="absolute -right-32 -top-44 h-[520px] w-[650px] rounded-full bg-[#6A9FC8]/[0.10] blur-[130px]" />
+    <div className="absolute -bottom-56 -left-32 h-[480px] w-[480px] rounded-full bg-[#C89438]/[0.08] blur-[120px]" />
+
+    {/* Architectural grid */}
+    <div
+      className="absolute inset-0 opacity-[0.055]"
+      style={{
+        backgroundImage: `
+          linear-gradient(to right, #52789A 1px, transparent 1px),
+          linear-gradient(to bottom, #52789A 1px, transparent 1px)
+        `,
+        backgroundSize: "82px 82px",
+        maskImage: "linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)",
+      }}
     />
+
+    {/* Right architectural geometry */}
+    <div className="absolute -right-32 -top-40 h-[490px] w-[510px] rotate-[42deg] border border-[#52789A]/[0.13] bg-gradient-to-br from-[#DCEAF5]/50 to-transparent" />
+
+    <div className="absolute -right-20 top-20 h-[300px] w-[300px] rotate-45 border border-[#C89438]/[0.16]" />
+
+    {/* Dotted texture */}
+    <div
+      className="absolute right-12 top-12 h-48 w-56 opacity-[0.22]"
+      style={{
+        backgroundImage: "radial-gradient(#52789A 1px, transparent 1px)",
+        backgroundSize: "20px 20px",
+        maskImage: "linear-gradient(to left, black, transparent)",
+      }}
+    />
+
+    {/* Bottom geometry */}
+    <div className="absolute -bottom-56 -right-20 h-[440px] w-[490px] rotate-[-42deg] border border-[#52789A]/[0.10]" />
+
+    {/* Gold finishing line */}
+    <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#C89438]/45 to-transparent" />
+    <div className="absolute bottom-0 left-1/2 h-[2px] w-24 -translate-x-1/2 bg-[#C89438]" />
   </div>
 
-  <div className="absolute inset-0 bg-ubh-navy/80" />
+  {/* Content */}
+  <Container className="relative z-10">
+    <div className="flex min-h-[420px] items-center py-12 md:min-h-[460px] md:py-14 lg:min-h-[490px] lg:py-16">
 
-  <div className="absolute inset-0 bg-gradient-to-r from-ubh-navy via-ubh-navy/90 to-ubh-navy/40" />
-</div>
-        <Container className="relative z-10">
-          <div className="min-h-[410px] pb-12 pt-7 md:min-h-[430px]">
-            {/* Breadcrumb */}
-            {/* <div className="flex items-center gap-2 text-[10px] text-white/70">
-              <Link
-                href={`/${locale}`}
-                className="transition-colors hover:text-white"
-              >
-                {t.breadcrumbHome}
-              </Link>
+      <div className="grid w-full items-center gap-9 md:grid-cols-[200px_minmax(0,1fr)] md:gap-12 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-16">
 
-              <span>›</span>
-
-              <Link
-                href={`/${locale}/publishers`}
-                className="transition-colors hover:text-white"
-              >
-                {t.breadcrumbPublishers}
-              </Link>
-
-              <span>›</span>
-
-              <span className="max-w-[180px] truncate text-white">
-                {publisher.name}
-              </span>
-            </div> */}<div className="mb-7">
-  <Breadcrumbs
-    locale={locale}
-    items={websiteBreadcrumbs(locale, "digitalSolutions")}
-    variant="dark"
-  />
-</div>
-            
-
-            {/* Hero */}
-            <div className="mt-12 grid gap-10 md:grid-cols-[190px_1fr] md:items-center">
-  {/* Logo Card */}
-  <div className="flex h-[150px] w-[190px] items-center justify-center rounded-[6px] border border-white/15 bg-white p-6 shadow-2xl">
-    <div className="relative h-full w-full">
-      <SafeImage
-        src={publisher.logo}
-        alt={`${publisher.name} logo`}
-        fill
-        sizes="160px"
-        className="object-contain"
-        fallback={
-          <div className="flex h-full w-full items-center justify-center text-center">
-            <span className="text-sm font-semibold text-ubh-navy">
-              {publisher.name}
-            </span>
-          </div>
-        }
-      />
-    </div>
-  </div>
-
-              {/* Content */}
-              <div className="max-w-[680px]">
-                <div className="mb-4 flex flex-wrap items-center gap-2">
-                  <span className="rounded-full bg-ubh-gold-light px-3 py-1 text-[9px] font-semibold text-white">
-                    {details.academicPublisher}
-                  </span>
-
-                  <span className="flex items-center gap-1 rounded-full border border-white/20 bg-white/5 px-3 py-1 text-[9px] text-white/80">
-                    <MapPin size={11} />
-                    {countryLabels[publisher.country] ?? publisher.country}
-                  </span>
-                </div>
-
-                <h1 className="font-serif text-4xl leading-tight md:text-[48px]">
-                  {publisher.name}
-                </h1>
-
-                <p className="mt-4 max-w-[650px] text-[13px] leading-[1.7] text-white/80 md:text-[14px]">
-                  {publisherTranslation.description}
-                </p>
-
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {publisher.subjects.slice(0, 4).map((subject) => (
-                    <span
-                      key={subject}
-                      className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[9px] text-white/80"
-                    >
-                      {subjectLabels[subject] ?? subject}
+        {/* Publisher Logo */}
+        <div className="flex justify-center md:justify-start">
+          <div className="relative flex h-[150px] w-[190px] items-center justify-center rounded-2xl border border-slate-200/90 bg-white p-6 shadow-[0_15px_40px_-22px_rgba(16,43,78,0.22)] lg:h-[165px] lg:w-[210px]">
+            <div className="relative h-full w-full">
+              <SafeImage
+                src={publisher.logo}
+                alt={`${publisher.name} logo`}
+                fill
+                sizes="(min-width: 1024px) 210px, 190px"
+                className="object-contain"
+                fallback={
+                  <div className="flex h-full items-center justify-center text-center">
+                    <span className="text-sm font-semibold text-ubh-navy">
+                      {publisher.name}
                     </span>
-                  ))}
-                </div>
-              </div>
+                  </div>
+                }
+              />
             </div>
           </div>
-        </Container>
-      </section>
+        </div>
+
+        {/* Publisher Information */}
+        <div className="min-w-0 text-center md:text-start">
+
+          {/* Metadata */}
+          <div className="mb-5 flex flex-wrap items-center justify-center gap-3 md:justify-start">
+
+            <span className="inline-flex items-center rounded-md border border-[#C89438]/30 bg-[#C89438]/[0.09] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#987027]">
+              {details.academicPublisher}
+            </span>
+
+            <span className="inline-flex items-center gap-2 text-xs font-medium text-slate-500">
+              <MapPin size={14} className="text-[#B8822C]" />
+              {countryLabels[publisher.country] ?? publisher.country}
+            </span>
+          </div>
+
+          {/* Publisher Name */}
+          <h1 className="max-w-4xl font-serif text-3xl font-semibold leading-[1.2] tracking-tight text-[#102B4E] md:text-4xl lg:text-[48px]">
+            {publisher.name}
+          </h1>
+
+          {/* Gold Accent */}
+          <div className="mx-auto mt-5 h-[3px] w-14 rounded-full bg-gradient-to-r from-[#B8822C] to-[#E3BD76] md:mx-0" />
+
+          {/* Description */}
+          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-600 md:mx-0 md:text-[15px] md:leading-8">
+            {publisherTranslation.description}
+          </p>
+
+          {/* Subject Areas */}
+          {publisher.subjects.length > 0 && (
+            <div className="mt-6 flex flex-wrap justify-center gap-2 md:justify-start">
+              {publisher.subjects.slice(0, 4).map((subject) => (
+                <span
+                  key={subject}
+                  className="rounded-md border border-slate-200 bg-white/80 px-3 py-2 text-[11px] font-medium text-[#385477] shadow-sm transition-colors duration-200 hover:border-[#C89438]/50 hover:bg-white"
+                >
+                  {subjectLabels[subject] ?? subject}
+                </span>
+              ))}
+
+              {publisher.subjects.length > 4 && (
+                <span className="flex items-center px-2 text-[11px] font-medium text-slate-500">
+                  +{publisher.subjects.length - 4}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>
+
 
       {/* ================================================================== */}
       {/* MAIN CONTENT                                                       */}
@@ -758,10 +767,7 @@ const subjectLabels: Record<string, string> = {
               <section className="mt-6 rounded-[6px] border border-ubh-border bg-white p-6 md:p-8">
                 <div className="flex items-center gap-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#edf3f8] text-ubh-blue-bright">
-                    <GraduationCap
-                      size={17}
-                      strokeWidth={1.7}
-                    />
+                    <GraduationCap size={17} strokeWidth={1.7} />
                   </div>
 
                   <div>
@@ -790,8 +796,6 @@ const subjectLabels: Record<string, string> = {
                   ))}
                 </div>
               </section>
-
-
             </div>
 
             {/* ============================================================ */}
@@ -945,88 +949,87 @@ const subjectLabels: Record<string, string> = {
             </aside>
           </div>
         </Container>
-        
-      {/* PUBLISHER BOOK CATALOGUE */}
-      <section
-        id="publisher-books"
-        className="border-t border-[#e4eaf1] bg-white py-12 sm:py-16"
-      >
-        <Container>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-ubh-gold">
-                {locale === "ar"
-                  ? "اكتشف إصدارات الناشر"
-                  : "EXPLORE THE CATALOGUE"}
-              </p>
 
-              <h2 className="font-serif text-2xl tracking-tight text-ubh-navy sm:text-3xl">
-                {locale === "ar"
-                  ? "كتب هذا الناشر"
-                  : `Books by ${publisher.name}`}
-              </h2>
+        {/* PUBLISHER BOOK CATALOGUE */}
+        <section
+          id="publisher-books"
+          className="border-t border-[#e4eaf1] bg-white py-12 sm:py-16"
+        >
+          <Container>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-ubh-gold">
+                  {locale === "ar"
+                    ? "اكتشف إصدارات الناشر"
+                    : "EXPLORE THE CATALOGUE"}
+                </p>
 
-              <p className="mt-2 text-sm leading-6 text-[#718096]">
-                {locale === "ar"
-                  ? "استكشف الكتب والإصدارات المتاحة من هذا الناشر."
-                  : "Explore academic books and publications from this publisher."}
-              </p>
+                <h2 className="font-serif text-2xl tracking-tight text-ubh-navy sm:text-3xl">
+                  {locale === "ar"
+                    ? "كتب هذا الناشر"
+                    : `Books by ${publisher.name}`}
+                </h2>
+
+                <p className="mt-2 text-sm leading-6 text-[#718096]">
+                  {locale === "ar"
+                    ? "استكشف الكتب والإصدارات المتاحة من هذا الناشر."
+                    : "Explore academic books and publications from this publisher."}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="w-fit rounded-full border border-[#e1e8f0] px-4 py-2 text-xs text-ubh-blue-muted">
+                  {publisherProducts.length}{" "}
+                  {locale === "ar"
+                    ? "كتاب"
+                    : publisherProducts.length === 1
+                      ? "title"
+                      : "titles"}
+                </span>
+                {publisherProducts.length > 0 && (
+                  <Link
+                    href={`/${locale}/shop/products?publisher=${encodeURIComponent(publisher.name)}`}
+                    className="inline-flex min-h-10 items-center gap-2 rounded-md bg-ubh-navy px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#0b2b55] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold focus-visible:ring-offset-2"
+                  >
+                    {locale === "ar" ? "عرض جميع الكتب" : "View all books"}
+                    <ArrowRight size={14} />
+                  </Link>
+                )}
+              </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="w-fit rounded-full border border-[#e1e8f0] px-4 py-2 text-xs text-ubh-blue-muted">
-                {publisherProducts.length}{" "}
-                {locale === "ar"
-                  ? "كتاب"
-                  : publisherProducts.length === 1
-                    ? "title"
-                    : "titles"}
-              </span>
-              {publisherProducts.length > 0 && (
-                <Link
-                  href={`/${locale}/shop/products?publisher=${encodeURIComponent(publisher.name)}`}
-                  className="inline-flex min-h-10 items-center gap-2 rounded-md bg-ubh-navy px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#0b2b55] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold focus-visible:ring-offset-2"
-                >
-                  {locale === "ar" ? "عرض جميع الكتب" : "View all books"}
-                  <ArrowRight size={14} />
-                </Link>
-              )}
-            </div>
-          </div>
-
-          {publisherProducts.length > 0 ? (
-            <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4 xl:gap-6">
-              {previewProducts.map((product) => (
-                <ProductCard
-                  key={product.slug || product.id}
-                  product={product}
-                  locale={locale}
-                  noCoverText={locale === "ar" ? "لا توجد صورة" : "No cover"}
+            {publisherProducts.length > 0 ? (
+              <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4 xl:gap-6">
+                {previewProducts.map((product) => (
+                  <ProductCard
+                    key={product.slug || product.id}
+                    product={product}
+                    locale={locale}
+                    noCoverText={locale === "ar" ? "لا توجد صورة" : "No cover"}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="mt-8 rounded-xl border border-dashed border-[#d9e2ec] bg-[#f8fafc] px-6 py-12 text-center">
+                <BookOpen
+                  size={28}
+                  strokeWidth={1.4}
+                  className="mx-auto text-ubh-muted-light"
                 />
-              ))}
-            </div>
-          ) : (
-            <div className="mt-8 rounded-xl border border-dashed border-[#d9e2ec] bg-[#f8fafc] px-6 py-12 text-center">
-              <BookOpen
-                size={28}
-                strokeWidth={1.4}
-                className="mx-auto text-ubh-muted-light"
-              />
-              <p className="mt-4 font-medium text-ubh-navy">
-                {locale === "ar"
-                  ? "لا توجد كتب متاحة حالياً"
-                  : "No titles available yet"}
-              </p>
-              <p className="mt-2 text-sm text-[#718096]">
-                {locale === "ar"
-                  ? "يرجى العودة لاحقاً للاطلاع على إصدارات هذا الناشر."
-                  : "Please check back later for available publications."}
-              </p>
-            </div>
-          )}
-        </Container>
-      </section>
-
+                <p className="mt-4 font-medium text-ubh-navy">
+                  {locale === "ar"
+                    ? "لا توجد كتب متاحة حالياً"
+                    : "No titles available yet"}
+                </p>
+                <p className="mt-2 text-sm text-[#718096]">
+                  {locale === "ar"
+                    ? "يرجى العودة لاحقاً للاطلاع على إصدارات هذا الناشر."
+                    : "Please check back later for available publications."}
+                </p>
+              </div>
+            )}
+          </Container>
+        </section>
       </main>
 
       {/* ================================================================== */}
@@ -1052,9 +1055,9 @@ const subjectLabels: Record<string, string> = {
           <div className="flex min-h-[190px] flex-col items-start justify-center gap-6 py-8 md:flex-row md:items-center md:justify-between">
             <div>
               <h2 className="max-w-[480px] font-serif text-3xl leading-[1.1] md:text-[34px]">
-               {details.discoverMore}
-<br />
-{details.resources}
+                {details.discoverMore}
+                <br />
+                {details.resources}
               </h2>
 
               <p className="mt-3 text-[11px] text-white/75 md:text-[12px]">
@@ -1065,7 +1068,7 @@ const subjectLabels: Record<string, string> = {
             <div className="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[145px]">
               <Link
                 href={`/${locale}/shop/products?publisher=${encodeURIComponent(
-                  publisher.name
+                  publisher.name,
                 )}`}
                 className="flex h-[35px] items-center justify-center gap-2 rounded-[4px] bg-ubh-gold-light px-5 text-[10px] font-semibold text-white transition-colors hover:bg-ubh-gold"
               >
@@ -1083,7 +1086,6 @@ const subjectLabels: Record<string, string> = {
           </div>
         </Container>
       </section>
-     
-</>
+    </>
   );
 }

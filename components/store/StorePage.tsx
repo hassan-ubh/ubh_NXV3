@@ -251,12 +251,12 @@ export function ProductCard({
         <div className="relative aspect-[3/4] overflow-hidden">
           {product.cover ? (
             <Image
-              src={product.cover}
-              alt={product.title}
-              fill
-              sizes="(max-width: 639px) 42vw, (max-width: 1023px) 22vw, 160px"
-              className="object-contain p-2 transition-transform duration-300 group-hover:scale-[1.04]"
-            />
+  src={product.cover}
+  alt={product.title}
+  fill
+  sizes="(max-width: 639px) 42vw, (max-width: 1023px) 22vw, 160px"
+  className="object-contain p-2"
+/>
           ) : (
             <div className="flex h-full min-h-32 flex-col items-center justify-center gap-2 text-xs text-slate-400">
               <BookOpen size={25} strokeWidth={1.5} aria-hidden="true" />

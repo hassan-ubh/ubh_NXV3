@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { Container } from "@/components/shared/Container";
 import type { Locale } from "@/lib/i18n";
+import { PremiumHeroBackground } from "../ui/BackgroundGraphics";
 
 type LegalPageLayoutProps = {
   locale: Locale;
@@ -53,71 +54,57 @@ export function LegalPageLayout({
 }`}
     >
       {/* Hero */}
-      <section className="relative overflow-hidden bg-ubh-navy">
-        <div
-          aria-hidden="true"
-          className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-ubh-gold/10 blur-3xl"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute -bottom-32 -left-20 h-72 w-72 rounded-full bg-blue-500/10 blur-3xl"
-        />
+      
+{/* Hero */}
+<PremiumHeroBackground className="min-h-[280px] md:min-h-[340px]"
+  contentClassName="mx-auto flex max-w-7xl items-center px-5 py-12 md:px-8 md:py-16">
+  <Container>
+    <div className="relative py-9 sm:py-11 lg:py-14">
 
-        <Container>
-          <div className="relative py-12 sm:py-16 lg:py-20">
-            {/* <div className="mb-6 flex items-center gap-2 text-sm text-white/60">
-              <Link
-                href={backHref}
-                className="transition-colors hover:text-ubh-gold-light"
-              >
-                {isStore
-                  ? isArabic
-                    ? "المتجر"
-                    : "Store"
-                  : isArabic
-                    ? "الرئيسية"
-                    : "Home"}
-              </Link>
-              <span aria-hidden="true">/</span>
-              <span className="text-ubh-gold-light">
-                {isArabic ? "المعلومات القانونية" : "Legal"}
-              </span>
-            </div> */}
+      {/* Hero Content */}
+      <div className="flex max-w-3xl items-start gap-4">
 
-            <div className="flex max-w-3xl items-start gap-4">
-              <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-ubh-gold-light/30 bg-white/5 sm:flex">
-                <ShieldCheck
-                  size={27}
-                  className="text-ubh-gold-light"
-                  strokeWidth={1.7}
-                />
-              </div>
+        {/* Legal Icon */}
+        <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-ubh-gold-light/30 bg-white/[0.05] sm:flex">
+          <ShieldCheck
+            size={27}
+            className="text-ubh-gold-light"
+            strokeWidth={1.7}
+          />
+        </div>
 
-              <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-ubh-gold-light">
-                  {isArabic
-                    ? "دار الكتب الجامعية"
-                    : "University Book House"}
-                </p>
+        <div className="min-w-0">
 
-                <h1 className="font-serif text-3xl font-semibold leading-tight text-white sm:text-4xl lg:text-5xl">
-                  {title}
-                </h1>
+          {/* Brand Label */}
+          <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-ubh-gold-light">
+            {isArabic
+              ? "دار الكتب الجامعية"
+              : "University Book House"}
+          </p>
 
-                <p className="mt-4 max-w-2xl text-sm leading-7 text-white/70 sm:text-base sm:leading-8">
-                  {description}
-                </p>
+          {/* Page Title */}
+          <h1 className="font-serif text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+            {title}
+          </h1>
 
-                {updatedLabel && updatedDate && (
-                  <p className="mt-5 text-xs text-white/55 sm:text-sm">
-                    {updatedLabel}: {updatedDate}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-        </Container>
-      </section>
+          {/* Description */}
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-white/70 sm:text-base sm:leading-8">
+            {description}
+          </p>
+
+          {/* Last Updated */}
+          {updatedLabel && updatedDate && (
+            <p className="mt-5 text-xs font-medium text-white/55 sm:text-sm">
+              {updatedLabel}: {updatedDate}
+            </p>
+          )}
+
+        </div>
+      </div>
+    </div>
+  </Container>
+</PremiumHeroBackground>
+
 
       {/* Content */}
       <Container>
