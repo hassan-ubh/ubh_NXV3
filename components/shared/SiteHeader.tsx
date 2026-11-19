@@ -179,14 +179,14 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
     setMobileOpen((current) => !current);
   };
 
- return (
-  <header
-    ref={headerRef}
-    dir={isArabic ? "rtl" : "ltr"}
-    className="fixed inset-x-0 top-0 z-[100]"
-  >
-    {/* Premium Main Navigation */}
-    <div
+  return (
+    <header
+      ref={headerRef}
+      dir={isArabic ? "rtl" : "ltr"}
+      className="fixed inset-x-0 top-0 z-[100]"
+    >
+      {/* Premium Main Navigation */}
+      {/* <div
       className={`
         relative isolate border-b border-white/[0.08]
         transition-all duration-300 ease-in-out
@@ -196,61 +196,78 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
             : "bg-gradient-to-r from-[#06172F] via-[#0A2343] to-[#071A34] shadow-[0_4px_20px_rgba(0,0,0,0.12)]"
         }
       `}
-    >
-      {/* Refined background details */}
+    > */}
       <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 overflow-hidden"
+        className={`
+    relative isolate overflow-visible
+    border-b border-white/[0.08]
+    bg-[#061A37]
+    shadow-[0_8px_30px_rgba(0,0,0,0.22)]
+    transition-[box-shadow,background-color] duration-300 ease-in-out
+    ${
+      isScrolled
+        ? "shadow-[0_10px_35px_rgba(0,0,0,0.35)]"
+        : "shadow-[0_4px_20px_rgba(0,0,0,0.12)]"
+    }
+  `}
       >
-        {/* Soft blue lighting */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/[0.035] via-transparent to-black/[0.12]" />
+        {/* Refined background details */}
+        {/* Premium dark navy background */}
+<div
+  aria-hidden="true"
+  className="pointer-events-none absolute inset-0 overflow-hidden"
+>
+  {/* Deep navy gradient */}
+  <div className="absolute inset-0 bg-gradient-to-r from-[#061A37] via-[#0A2343] to-[#061A37]" />
 
-        {/* Subtle side illumination */}
-        <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#16416A]/15 to-transparent" />
+  {/* Soft atmospheric lighting */}
+  <div className="absolute inset-0 bg-gradient-to-b from-white/[0.035] via-transparent to-black/[0.20]" />
 
-        {/* Fine gold bottom accent */}
-        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#DCAE57]/60 to-transparent" />
-      </div>
+  {/* Subtle blue ambient glow */}
+  <div className="absolute -left-20 -top-20 h-48 w-72 rounded-full bg-[#1B4775]/20 blur-[90px]" />
 
-      <Container className="relative px-3 py-2 sm:px-4 lg:px-5 2xl:px-7">
-        <div
-          className={`
+  {/* Gold bottom accent */}
+  <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#DCAE57]/50 to-transparent" />
+</div>
+        <Container className="relative px-3 py-2 sm:px-4 lg:px-5 2xl:px-7">
+          <div
+            className={`
             flex items-center gap-2
             transition-all duration-300 ease-in-out
             lg:gap-2 xl:gap-3 2xl:gap-4
             ${isScrolled ? "h-[72px]" : "h-[77px]"}
           `}
-        >
-          {/* Logo */}
-          <div className="flex w-[105px] shrink-0 items-center sm:w-[125px] lg:w-[115px] xl:w-[145px] 2xl:w-[170px]">
-            <Logo size="header" />
-          </div>
-
-          {/* Desktop Navigation */}
-          <nav
-            aria-label={t.menu}
-            className="hidden min-w-0 flex-1 items-center justify-between gap-0 lg:flex"
           >
-            {navigation.map((item) =>
-              item.children ? (
-                <DesktopDropdown
-                  key={item.label}
-                  item={item}
-                  open={openDropdown === item.label}
-                  isArabic={isArabic}
-                  onToggle={() =>
-                    setOpenDropdown((current) =>
-                      current === item.label ? null : item.label
-                    )
-                  }
-                  onNavigate={closeMenus}
-                />
-              ) : (
-                <Link
-                  key={item.href}
-                  href={item.href!}
-                  onClick={closeMenus}
-                  className="
+            {/* Logo */}
+            <div className="flex w-[105px] shrink-0 items-center sm:w-[125px] lg:w-[115px] xl:w-[145px] 2xl:w-[170px]">
+              <Logo size="header" />
+            </div>
+
+            {/* Desktop Navigation */}
+            <nav
+              aria-label={t.menu}
+              className="hidden min-w-0 flex-1 items-center justify-between gap-0 lg:flex"
+            >
+              {navigation.map((item) =>
+                item.children ? (
+                  <DesktopDropdown
+                    key={item.label}
+                    item={item}
+                    open={openDropdown === item.label}
+                    isArabic={isArabic}
+                    onToggle={() =>
+                      setOpenDropdown((current) =>
+                        current === item.label ? null : item.label,
+                      )
+                    }
+                    onNavigate={closeMenus}
+                  />
+                ) : (
+                  <Link
+                    key={item.href}
+                    href={item.href!}
+                    onClick={closeMenus}
+                    className="
                     group relative flex h-10 shrink-0 items-center
                     whitespace-nowrap rounded-md px-1
                     text-[10px] font-semibold text-white/85
@@ -261,41 +278,44 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
                     xl:px-1.5 xl:text-[12px]
                     2xl:px-2 2xl:text-[13px]
                   "
-                >
-                  {item.label}
+                  >
+                    {item.label}
 
-                  <span className="
+                    <span
+                      className="
                     absolute inset-x-1 bottom-0 h-[2px]
                     origin-center scale-x-0 rounded-full
                     bg-[#DCAE57]
                     transition-transform duration-200
                     group-hover:scale-x-100
-                  " />
-                </Link>
-              )
-            )}
-          </nav>
+                  "
+                    />
+                  </Link>
+                ),
+              )}
+            </nav>
 
-          {/* Right-side Actions */}
-          <div className="ms-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
+            {/* Right-side Actions */}
+            <div className="ms-auto flex shrink-0 items-center gap-1.5 sm:gap-2">
+              {/* Language Switcher */}
+              <div className="hidden shrink-0 items-center lg:flex">
+                <LanguageSwitcher locale={locale} />
+              </div>
 
-            {/* Language Switcher */}
-            <div className="hidden shrink-0 items-center lg:flex">
-              <LanguageSwitcher locale={locale} />
-            </div>
-
-            {/* Search */}
-            <button
-              type="button"
-              onClick={toggleSearch}
-              aria-label={
-                searchOpen
-                  ? isArabic ? "إغلاق البحث" : "Close search"
-                  : t.search
-              }
-              aria-expanded={searchOpen}
-              aria-controls="site-search-panel"
-              className="
+              {/* Search */}
+              <button
+                type="button"
+                onClick={toggleSearch}
+                aria-label={
+                  searchOpen
+                    ? isArabic
+                      ? "إغلاق البحث"
+                      : "Close search"
+                    : t.search
+                }
+                aria-expanded={searchOpen}
+                aria-controls="site-search-panel"
+                className="
                 flex size-9 shrink-0 items-center justify-center
                 rounded-full border border-white/[0.08]
                 text-white/85 transition-all duration-200
@@ -305,15 +325,15 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
                 focus-visible:outline-none
                 focus-visible:ring-2 focus-visible:ring-[#DCAE57]
               "
-            >
-              {searchOpen ? <X size={19} /> : <Search size={19} />}
-            </button>
+              >
+                {searchOpen ? <X size={19} /> : <Search size={19} />}
+              </button>
 
-            {/* Institutions CTA */}
-            <Link
-              href={`/${locale}/institutions`}
-              onClick={closeMenus}
-              className="
+              {/* Institutions CTA */}
+              <Link
+                href={`/${locale}/institutions`}
+                onClick={closeMenus}
+                className="
                 hidden min-h-9 shrink-0 items-center justify-center
                 gap-1.5 rounded-md
                 border border-[#DCAE57]/70
@@ -327,19 +347,19 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
                 focus-visible:ring-2 focus-visible:ring-[#DCAE57]
                 lg:inline-flex xl:px-3 xl:text-xs
               "
-            >
-              <span>{t.institutionCta}</span>
-              <ArrowUpRight size={13} />
-            </Link>
+              >
+                <span>{t.institutionCta}</span>
+                <ArrowUpRight size={13} />
+              </Link>
 
-            {/* Mobile Menu */}
-            <button
-              type="button"
-              onClick={toggleMobileMenu}
-              aria-label={mobileOpen ? t.closeMenu : t.openMenu}
-              aria-expanded={mobileOpen}
-              aria-controls="site-mobile-menu"
-              className="
+              {/* Mobile Menu */}
+              <button
+                type="button"
+                onClick={toggleMobileMenu}
+                aria-label={mobileOpen ? t.closeMenu : t.openMenu}
+                aria-expanded={mobileOpen}
+                aria-controls="site-mobile-menu"
+                className="
                 flex size-9 shrink-0 items-center justify-center
                 rounded-full border border-white/10
                 text-white transition-all duration-200
@@ -350,14 +370,13 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
                 focus-visible:ring-2 focus-visible:ring-[#DCAE57]
                 lg:hidden
               "
-            >
-              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-
+              >
+                {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
+            </div>
           </div>
-        </div>
-      </Container>
-    </div>
+        </Container>
+      </div>
 
       {/* Search panel */}
       <div

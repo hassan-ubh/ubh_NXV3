@@ -252,3 +252,54 @@ body {
     transform: none;
   }
 }
+
+
+
+
+/* scroll bar style  */
+
+/* =========================================
+   UBH2 - Premium Global Scrollbar
+========================================= */
+
+:root {
+  scrollbar-color: #B8822C #F1F3F6;
+  scrollbar-width: thin;
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F1F3F6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #B8822C;
+  border-radius: 999px;
+  border: 1px solid #F1F3F6;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94651F;
+}
+
+/* Dark sections and dark scrollable panels */
+.dark-scroll {
+  scrollbar-color: #B8822C #10243D;
+  scrollbar-width: thin;
+}
+
+.dark-scroll::-webkit-scrollbar-track {
+  background: #10243D;
+}
+
+.dark-scroll::-webkit-scrollbar-thumb {
+  background: #B8822C;
+  border-color: #10243D;
+}
+
+/* scroll bar style  */

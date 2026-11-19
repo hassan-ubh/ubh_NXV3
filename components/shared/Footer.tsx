@@ -884,12 +884,12 @@ export function Footer({ locale }: FooterProps) {
                 {isArabic ? "الشروط" : "Terms"}
               </Link>
 
-              <Link
+              {/* <Link
                 href={`/${locale}/accessibility?source=${source}`}
                 className="transition-colors hover:text-[#dcae57]"
               >
                 {isArabic ? "إمكانية الوصول" : "Accessibility"}
-              </Link>
+              </Link> */}
             </nav>
 
             {/* Language switcher */}
