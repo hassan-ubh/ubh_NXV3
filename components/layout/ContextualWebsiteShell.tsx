@@ -1,6 +1,45 @@
+// "use client";
+
+// import { usePathname, useSearchParams } from "next/navigation";
+// import { SiteHeader } from "@/components/shared/SiteHeader";
+// import { StoreHeader } from "@/components/store/StoreHeader";
+// import { Footer } from "@/components/shared/Footer";
+// import type { Locale } from "@/lib/i18n";
+
+// export function ContextualWebsiteShell({
+//   locale,
+//   children,
+// }: {
+//   locale: Locale;
+//   children: React.ReactNode;
+// }) {
+//   const pathname = usePathname();
+//   const searchParams = useSearchParams();
+
+//   const isPublisherProfile =
+//     pathname?.startsWith(`/${locale}/publishers/`) ?? false;
+
+//   const useStoreHeader =
+//     isPublisherProfile && searchParams.get("source") === "store";
+
+//   return (
+//     <>
+//       {useStoreHeader ? (
+//         <StoreHeader locale={locale} />
+//       ) : (
+//         <SiteHeader locale={locale} />
+//       )}
+
+//       <main className={useStoreHeader ? "" : "pt-[70px]"}>{children}</main>
+
+//       <Footer locale={locale} />
+//     </>
+//   );
+// }
+
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { SiteHeader } from "@/components/shared/SiteHeader";
 import { StoreHeader } from "@/components/store/StoreHeader";
 import { Footer } from "@/components/shared/Footer";
@@ -13,24 +52,21 @@ export function ContextualWebsiteShell({
   locale: Locale;
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const isPublisherProfile =
-    pathname?.startsWith(`/${locale}/publishers/`) ?? false;
-
-  const useStoreHeader =
-    isPublisherProfile && searchParams.get("source") === "store";
+  const isStoreContext = searchParams.get("source") === "store";
 
   return (
     <>
-      {useStoreHeader ? (
+      {isStoreContext ? (
         <StoreHeader locale={locale} />
       ) : (
         <SiteHeader locale={locale} />
       )}
 
-      <main className={useStoreHeader ? "" : "pt-[70px]"}>{children}</main>
+      <main className={isStoreContext ? "" : "pt-[70px]"}>
+        {children}
+      </main>
 
       <Footer locale={locale} />
     </>

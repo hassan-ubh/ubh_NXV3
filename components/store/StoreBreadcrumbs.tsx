@@ -377,6 +377,19 @@ export function StoreBreadcrumbs({ locale }: Props) {
     .filter(Boolean)
     .slice(1);
 
+    // Routes where breadcrumbs should not appear
+const hiddenRoutes = [
+  "login",
+  "signup",
+  "forgot-password",
+  "checkout",
+  "order-confirmation",
+];
+
+if (hiddenRoutes.includes(segments[0])) {
+  return null;
+}
+
   const currentRoute = segments[0];
   const secondSegment = segments[1];
   const thirdSegment = segments[2];

@@ -117,14 +117,14 @@ export default async function NewsArticlePage({
     >
       {/* Article hero */}
       <section className="relative isolate overflow-hidden bg-ubh-navy text-white">
-        <Image
+        {/* <Image
     src={article.image}
     alt=""
     fill
     priority
     sizes="100vw"
     className="object-cover object-center"
-  />
+  /> */}
 
   {/* Navy overlay for readable text */}
   <div
