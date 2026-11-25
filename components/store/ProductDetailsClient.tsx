@@ -4117,6 +4117,7 @@ import { ProductDescription } from "@/components/store/ProductDescription";
 import { StickyMobilePurchaseBar } from "@/components/store/StickyMobilePurchaseBar";
 import { CartNotification } from "@/components/store/CartNotification";
 import ProductDelivery from "@/components/store/product/ProductDelivery";
+import { ProductReviews } from "./product/ProductReviews";
 
 /* ==========================================================================
    CONSTANTS
@@ -4667,7 +4668,7 @@ export default function ProductDetailsClient({
                   </div>
 
                   {/* TRUST INFORMATION */}
-                  <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
+                  {/* <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
                     <div className="flex items-center justify-center gap-2 rounded-xl border border-slate-100 px-2 py-3">
                       <ShieldCheck
                         size={17}
@@ -4694,7 +4695,7 @@ export default function ProductDetailsClient({
                         {t.support}
                       </span>
                     </div>
-                  </div>
+                  </div> */}
                 </section>
 
                 {/* BOOK DESCRIPTION */}
@@ -5030,7 +5031,39 @@ export default function ProductDetailsClient({
                 )}
 
                 {/* RATINGS */}
-                {(product.rating != null || product.reviewCount != null) && (
+                {/* Product Rating */}
+                <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                  <div className="inline-flex items-center gap-1" dir="ltr">
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <Star
+                        key={index}
+                        size={15}
+                        className={
+                          index < Math.round(product.rating ?? 4.7)
+                            ? "fill-[#C89A48] text-[#C89A48]"
+                            : "text-slate-300"
+                        }
+                      />
+                    ))}
+                  </div>
+
+                  <span className="font-semibold text-[#9a6b1e]" dir="ltr">
+                    {(product.rating ?? 4.7).toFixed(1)}
+                  </span>
+
+                  <span>
+                    ({product.reviewCount ?? 24}{" "}
+                    {isArabic ? "تقييم" : "reviews"})
+                  </span>
+
+                  <a
+                    href="#product-reviews"
+                    className="font-medium text-ubh-blue-bright transition-colors hover:text-ubh-gold"
+                  >
+                    {isArabic ? "عرض التقييمات" : "Read reviews"}
+                  </a>
+                </div>
+                {/* {(product.rating != null || product.reviewCount != null) && (
                   <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-slate-500">
                     {product.rating != null && (
                       <span className="inline-flex items-center gap-1 font-semibold text-[#9a6b1e]">
@@ -5045,7 +5078,7 @@ export default function ProductDetailsClient({
                       </span>
                     )}
                   </div>
-                )}
+                )} */}
 
                 {/* SHORT DESCRIPTION */}
                 {shortDescription && (
@@ -5177,6 +5210,9 @@ export default function ProductDetailsClient({
                 </div>
               </div>
             </div>
+
+            {/* PRODUCT REVIEWS */}
+            <ProductReviews locale={locale} productId={product.id} />
 
             {/* ==========================================================
                 PRODUCT RECOMMENDATIONS
@@ -5713,9 +5749,7 @@ function InfoTile({ label, value }: DetailRowProps) {
 function DetailRow({ label, value }: DetailRowProps) {
   return (
     <div className="flex items-start justify-between gap-4 border-b border-slate-100 py-2.5 last:border-0">
-      <span className="text-xs text-slate-500">
-        {label}
-      </span>
+      <span className="text-xs text-slate-500">{label}</span>
 
       <span className="min-w-0 break-words text-end text-xs font-medium leading-5 text-[#385477]">
         {value}
@@ -5723,4 +5757,3 @@ function DetailRow({ label, value }: DetailRowProps) {
     </div>
   );
 }
-

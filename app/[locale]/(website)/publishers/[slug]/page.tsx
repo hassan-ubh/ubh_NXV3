@@ -132,7 +132,7 @@ const publishers: Record<string, PublisherProfile> = {
 
   wiley: {
     name: "Wiley",
-    logo: "/images/publishers/wiley_logo.svg",
+    logo: "/images/publishers/Wiley_logo.svg",
     country: "United States",
     description:
       "Advancing knowledge and innovation through research, books and digital learning.",
@@ -480,10 +480,7 @@ export default async function PublisherDetailsPage({
     const isArabic = locale === "ar";
 
     return (
-      <main
-        dir={isArabic ? "rtl" : "ltr"}
-        className="min-h-[60vh] bg-ubh-canvas px-4 py-20"
-      >
+      <main dir={isArabic ? "rtl" : "ltr"} className="bg-ubh-canvas">
         <div className="mx-auto flex max-w-xl flex-col items-center text-center">
           <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-ubh-navy/5 text-ubh-navy">
             <span className="text-3xl" aria-hidden="true">
@@ -587,505 +584,778 @@ export default async function PublisherDetailsPage({
       {/* HERO                                                               */}
       {/* ================================================================== */}
 
-   
-<section className="relative isolate min-h-[420px] overflow-hidden border-b border-slate-200 bg-[#F5F8FC] text-[#102B4E] md:min-h-[460px] lg:min-h-[490px]">
+      <section className="relative isolate min-h-[420px] overflow-hidden border-b border-slate-200 bg-[#F5F8FC] text-[#102B4E] md:min-h-[460px] lg:min-h-[490px]">
+        {/* Light UBH2 Background */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
+          {/* Soft background gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white via-[#F4F8FC] to-[#EAF1F8]" />
 
-  {/* Light UBH2 Background */}
-  <div
-    aria-hidden="true"
-    className="pointer-events-none absolute inset-0 overflow-hidden"
-  >
-    {/* Soft background gradient */}
-    <div className="absolute inset-0 bg-gradient-to-br from-white via-[#F4F8FC] to-[#EAF1F8]" />
+          {/* Ambient lighting */}
+          <div className="absolute -right-32 -top-44 h-[520px] w-[650px] rounded-full bg-[#6A9FC8]/[0.10] blur-[130px]" />
+          <div className="absolute -bottom-56 -left-32 h-[480px] w-[480px] rounded-full bg-[#C89438]/[0.08] blur-[120px]" />
 
-    {/* Ambient lighting */}
-    <div className="absolute -right-32 -top-44 h-[520px] w-[650px] rounded-full bg-[#6A9FC8]/[0.10] blur-[130px]" />
-    <div className="absolute -bottom-56 -left-32 h-[480px] w-[480px] rounded-full bg-[#C89438]/[0.08] blur-[120px]" />
-
-    {/* Architectural grid */}
-    <div
-      className="absolute inset-0 opacity-[0.055]"
-      style={{
-        backgroundImage: `
+          {/* Architectural grid */}
+          <div
+            className="absolute inset-0 opacity-[0.055]"
+            style={{
+              backgroundImage: `
           linear-gradient(to right, #52789A 1px, transparent 1px),
           linear-gradient(to bottom, #52789A 1px, transparent 1px)
         `,
-        backgroundSize: "82px 82px",
-        maskImage: "linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)",
-      }}
-    />
+              backgroundSize: "82px 82px",
+              maskImage:
+                "linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)",
+            }}
+          />
 
-    {/* Right architectural geometry */}
-    <div className="absolute -right-32 -top-40 h-[490px] w-[510px] rotate-[42deg] border border-[#52789A]/[0.13] bg-gradient-to-br from-[#DCEAF5]/50 to-transparent" />
+          {/* Right architectural geometry */}
+          <div className="absolute -right-32 -top-40 h-[490px] w-[510px] rotate-[42deg] border border-[#52789A]/[0.13] bg-gradient-to-br from-[#DCEAF5]/50 to-transparent" />
 
-    <div className="absolute -right-20 top-20 h-[300px] w-[300px] rotate-45 border border-[#C89438]/[0.16]" />
+          <div className="absolute -right-20 top-20 h-[300px] w-[300px] rotate-45 border border-[#C89438]/[0.16]" />
 
-    {/* Dotted texture */}
-    <div
-      className="absolute right-12 top-12 h-48 w-56 opacity-[0.22]"
-      style={{
-        backgroundImage: "radial-gradient(#52789A 1px, transparent 1px)",
-        backgroundSize: "20px 20px",
-        maskImage: "linear-gradient(to left, black, transparent)",
-      }}
-    />
+          {/* Dotted texture */}
+          <div
+            className="absolute right-12 top-12 h-48 w-56 opacity-[0.22]"
+            style={{
+              backgroundImage: "radial-gradient(#52789A 1px, transparent 1px)",
+              backgroundSize: "20px 20px",
+              maskImage: "linear-gradient(to left, black, transparent)",
+            }}
+          />
 
-    {/* Bottom geometry */}
-    <div className="absolute -bottom-56 -right-20 h-[440px] w-[490px] rotate-[-42deg] border border-[#52789A]/[0.10]" />
+          {/* Bottom geometry */}
+          <div className="absolute -bottom-56 -right-20 h-[440px] w-[490px] rotate-[-42deg] border border-[#52789A]/[0.10]" />
 
-    {/* Gold finishing line */}
-    <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#C89438]/45 to-transparent" />
-    <div className="absolute bottom-0 left-1/2 h-[2px] w-24 -translate-x-1/2 bg-[#C89438]" />
-  </div>
+          {/* Gold finishing line */}
+          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#C89438]/45 to-transparent" />
+          <div className="absolute bottom-0 left-1/2 h-[2px] w-24 -translate-x-1/2 bg-[#C89438]" />
+        </div>
 
-  {/* Content */}
-  <Container className="relative z-10">
-    <div className="flex min-h-[420px] items-center py-12 md:min-h-[460px] md:py-14 lg:min-h-[490px] lg:py-16">
-
-      <div className="grid w-full items-center gap-9 md:grid-cols-[200px_minmax(0,1fr)] md:gap-12 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-16">
-
-        {/* Publisher Logo */}
-        <div className="flex justify-center md:justify-start">
-          <div className="relative flex h-[150px] w-[190px] items-center justify-center rounded-2xl border border-slate-200/90 bg-white p-6 shadow-[0_15px_40px_-22px_rgba(16,43,78,0.22)] lg:h-[165px] lg:w-[210px]">
-            <div className="relative h-full w-full">
-              <SafeImage
-                src={publisher.logo}
-                alt={`${publisher.name} logo`}
-                fill
-                sizes="(min-width: 1024px) 210px, 190px"
-                className="object-contain"
-                fallback={
-                  <div className="flex h-full items-center justify-center text-center">
-                    <span className="text-sm font-semibold text-ubh-navy">
-                      {publisher.name}
-                    </span>
+        {/* Content */}
+        <Container className="relative z-10">
+          <div className="flex min-h-[420px] items-center py-12 md:min-h-[460px] md:py-14 lg:min-h-[490px] lg:py-16">
+            <div className="grid w-full items-center gap-9 md:grid-cols-[200px_minmax(0,1fr)] md:gap-12 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-16">
+              {/* Publisher Logo */}
+              <div className="flex justify-center md:justify-start">
+                <div className="relative flex h-[150px] w-[190px] items-center justify-center rounded-2xl border border-slate-200/90 bg-white p-6 shadow-[0_15px_40px_-22px_rgba(16,43,78,0.22)] lg:h-[165px] lg:w-[210px]">
+                  <div className="relative h-full w-full">
+                    <SafeImage
+                      src={publisher.logo}
+                      alt={`${publisher.name} logo`}
+                      fill
+                      sizes="(min-width: 1024px) 210px, 190px"
+                      className="object-contain"
+                      fallback={
+                        <div className="flex h-full items-center justify-center text-center">
+                          <span className="text-sm font-semibold text-ubh-navy">
+                            {publisher.name}
+                          </span>
+                        </div>
+                      }
+                    />
                   </div>
-                }
-              />
+                </div>
+              </div>
+
+              {/* Publisher Information */}
+              <div
+                className="
+  min-w-0
+  lg:sticky lg:top-24
+  lg:self-start
+"
+              >
+                {/* Metadata */}
+                <div className="mb-5 flex flex-wrap items-center justify-center gap-3 md:justify-start">
+                  <span className="inline-flex items-center rounded-md border border-[#C89438]/30 bg-[#C89438]/[0.09] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#987027]">
+                    {details.academicPublisher}
+                  </span>
+
+                  <span className="inline-flex items-center gap-2 text-xs font-medium text-slate-500">
+                    <MapPin size={14} className="text-[#B8822C]" />
+                    {countryLabels[publisher.country] ?? publisher.country}
+                  </span>
+                </div>
+
+                {/* Publisher Name */}
+                <h1 className="max-w-4xl font-serif text-3xl font-semibold leading-[1.2] tracking-tight text-[#102B4E] md:text-4xl lg:text-[48px]">
+                  {publisher.name}
+                </h1>
+
+                {/* Gold Accent */}
+                <div className="mx-auto mt-5 h-[3px] w-14 rounded-full bg-gradient-to-r from-[#B8822C] to-[#E3BD76] md:mx-0" />
+
+                {/* Description */}
+                <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-600 md:mx-0 md:text-[15px] md:leading-8">
+                  {publisherTranslation.description}
+                </p>
+
+                {/* Subject Areas */}
+                {publisher.subjects.length > 0 && (
+                  <div className="mt-6 flex flex-wrap justify-center gap-2 md:justify-start">
+                    {publisher.subjects.slice(0, 4).map((subject) => (
+                      <span
+                        key={subject}
+                        className="rounded-md border border-slate-200 bg-white/80 px-3 py-2 text-[11px] font-medium text-[#385477] shadow-sm transition-colors duration-200 hover:border-[#C89438]/50 hover:bg-white"
+                      >
+                        {subjectLabels[subject] ?? subject}
+                      </span>
+                    ))}
+
+                    {publisher.subjects.length > 4 && (
+                      <span className="flex items-center px-2 text-[11px] font-medium text-slate-500">
+                        +{publisher.subjects.length - 4}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Publisher Information */}
-        <div className="min-w-0 text-center md:text-start">
-
-          {/* Metadata */}
-          <div className="mb-5 flex flex-wrap items-center justify-center gap-3 md:justify-start">
-
-            <span className="inline-flex items-center rounded-md border border-[#C89438]/30 bg-[#C89438]/[0.09] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#987027]">
-              {details.academicPublisher}
-            </span>
-
-            <span className="inline-flex items-center gap-2 text-xs font-medium text-slate-500">
-              <MapPin size={14} className="text-[#B8822C]" />
-              {countryLabels[publisher.country] ?? publisher.country}
-            </span>
-          </div>
-
-          {/* Publisher Name */}
-          <h1 className="max-w-4xl font-serif text-3xl font-semibold leading-[1.2] tracking-tight text-[#102B4E] md:text-4xl lg:text-[48px]">
-            {publisher.name}
-          </h1>
-
-          {/* Gold Accent */}
-          <div className="mx-auto mt-5 h-[3px] w-14 rounded-full bg-gradient-to-r from-[#B8822C] to-[#E3BD76] md:mx-0" />
-
-          {/* Description */}
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-600 md:mx-0 md:text-[15px] md:leading-8">
-            {publisherTranslation.description}
-          </p>
-
-          {/* Subject Areas */}
-          {publisher.subjects.length > 0 && (
-            <div className="mt-6 flex flex-wrap justify-center gap-2 md:justify-start">
-              {publisher.subjects.slice(0, 4).map((subject) => (
-                <span
-                  key={subject}
-                  className="rounded-md border border-slate-200 bg-white/80 px-3 py-2 text-[11px] font-medium text-[#385477] shadow-sm transition-colors duration-200 hover:border-[#C89438]/50 hover:bg-white"
-                >
-                  {subjectLabels[subject] ?? subject}
-                </span>
-              ))}
-
-              {publisher.subjects.length > 4 && (
-                <span className="flex items-center px-2 text-[11px] font-medium text-slate-500">
-                  +{publisher.subjects.length - 4}
-                </span>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  </Container>
-</section>
-
+        </Container>
+      </section>
 
       {/* ================================================================== */}
       {/* MAIN CONTENT                                                       */}
       {/* ================================================================== */}
 
-      <main className="bg-ubh-canvas">
-        <Container>
-          <div className="grid gap-7 py-10 lg:grid-cols-[1fr_250px] lg:py-12">
-            {/* ============================================================ */}
-            {/* LEFT CONTENT                                                  */}
-            {/* ============================================================ */}
+      
+<main
+  dir={locale === "ar" ? "rtl" : "ltr"}
+  className="bg-[#F5F7FA]"
+>
+  {/* ================================================================ */}
+  {/* PUBLISHER INFORMATION                                             */}
+  {/* ================================================================ */}
 
-            <div>
-              {/* Back */}
-              <BackButton fallback={`/${locale}/publishers`} />
+  <section className="py-8 sm:py-10 lg:py-12">
+    <Container>
+      <div className="
+        grid grid-cols-1 items-start gap-6
+        lg:grid-cols-[minmax(0,1fr)_290px]
+        lg:gap-8
+        xl:grid-cols-[minmax(0,1fr)_320px]
+        xl:gap-10
+      ">
 
-              {/* About */}
-              <section className="rounded-[6px] border border-ubh-border bg-white p-6 md:p-8">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#edf3f8] text-ubh-blue-bright">
-                    <BookOpen size={17} strokeWidth={1.7} />
+        {/* ========================================================== */}
+        {/* MAIN COLUMN                                                 */}
+        {/* ========================================================== */}
+
+        <div className="min-w-0 lg:sticky lg:top-24 lg:self-start">
+
+          {/* Back Navigation */}
+          <div className="mb-5">
+            <BackButton fallback={`/${locale}/publishers`} />
+          </div>
+
+          <div className="space-y-5 sm:space-y-6">
+
+            {/* ABOUT PUBLISHER */}
+            <section className="
+              overflow-hidden rounded-xl
+              border border-[#E5EAF0]
+              bg-white
+              shadow-[0_4px_20px_-12px_rgba(16,43,78,0.12)]
+            ">
+              <div className="p-5 sm:p-7 lg:p-8">
+
+                <div className="flex items-start gap-4">
+
+                  <div className="
+                    flex h-11 w-11 shrink-0 items-center
+                    justify-center rounded-xl
+                    bg-[#F0F5FA] text-[#173B62]
+                  ">
+                    <BookOpen size={20} strokeWidth={1.7} />
                   </div>
 
-                  <div>
-                    <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-ubh-gold">
+                  <div className="min-w-0 flex-1">
+
+                    <p className="
+                      text-[10px] font-bold uppercase
+                      tracking-[0.16em] text-[#B8822C]
+                    ">
                       {details.publisherProfile}
                     </p>
 
-                    <h2 className="mt-1 text-[20px] font-semibold text-ubh-blue">
+                    <h2 className="
+                      mt-1.5 text-xl font-semibold
+                      leading-snug tracking-tight
+                      text-[#102B4E]
+                      sm:text-2xl
+                    ">
                       {details.about} {publisher.name}
                     </h2>
+
                   </div>
                 </div>
 
-                <p className="mt-6 text-[12px] leading-[1.8] text-ubh-blue-muted">
-                  {publisherTranslation.longDescription}
-                </p>
+                <div className="
+                  my-6 h-px
+                  bg-gradient-to-r from-[#C89438]/50
+                  via-[#E5EAF0] to-transparent
+                " />
 
-                <p className="mt-4 text-[12px] leading-[1.8] text-ubh-blue-muted">
-                  {details.exploreResources}
-                </p>
-              </section>
+                <div className="
+                  space-y-4 text-[13px]
+                  leading-7 text-[#64748B]
+                  sm:text-sm sm:leading-8
+                ">
+                  <p>
+                    {publisherTranslation.longDescription}
+                  </p>
 
-              {/* Subject Areas */}
-              <section className="mt-6 rounded-[6px] border border-ubh-border bg-white p-6 md:p-8">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#edf3f8] text-ubh-blue-bright">
-                    <GraduationCap size={17} strokeWidth={1.7} />
+                  <p>
+                    {details.exploreResources}
+                  </p>
+                </div>
+
+              </div>
+            </section>
+
+            {/* ACADEMIC SUBJECT AREAS */}
+            <section className="
+              overflow-hidden rounded-xl
+              border border-[#E5EAF0]
+              bg-white
+              shadow-[0_4px_20px_-12px_rgba(16,43,78,0.12)]
+            ">
+              <div className="p-5 sm:p-7 lg:p-8">
+
+                <div className="flex items-center gap-4">
+
+                  <div className="
+                    flex h-11 w-11 shrink-0 items-center
+                    justify-center rounded-xl
+                    bg-[#F0F5FA] text-[#173B62]
+                  ">
+                    <GraduationCap size={21} strokeWidth={1.7} />
                   </div>
 
                   <div>
-                    <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-ubh-gold">
+                    <p className="
+                      text-[10px] font-bold uppercase
+                      tracking-[0.16em] text-[#B8822C]
+                    ">
                       {details.academicCoverage}
                     </p>
 
-                    <h2 className="mt-1 text-[20px] font-semibold text-ubh-blue">
+                    <h2 className="
+                      mt-1.5 text-xl font-semibold
+                      tracking-tight text-[#102B4E]
+                      sm:text-2xl
+                    ">
                       {details.subjectAreas}
                     </h2>
                   </div>
+
                 </div>
 
-                <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {publisher.subjects.map((subject) => (
+                <div className="
+                  my-6 h-px bg-[#E9EDF2]
+                " />
+
+                <div className="
+                  grid grid-cols-1 gap-3
+                  min-[420px]:grid-cols-2
+                  xl:grid-cols-3
+                ">
+                  {publisher.subjects.map((subject, index) => (
                     <div
                       key={subject}
-                      className="rounded-[5px] border border-ubh-border bg-ubh-canvas px-4 py-4"
+                      className="
+                        group flex min-h-[76px] items-center
+                        gap-3 rounded-lg
+                        border border-[#E8EDF3]
+                        bg-[#F8FAFC] px-4 py-3
+                        transition-all duration-200
+                        hover:border-[#C89438]/40
+                        hover:bg-[#FCFAF5]
+                      "
                     >
-                      <div className="h-1 w-6 rounded-full bg-ubh-gold-light" />
+                      <div className="
+                        flex h-8 w-8 shrink-0
+                        items-center justify-center
+                        rounded-md bg-white
+                        border border-[#E8EDF3]
+                        text-[#B8822C]
+                        transition-colors
+                        group-hover:border-[#C89438]/40
+                      ">
+                        <span className="text-xs font-semibold">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                      </div>
 
-                      <p className="mt-3 text-[10px] font-semibold text-ubh-blue-deep">
+                      <p className="
+                        min-w-0 text-xs font-semibold
+                        leading-5 text-[#304A68]
+                        sm:text-[13px]
+                      ">
                         {subjectLabels[subject] ?? subject}
                       </p>
                     </div>
                   ))}
                 </div>
-              </section>
-            </div>
 
-            {/* ============================================================ */}
-            {/* SIDEBAR                                                       */}
-            {/* ============================================================ */}
-
-            <aside className="space-y-5">
-              {/* Publisher Information */}
-              <div className="rounded-[6px] border border-ubh-border bg-white p-5">
-                <h3 className="text-[13px] font-semibold text-ubh-blue">
-                  {details.publisherInformation}
-                </h3>
-
-                <div className="mt-5 space-y-4">
-                  <div className="flex gap-3">
-                    <div className="mt-0.5 text-ubh-gold">
-                      <MapPin size={15} />
-                    </div>
-
-                    <div>
-                      <p className="text-[8px] uppercase tracking-wider text-ubh-muted-light">
-                        {details.country}
-                      </p>
-
-                      <p className="mt-1 text-[10px] font-medium text-ubh-blue-muted">
-                        {countryLabels[publisher.country] ?? publisher.country}
-                      </p>
-                    </div>
-                  </div>
-
-                  {publisher.founded && (
-                    <div className="flex gap-3">
-                      <div className="mt-0.5 text-ubh-gold">
-                        <GraduationCap size={15} />
-                      </div>
-
-                      <div>
-                        <p className="text-[8px] uppercase tracking-wider text-ubh-muted-light">
-                          {details.founded}
-                        </p>
-
-                        <p className="mt-1 text-[10px] font-medium text-ubh-blue-muted">
-                          {publisher.founded}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="flex gap-3">
-                    <div className="mt-0.5 text-ubh-gold">
-                      <BookOpen size={15} />
-                    </div>
-
-                    <div>
-                      <p className="text-[8px] uppercase tracking-wider text-ubh-muted-light">
-                        {details.publications}
-                      </p>
-
-                      <p className="mt-1 text-[10px] font-medium text-ubh-blue-muted">
-                        {publisher.booksCount}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {publisher.website ? (
-                  <a
-                    href={publisher.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-6 flex h-9 items-center justify-center gap-2 rounded-[4px] bg-ubh-blue px-4 text-[9px] font-semibold text-white transition-colors hover:bg-ubh-blue-deep"
-                  >
-                    {details.visitWebsite}
-                    <ExternalLink size={12} />
-                  </a>
-                ) : null}
               </div>
+            </section>
 
-              {/* Subjects */}
-              <div className="rounded-[6px] border border-ubh-border bg-white p-5">
-                <div className="flex items-center gap-2">
-                  <Globe2
-                    size={15}
-                    className="text-ubh-gold"
-                    strokeWidth={1.7}
-                  />
-
-                  <h3 className="text-[13px] font-semibold text-ubh-blue">
-                    {details.subjectAreas}
-                  </h3>
-                </div>
-
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  {publisher.subjects.map((subject) => (
-                    <span
-                      key={subject}
-                      className="rounded-full bg-[#f0f5f9] px-2.5 py-1.5 text-[8.5px] font-medium text-[#46617f]"
-                    >
-                      {subjectLabels[subject] ?? subject}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Related Publishers */}
-              <div className="rounded-[6px] border border-ubh-border bg-white p-5">
-                <h3 className="text-[13px] font-semibold text-ubh-blue">
-                  {details.explorePublishers}
-                </h3>
-
-                <div className="mt-4 space-y-2">
-                  {relatedPublishers
-                    .filter((item) => item.slug !== slug)
-                    .slice(0, 3)
-                    .map((item) => (
-                      <Link
-                        key={item.slug}
-                        href={`/${locale}/publishers/${item.slug}`}
-                        className="group flex items-center gap-3 rounded-[4px] border border-[#edf1f5] p-2.5 transition-colors hover:border-[#d4dfeb]"
-                      >
-                        <div className="relative h-9 w-12 shrink-0">
-                          <Image
-                            src={item.logo}
-                            alt={item.name}
-                            fill
-                            sizes="48px"
-                            className="object-contain"
-                          />
-                        </div>
-
-                        <span className="min-w-0 flex-1 truncate text-[9px] font-medium text-ubh-blue-muted group-hover:text-ubh-blue-bright">
-                          {item.name}
-                        </span>
-
-                        <ArrowRight
-                          size={11}
-                          className="shrink-0 text-ubh-muted-light transition-transform group-hover:translate-x-0.5"
-                        />
-                      </Link>
-                    ))}
-                </div>
-
-                <Link
-                  href={`/${locale}/publishers`}
-                  className="mt-4 flex items-center justify-center gap-1 text-[9px] font-semibold text-ubh-blue-bright hover:text-ubh-gold"
-                >
-                  {details.viewAllPublishers}
-                  <ArrowRight size={11} />
-                </Link>
-              </div>
-            </aside>
           </div>
-        </Container>
+        </div>
 
-        {/* PUBLISHER BOOK CATALOGUE */}
-        <section
-          id="publisher-books"
-          className="border-t border-[#e4eaf1] bg-white py-12 sm:py-16"
-        >
-          <Container>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-ubh-gold">
-                  {locale === "ar"
-                    ? "اكتشف إصدارات الناشر"
-                    : "EXPLORE THE CATALOGUE"}
-                </p>
+        {/* ========================================================== */}
+        {/* SIDEBAR                                                     */}
+        {/* ========================================================== */}
 
-                <h2 className="font-serif text-2xl tracking-tight text-ubh-navy sm:text-3xl">
-                  {locale === "ar"
-                    ? "كتب هذا الناشر"
-                    : `Books by ${publisher.name}`}
-                </h2>
+        <aside className="min-w-0 space-y-5">
 
-                <p className="mt-2 text-sm leading-6 text-[#718096]">
-                  {locale === "ar"
-                    ? "استكشف الكتب والإصدارات المتاحة من هذا الناشر."
-                    : "Explore academic books and publications from this publisher."}
-                </p>
-              </div>
+          {/* PUBLISHER INFORMATION */}
+          <section className="
+            overflow-hidden rounded-xl
+            border border-[#E5EAF0]
+            bg-white
+            shadow-[0_4px_20px_-12px_rgba(16,43,78,0.12)]
+          ">
 
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="w-fit rounded-full border border-[#e1e8f0] px-4 py-2 text-xs text-ubh-blue-muted">
-                  {publisherProducts.length}{" "}
-                  {locale === "ar"
-                    ? "كتاب"
-                    : publisherProducts.length === 1
-                      ? "title"
-                      : "titles"}
-                </span>
-                {publisherProducts.length > 0 && (
-                  <Link
-                    href={`/${locale}/shop/products?publisher=${encodeURIComponent(publisher.name)}`}
-                    className="inline-flex min-h-10 items-center gap-2 rounded-md bg-ubh-navy px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-[#0b2b55] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold focus-visible:ring-offset-2"
-                  >
-                    {locale === "ar" ? "عرض جميع الكتب" : "View all books"}
-                    <ArrowRight size={14} />
-                  </Link>
-                )}
-              </div>
+            <div className="border-b border-[#EDF0F4] px-5 py-4">
+
+              <h3 className="
+                text-sm font-bold tracking-tight
+                text-[#102B4E]
+              ">
+                {details.publisherInformation}
+              </h3>
+
             </div>
 
-            {publisherProducts.length > 0 ? (
-              <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4 xl:gap-6">
-                {previewProducts.map((product) => (
-                  <ProductCard
-                    key={product.slug || product.id}
-                    product={product}
-                    locale={locale}
-                    noCoverText={locale === "ar" ? "لا توجد صورة" : "No cover"}
-                  />
+            <div className="space-y-5 p-5">
+
+              {/* Country */}
+              <div className="flex items-start gap-3">
+
+                <div className="
+                  flex h-9 w-9 shrink-0 items-center
+                  justify-center rounded-lg
+                  bg-[#F5F7FA] text-[#B8822C]
+                ">
+                  <MapPin size={17} />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <p className="
+                    text-[10px] font-medium
+                    text-[#94A3B8]
+                  ">
+                    {details.country}
+                  </p>
+
+                  <p className="
+                    mt-1 text-xs font-semibold
+                    leading-5 text-[#304A68]
+                  ">
+                    {countryLabels[publisher.country] ?? publisher.country}
+                  </p>
+                </div>
+
+              </div>
+
+              {/* Founded */}
+              {publisher.founded && (
+                <div className="flex items-start gap-3">
+
+                  <div className="
+                    flex h-9 w-9 shrink-0 items-center
+                    justify-center rounded-lg
+                    bg-[#F5F7FA] text-[#B8822C]
+                  ">
+                    <GraduationCap size={18} />
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <p className="
+                      text-[10px] font-medium
+                      text-[#94A3B8]
+                    ">
+                      {details.founded}
+                    </p>
+
+                    <p className="
+                      mt-1 text-xs font-semibold
+                      text-[#304A68]
+                    ">
+                      {publisher.founded}
+                    </p>
+                  </div>
+
+                </div>
+              )}
+
+              {/* Publications */}
+              <div className="flex items-start gap-3">
+
+                <div className="
+                  flex h-9 w-9 shrink-0 items-center
+                  justify-center rounded-lg
+                  bg-[#F5F7FA] text-[#B8822C]
+                ">
+                  <BookOpen size={17} />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <p className="
+                    text-[10px] font-medium
+                    text-[#94A3B8]
+                  ">
+                    {details.publications}
+                  </p>
+
+                  <p className="
+                    mt-1 text-xs font-semibold
+                    text-[#304A68]
+                  ">
+                    {publisher.booksCount}
+                  </p>
+                </div>
+
+              </div>
+
+              {/* Website */}
+              {publisher.website && (
+                <a
+                  href={publisher.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    flex min-h-11 w-full items-center
+                    justify-center gap-2 rounded-lg
+                    bg-[#102B4E] px-4 py-3
+                    text-xs font-semibold text-white
+                    transition-colors
+                    hover:bg-[#1B426C]
+                    focus-visible:outline-none
+                    focus-visible:ring-2
+                    focus-visible:ring-[#C89438]
+                    focus-visible:ring-offset-2
+                  "
+                >
+                  {details.visitWebsite}
+                  <ExternalLink size={14} />
+                </a>
+              )}
+
+            </div>
+          </section>
+
+          {/* SUBJECT TAGS */}
+          <section className="
+            rounded-xl border border-[#E5EAF0]
+            bg-white p-5
+            shadow-[0_4px_20px_-12px_rgba(16,43,78,0.12)]
+          ">
+
+            <div className="flex items-center gap-3">
+
+              <div className="
+                flex h-9 w-9 items-center
+                justify-center rounded-lg
+                bg-[#F5F7FA] text-[#B8822C]
+              ">
+                <Globe2 size={17} />
+              </div>
+
+              <h3 className="
+                text-sm font-bold text-[#102B4E]
+              ">
+                {details.subjectAreas}
+              </h3>
+
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              {publisher.subjects.map((subject) => (
+                <span
+                  key={subject}
+                  className="
+                    rounded-md border border-[#E8EDF3]
+                    bg-[#F8FAFC] px-3 py-2
+                    text-[10px] font-medium
+                    leading-4 text-[#46617F]
+                    transition-colors
+                    hover:border-[#C89438]/40
+                    hover:bg-[#FCFAF5]
+                  "
+                >
+                  {subjectLabels[subject] ?? subject}
+                </span>
+              ))}
+            </div>
+
+          </section>
+
+          {/* RELATED PUBLISHERS */}
+          <section className="
+            rounded-xl border border-[#E5EAF0]
+            bg-white p-5
+            shadow-[0_4px_20px_-12px_rgba(16,43,78,0.12)]
+          ">
+
+            <div className="flex items-center justify-between gap-2">
+
+              <h3 className="
+                text-sm font-bold text-[#102B4E]
+              ">
+                {details.explorePublishers}
+              </h3>
+
+              <Globe2
+                size={16}
+                className="shrink-0 text-[#B8822C]"
+              />
+
+            </div>
+
+            <div className="mt-5 space-y-2">
+
+              {relatedPublishers
+                .filter((item) => item.slug !== publisherKey)
+                .slice(0, 3)
+                .map((item) => (
+                  <Link
+                    key={item.slug}
+                    href={`/${locale}/publishers/${item.slug}`}
+                    className="
+                      group flex min-w-0 items-center gap-3
+                      rounded-lg border border-[#EDF0F4]
+                      p-3 transition-all duration-200
+                      hover:border-[#C89438]/40
+                      hover:bg-[#FAFBFD]
+                    "
+                  >
+
+                    <div className="
+                      relative h-10 w-12 shrink-0
+                      rounded-md bg-white
+                    ">
+                      <Image
+                        src={item.logo}
+                        alt={item.name}
+                        fill
+                        sizes="48px"
+                        className="object-contain"
+                      />
+                    </div>
+
+                    <span className="
+                      min-w-0 flex-1 text-xs
+                      font-semibold leading-5
+                      text-[#304A68]
+                      group-hover:text-[#B8822C]
+                    ">
+                      {item.name}
+                    </span>
+
+                    <ArrowRight
+                      size={14}
+                      className={`
+                        shrink-0 text-[#94A3B8]
+                        transition-transform
+                        group-hover:translate-x-0.5
+                        ${locale === "ar" ? "rotate-180 group-hover:-translate-x-0.5" : ""}
+                      `}
+                    />
+
+                  </Link>
                 ))}
-              </div>
-            ) : (
-              <div className="mt-8 rounded-xl border border-dashed border-[#d9e2ec] bg-[#f8fafc] px-6 py-12 text-center">
-                <BookOpen
-                  size={28}
-                  strokeWidth={1.4}
-                  className="mx-auto text-ubh-muted-light"
-                />
-                <p className="mt-4 font-medium text-ubh-navy">
-                  {locale === "ar"
-                    ? "لا توجد كتب متاحة حالياً"
-                    : "No titles available yet"}
-                </p>
-                <p className="mt-2 text-sm text-[#718096]">
-                  {locale === "ar"
-                    ? "يرجى العودة لاحقاً للاطلاع على إصدارات هذا الناشر."
-                    : "Please check back later for available publications."}
-                </p>
-              </div>
-            )}
-          </Container>
-        </section>
-      </main>
+
+            </div>
+
+            <Link
+              href={`/${locale}/publishers`}
+              className="
+                mt-5 flex min-h-10 items-center
+                justify-center gap-2 rounded-lg
+                border border-[#E5EAF0]
+                text-xs font-semibold text-[#173B62]
+                transition-colors
+                hover:border-[#C89438]/50
+                hover:bg-[#FAFBFD]
+              "
+            >
+              {details.viewAllPublishers}
+
+              <ArrowRight
+                size={14}
+                className={locale === "ar" ? "rotate-180" : ""}
+              />
+            </Link>
+
+          </section>
+
+        </aside>
+
+      </div>
+    </Container>
+  </section>
+
+  {/* ================================================================ */}
+  {/* PUBLISHER BOOK CATALOGUE                                         */}
+  {/* ================================================================ */}
+
+  
+<section
+  id="publisher-books"
+  className="border-t border-[#E8EDF3] bg-[#F8FAFC] py-9 sm:py-11 lg:py-14"
+>
+  <Container>
+    {/* Compact catalogue header */}
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div className="min-w-0">
+        <div className="mb-2 flex items-center gap-2">
+          <span className="h-[3px] w-6 rounded-full bg-[#C89438]" />
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#B8822C]">
+            {locale === "ar" ? "كتالوج الناشر" : "PUBLISHER CATALOGUE"}
+          </p>
+        </div>
+
+        <h2 className="font-serif text-2xl font-semibold tracking-tight text-[#102B4E] sm:text-[28px]">
+          {locale === "ar"
+            ? "كتب هذا الناشر"
+            : `Books by ${publisher.name}`}
+        </h2>
+
+        <p className="mt-1.5 text-xs leading-5 text-[#718096] sm:text-sm">
+          {locale === "ar"
+            ? "اكتشف الكتب والإصدارات المتاحة."
+            : "Explore available books and publications."}
+        </p>
+      </div>
+
+      <div className="flex items-center justify-between gap-3 sm:justify-end">
+        <span className="whitespace-nowrap rounded-md border border-[#E3E9F0] bg-white px-3 py-2 text-[11px] font-medium text-[#46617F]">
+          {publisherProducts.length}{" "}
+          {locale === "ar"
+            ? "كتاب"
+            : publisherProducts.length === 1
+              ? "title"
+              : "titles"}
+        </span>
+
+        {publisherProducts.length > 0 && (
+          <Link
+            href={`/${locale}/shop/products?publisher=${encodeURIComponent(publisher.name)}`}
+            className="inline-flex h-9 items-center gap-2 rounded-md bg-[#102B4E] px-4 text-[11px] font-semibold text-white transition-colors hover:bg-[#1B426C]"
+          >
+            {locale === "ar" ? "عرض الكل" : "View all"}
+            <ArrowRight
+              size={13}
+              className={locale === "ar" ? "rotate-180" : ""}
+            />
+          </Link>
+        )}
+      </div>
+    </div>
+
+    {/* Catalogue products */}
+    {publisherProducts.length > 0 ? (
+      <div className="mt-6 grid grid-cols-2 gap-3 sm:mt-7 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
+        {previewProducts.map((product) => (
+          <ProductCard
+            key={product.slug || product.id}
+            product={product}
+            locale={locale}
+            noCoverText={locale === "ar" ? "لا توجد صورة" : "No cover"}
+          />
+        ))}
+      </div>
+    ) : (
+      <div className="mt-6 rounded-lg border border-dashed border-[#D9E2EC] bg-white px-5 py-12 text-center">
+        <BookOpen
+          size={28}
+          strokeWidth={1.4}
+          className="mx-auto text-[#94A3B8]"
+        />
+
+        <p className="mt-3 text-sm font-semibold text-[#102B4E]">
+          {locale === "ar"
+            ? "لا توجد كتب متاحة حالياً"
+            : "No titles available yet"}
+        </p>
+
+        <p className="mx-auto mt-1 max-w-md text-xs leading-6 text-[#718096]">
+          {locale === "ar"
+            ? "يرجى العودة لاحقاً للاطلاع على إصدارات هذا الناشر."
+            : "Please check back later for available publications."}
+        </p>
+      </div>
+    )}
+  </Container>
+</section>
+
+</main>
 
       {/* ================================================================== */}
       {/* CTA                                                                */}
       {/* ================================================================== */}
 
-      <section className="relative overflow-hidden bg-ubh-navy text-white">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/publishers/publishers-cta.jpg"
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover"
+      <section className="relative isolate overflow-hidden border-y border-white/10 bg-[#061A37] text-white">
+  {/* Subtle background image */}
+  <div aria-hidden="true" className="absolute inset-0">
+    <Image
+      src="/images/publishers/publishers-cta.jpg"
+      alt=""
+      fill
+      sizes="100vw"
+      className="object-cover object-center opacity-20"
+    />
+    <div className="absolute inset-0 bg-gradient-to-r from-[#061A37] via-[#061A37]/95 to-[#061A37]/80" />
+  </div>
+
+  <Container className="relative z-10">
+    <div className="flex flex-col gap-5 py-6 sm:py-7 md:flex-row md:items-center md:justify-between">
+
+      <div className="min-w-0">
+        <h2 className="font-serif text-xl leading-snug sm:text-2xl">
+          {details.discoverMore}{" "}
+          <span className="text-ubh-gold-light">
+            {details.resources}
+          </span>
+        </h2>
+
+        <p className="mt-1.5 max-w-xl text-xs leading-5 text-white/65">
+          {details.discoverDescription}
+        </p>
+      </div>
+
+      <div className="flex shrink-0 flex-wrap items-center gap-2">
+        <Link
+          href={`/${locale}/shop/products?publisher=${encodeURIComponent(
+            publisher.name,
+          )}`}
+          className="inline-flex h-9 items-center justify-center gap-2 rounded bg-ubh-gold-light px-4 text-[11px] font-semibold text-[#061A37] transition-colors hover:bg-ubh-gold"
+        >
+          {details.browseBooks}
+          <ArrowRight
+            size={13}
+            className="rtl:rotate-180"
           />
+        </Link>
 
-          <div className="absolute inset-0 bg-ubh-navy/80" />
+        <Link
+          href={`/${locale}/publishers`}
+          className="inline-flex h-9 items-center justify-center rounded border border-white/25 px-4 text-[11px] font-medium text-white transition-colors hover:border-white/50 hover:bg-white/5"
+        >
+          {details.allPublishers}
+        </Link>
+      </div>
 
-          <div className="absolute inset-0 bg-gradient-to-r from-ubh-navy via-ubh-navy/90 to-ubh-navy/55" />
-        </div>
-
-        <Container className="relative z-10">
-          <div className="flex min-h-[190px] flex-col items-start justify-center gap-6 py-8 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h2 className="max-w-[480px] font-serif text-3xl leading-[1.1] md:text-[34px]">
-                {details.discoverMore}
-                <br />
-                {details.resources}
-              </h2>
-
-              <p className="mt-3 text-[11px] text-white/75 md:text-[12px]">
-                {details.discoverDescription}
-              </p>
-            </div>
-
-            <div className="flex w-full flex-col gap-2 sm:w-auto sm:min-w-[145px]">
-              <Link
-                href={`/${locale}/shop/products?publisher=${encodeURIComponent(
-                  publisher.name,
-                )}`}
-                className="flex h-[35px] items-center justify-center gap-2 rounded-[4px] bg-ubh-gold-light px-5 text-[10px] font-semibold text-white transition-colors hover:bg-ubh-gold"
-              >
-                {details.browseBooks}
-                <ArrowRight size={13} />
-              </Link>
-
-              <Link
-                href={`/${locale}/publishers`}
-                className="flex h-[35px] items-center justify-center rounded-[4px] border border-ubh-gold-light px-5 text-[10px] font-medium text-white transition-colors hover:bg-white/10"
-              >
-                {details.allPublishers}
-              </Link>
-            </div>
-          </div>
-        </Container>
-      </section>
+    </div>
+  </Container>
+</section>
     </>
   );
 }

@@ -66,7 +66,7 @@ export type PromoCardProps = {
   titleSize?: string;
   descriptionSize?: string;
   image?: string;
-imageAlt?: string;
+  imageAlt?: string;
 };
 
 const CATEGORY_ICONS: LucideIcon[] = [
@@ -229,6 +229,9 @@ function CategoryPanel({ locale, t }: { locale: Locale; t: StoreCopy }) {
   );
 }
 
+
+
+
 export function ProductCard({
   product,
   locale,
@@ -241,6 +244,8 @@ export function ProductCard({
   const href = `/${locale}/shop/${product.slug}`;
   const authors = product.authors?.filter(Boolean).join(", ");
 
+  const [imageError, setImageError] = useState(false);
+
   return (
     <article className="flex min-w-0 flex-col">
       <Link
@@ -248,19 +253,27 @@ export function ProductCard({
         aria-label={product.title}
         className="group overflow-hidden rounded-lg bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold"
       >
-        <div className="relative aspect-[3/4] overflow-hidden">
-          {product.cover ? (
+        <div className="relative aspect-[3/4] overflow-hidden bg-[#F1F4F8]">
+          {product.cover && !imageError ? (
             <Image
-  src={product.cover}
-  alt={product.title}
-  fill
-  sizes="(max-width: 639px) 42vw, (max-width: 1023px) 22vw, 160px"
-  className="object-contain p-2"
-/>
+              src={product.cover}
+              alt={product.title}
+              fill
+              sizes="(max-width: 639px) 42vw, (max-width: 1023px) 22vw, 160px"
+              className="object-contain p-2 transition-transform duration-300 group-hover:scale-[1.03]"
+              onError={() => setImageError(true)}
+            />
           ) : (
-            <div className="flex h-full min-h-32 flex-col items-center justify-center gap-2 text-xs text-slate-400">
-              <BookOpen size={25} strokeWidth={1.5} aria-hidden="true" />
-              <span>{noCoverText}</span>
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-[#F1F4F8] text-slate-400">
+              <BookOpen
+                size={30}
+                strokeWidth={1.3}
+                aria-hidden="true"
+              />
+
+              <span className="px-2 text-center text-[11px] font-medium">
+                {noCoverText}
+              </span>
             </div>
           )}
         </div>
@@ -273,23 +286,90 @@ export function ProductCard({
         >
           {product.title}
         </Link>
+
         <p className="mt-1 line-clamp-2 min-h-8 text-xs leading-4 text-slate-500">
           {authors || product.publisher || ""}
         </p>
+
         <div className="mt-auto flex flex-wrap items-baseline gap-x-2 pt-3">
           <span className="text-sm font-bold text-ubh-navy">
             {product.currency} {Number(product.price).toFixed(2)}
           </span>
-          {product.oldPrice != null && product.oldPrice > product.price && (
-            <del className="text-xs font-normal text-slate-400">
-              {product.currency} {Number(product.oldPrice).toFixed(2)}
-            </del>
-          )}
+
+          {product.oldPrice != null &&
+            product.oldPrice > product.price && (
+              <del className="text-xs font-normal text-slate-400">
+                {product.currency} {Number(product.oldPrice).toFixed(2)}
+              </del>
+            )}
         </div>
       </div>
     </article>
   );
 }
+
+
+// export function ProductCard({
+//   product,
+//   locale,
+//   noCoverText,
+// }: {
+//   product: Product;
+//   locale: Locale;
+//   noCoverText: string;
+// }) {
+//   const href = `/${locale}/shop/${product.slug}`;
+//   const authors = product.authors?.filter(Boolean).join(", ");
+
+//   return (
+//     <article className="flex min-w-0 flex-col">
+//       <Link
+//         href={href}
+//         aria-label={product.title}
+//         className="group overflow-hidden rounded-lg bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold"
+//       >
+//         <div className="relative aspect-[3/4] overflow-hidden">
+//           {product.cover ? (
+//             <Image
+//               src={product.cover}
+//               alt={product.title}
+//               fill
+//               sizes="(max-width: 639px) 42vw, (max-width: 1023px) 22vw, 160px"
+//               className="object-contain p-2"
+//             />
+//           ) : (
+//             <div className="flex h-full min-h-32 flex-col items-center justify-center gap-2 text-xs text-slate-400">
+//               <BookOpen size={25} strokeWidth={1.5} aria-hidden="true" />
+//               <span>{noCoverText}</span>
+//             </div>
+//           )}
+//         </div>
+//       </Link>
+
+//       <div className="flex flex-1 flex-col pt-3">
+//         <Link
+//           href={href}
+//           className="line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-ubh-navy hover:text-[#9a6a25]"
+//         >
+//           {product.title}
+//         </Link>
+//         <p className="mt-1 line-clamp-2 min-h-8 text-xs leading-4 text-slate-500">
+//           {authors || product.publisher || ""}
+//         </p>
+//         <div className="mt-auto flex flex-wrap items-baseline gap-x-2 pt-3">
+//           <span className="text-sm font-bold text-ubh-navy">
+//             {product.currency} {Number(product.price).toFixed(2)}
+//           </span>
+//           {product.oldPrice != null && product.oldPrice > product.price && (
+//             <del className="text-xs font-normal text-slate-400">
+//               {product.currency} {Number(product.oldPrice).toFixed(2)}
+//             </del>
+//           )}
+//         </div>
+//       </div>
+//     </article>
+//   );
+// }
 
 // function BestSellersPanel({ locale, t }: { locale: Locale; t: StoreCopy }) {
 //   const bestSellers = products
@@ -520,8 +600,6 @@ function BestSellersPanel({ locale, t }: { locale: Locale; t: StoreCopy }) {
   );
 }
 
-
-
 export function PromoCard({
   locale,
   title,
@@ -571,14 +649,8 @@ export function PromoCard({
         className={`
           pointer-events-none absolute
           -bottom-16 h-48 w-48 rounded-full blur-3xl
-          ${
-            isArabic ? "-left-20" : "-right-20"
-          }
-          ${
-            isEbook
-              ? "bg-[#c89438]/10"
-              : "bg-[#c89438]/[0.07]"
-          }
+          ${isArabic ? "-left-20" : "-right-20"}
+          ${isEbook ? "bg-[#c89438]/10" : "bg-[#c89438]/[0.07]"}
         `}
       />
 
@@ -591,11 +663,7 @@ export function PromoCard({
             bottom-0
             h-[82%] w-[46%]
             max-w-[190px]
-            ${
-              isArabic
-                ? "-left-1"
-                : "-right-1"
-            }
+            ${isArabic ? "-left-1" : "-right-1"}
           `}
         >
           <Image
@@ -613,7 +681,6 @@ export function PromoCard({
 
       {/* Main content */}
       <div className="relative z-10 flex min-h-0 flex-1 flex-col">
-
         {/* Icon */}
         <div
           className={`
@@ -626,11 +693,7 @@ export function PromoCard({
             }
           `}
         >
-          <Icon
-            size={21}
-            strokeWidth={1.65}
-            aria-hidden="true"
-          />
+          <Icon size={21} strokeWidth={1.65} aria-hidden="true" />
         </div>
 
         {/* Heading and description */}
@@ -649,11 +712,7 @@ export function PromoCard({
             className={`
               mt-1.5 leading-relaxed
               ${descriptionSize ?? "text-xs sm:text-sm"}
-              ${
-                isEbook
-                  ? "text-slate-300"
-                  : "text-slate-500"
-              }
+              ${isEbook ? "text-slate-300" : "text-slate-500"}
             `}
           >
             {description}
@@ -684,9 +743,7 @@ export function PromoCard({
 
             <ArrowRight
               size={15}
-              className={`shrink-0 ${
-                isArabic ? "rotate-180" : ""
-              }`}
+              className={`shrink-0 ${isArabic ? "rotate-180" : ""}`}
               aria-hidden="true"
             />
           </Link>
@@ -695,7 +752,6 @@ export function PromoCard({
     </section>
   );
 }
-
 
 // function Promotions({ locale, t }: { locale: Locale; t: StoreCopy }) {
 //   return (
@@ -744,7 +800,6 @@ export function PromoCard({
 function Promotions({ locale, t }: { locale: Locale; t: StoreCopy }) {
   return (
     <aside className="grid h-full min-h-0 min-w-0 grid-rows-3 gap-3 sm:gap-4">
-
       {/* E-books */}
       <PromoCard
         locale={locale}
@@ -786,17 +841,14 @@ function Promotions({ locale, t }: { locale: Locale; t: StoreCopy }) {
         href={`/${locale}/shop/products?collection=open-access`}
         kind="open-access"
         icon={Unlock}
-       
         minHeight="min-h-0"
         padding="p-3.5 sm:p-4 lg:p-5"
         titleSize="text-base sm:text-lg"
         descriptionSize="text-xs leading-5"
       />
-
     </aside>
   );
 }
-
 
 function StoreCollectionBenefits({
   locale,
@@ -1068,7 +1120,7 @@ function InstitutionalServices({ locale }: { locale: Locale }) {
   );
 }
 
-const FLASH_SALE_END_DATE = "2026-11-31T23:59:59+04:00";
+const FLASH_SALE_END_DATE = "2026-12-30T23:59:59+04:00";
 
 function FlashSaleCountdown({ locale }: { locale: Locale }) {
   const isArabic = locale === "ar";
@@ -1218,291 +1270,277 @@ export function StorePage({ locale }: StorePageProps) {
 
         <StoreCollectionBenefits locale={locale} t={t} />
 
-        
-<section
-  aria-label={isArabic ? "المنتجات المميزة" : "Featured products"}
-  dir={isArabic ? "rtl" : "ltr"}
-  className="space-y-14 py-8 sm:space-y-20 sm:py-12"
->
-  {/* ==========================================
+        <section
+          aria-label={isArabic ? "المنتجات المميزة" : "Featured products"}
+          dir={isArabic ? "rtl" : "ltr"}
+          className="space-y-14 py-8 sm:space-y-20 sm:py-12"
+        >
+          {/* ==========================================
       UBH PUBLICATIONS
   ========================================== */}
-  <section className="relative">
-    <div className="mb-6 flex items-end justify-between gap-4 sm:mb-8">
-      <div className="min-w-0">
-        <div className="mb-3 flex items-center gap-2">
-          <span className="h-[2px] w-8 bg-ubh-gold" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-ubh-gold-deep sm:text-xs">
-            {isArabic ? "منشوراتنا" : "THE UBH COLLECTION"}
-          </span>
-        </div>
+          <section className="relative">
+            <div className="mb-6 flex items-end justify-between gap-4 sm:mb-8">
+              <div className="min-w-0">
+                <div className="mb-3 flex items-center gap-2">
+                  <span className="h-[2px] w-8 bg-ubh-gold" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-ubh-gold-deep sm:text-xs">
+                    {isArabic ? "منشوراتنا" : "THE UBH COLLECTION"}
+                  </span>
+                </div>
 
-        <h2 className="text-2xl font-bold tracking-tight text-ubh-navy sm:text-3xl">
-          {isArabic
-            ? "إصدارات دار الكتاب الجامعي"
-            : "University Book House"}
-        </h2>
+                <h2 className="text-2xl font-bold tracking-tight text-ubh-navy sm:text-3xl">
+                  {isArabic
+                    ? "إصدارات دار الكتاب الجامعي"
+                    : "University Book House"}
+                </h2>
 
-        <p className="mt-2 max-w-xl text-xs leading-6 text-slate-500 sm:text-sm">
-          {isArabic
-            ? "معرفة أكاديمية ومهنية من إصداراتنا المختارة."
-            : "Academic excellence and professional knowledge from our own publications."}
-        </p>
-      </div>
+                <p className="mt-2 max-w-xl text-xs leading-6 text-slate-500 sm:text-sm">
+                  {isArabic
+                    ? "معرفة أكاديمية ومهنية من إصداراتنا المختارة."
+                    : "Academic excellence and professional knowledge from our own publications."}
+                </p>
+              </div>
 
-      <Link
-        href={`/${locale}/shop/products?publisher=university-book-house`}
-        className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-ubh-navy/15 px-4 py-2.5 text-xs font-semibold text-ubh-navy transition-all duration-300 hover:border-ubh-gold hover:bg-ubh-navy hover:text-white sm:px-5 sm:text-sm"
-      >
-        {isArabic ? "عرض الكل" : "Explore all"}
-        <span className="transition-transform duration-300 group-hover:-translate-y-0.5">
-          ↗
-        </span>
-      </Link>
-    </div>
+              <Link
+                href={`/${locale}/shop/products?publisher=university-book-house`}
+                className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-ubh-navy/15 px-4 py-2.5 text-xs font-semibold text-ubh-navy transition-all duration-300 hover:border-ubh-gold hover:bg-ubh-navy hover:text-white sm:px-5 sm:text-sm"
+              >
+                {isArabic ? "عرض الكل" : "Explore all"}
+                <span className="transition-transform duration-300 group-hover:-translate-y-0.5">
+                  ↗
+                </span>
+              </Link>
+            </div>
 
-    <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-br from-[#f7f9fc] via-white to-[#f5f1e9] p-3 sm:p-5 lg:p-6">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -end-20 -top-24 h-64 w-64 rounded-full bg-ubh-gold/10 blur-3xl"
-      />
+            <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-gradient-to-br from-[#f7f9fc] via-white to-[#f5f1e9] p-3 sm:p-5 lg:p-6">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -end-20 -top-24 h-64 w-64 rounded-full bg-ubh-gold/10 blur-3xl"
+              />
 
-      <div className="relative">
-        <ProductCarousel
-          locale={locale}
-          products={ubhPublisherProducts}
-          title=""
-          viewAllHref={`/${locale}/shop/products?publisher=university-book-house`}
-          cardWidth={190}
-          cardHeight={370}
-          imageHeight={190}
-          gap={16}
-        />
-      </div>
-    </div>
-  </section>
+              <div className="relative">
+                <ProductCarousel
+                  locale={locale}
+                  products={ubhPublisherProducts}
+                  title=""
+                  viewAllHref={`/${locale}/shop/products?publisher=university-book-house`}
+                  cardWidth={190}
+                  cardHeight={370}
+                  imageHeight={190}
+                  gap={16}
+                />
+              </div>
+            </div>
+          </section>
 
-
-  {/* ==========================================
+          {/* ==========================================
       FLASH DEALS - MAIN PROMOTIONAL FEATURE
   ========================================== */}
- 
-{/* ==========================================
+
+          {/* ==========================================
     FLASH DEALS - PREMIUM LIGHT GOLD THEME
 ========================================== */}
 
-{/* FLASH DEALS */}
-{flashSaleProducts.length > 0 && (
-  <section className="relative isolate overflow-hidden rounded-[24px] border border-[#dfc18a] bg-gradient-to-br from-[#f8efd9] via-[#f3e2bf] to-[#e9c991] shadow-[0_16px_45px_-26px_rgba(130,91,35,0.38)]">
+          {/* FLASH DEALS */}
+          {flashSaleProducts.length > 0 && (
+            <section className="relative isolate overflow-hidden rounded-[24px] border border-[#dfc18a] bg-gradient-to-br from-[#f8efd9] via-[#f3e2bf] to-[#e9c991] shadow-[0_16px_45px_-26px_rgba(130,91,35,0.38)]">
+              {/* Background decorations */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 overflow-hidden"
+              >
+                <div className="absolute -end-20 -top-28 h-80 w-80 rounded-full bg-[#e5b85f]/25 blur-[85px]" />
 
-    {/* Background decorations */}
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 overflow-hidden"
-    >
-      <div className="absolute -end-20 -top-28 h-80 w-80 rounded-full bg-[#e5b85f]/25 blur-[85px]" />
+                <div className="absolute -start-24 bottom-0 h-64 w-64 rounded-full bg-[#fffaf0]/70 blur-[75px]" />
 
-      <div className="absolute -start-24 bottom-0 h-64 w-64 rounded-full bg-[#fffaf0]/70 blur-[75px]" />
+                <div
+                  className="absolute inset-0 opacity-[0.12]"
+                  style={{
+                    backgroundImage:
+                      "radial-gradient(#a77b36 0.7px, transparent 0.7px)",
+                    backgroundSize: "22px 22px",
+                  }}
+                />
+              </div>
 
-      <div
-        className="absolute inset-0 opacity-[0.12]"
-        style={{
-          backgroundImage:
-            "radial-gradient(#a77b36 0.7px, transparent 0.7px)",
-          backgroundSize: "22px 22px",
-        }}
-      />
-    </div>
+              {/* Header */}
+              <div className="relative z-10 px-4 pb-5 pt-6 sm:px-7 sm:pb-7 sm:pt-8 lg:px-9">
+                <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
+                  {/* Promotional content */}
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-4 flex flex-wrap items-center gap-2">
+                      <span className="inline-flex items-center gap-2 rounded-full border border-[#d8b776] bg-white/70 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-[#886329] sm:text-xs">
+                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#bd852e]" />
+                        {isArabic ? "عروض لفترة محدودة" : "LIMITED TIME OFFERS"}
+                      </span>
 
-    {/* Header */}
-    <div className="relative z-10 px-4 pb-5 pt-6 sm:px-7 sm:pb-7 sm:pt-8 lg:px-9">
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-[#92774b]">
+                        {isArabic ? "عروض حصرية" : "EXCLUSIVE UBH DEALS"}
+                      </span>
+                    </div>
 
-      <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
+                    <div className="flex items-start gap-3">
+                      <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-[#e1c58f] bg-white/75 text-3xl text-[#b68132] shadow-sm sm:flex">
+                        ⚡
+                      </div>
 
-        {/* Promotional content */}
-        <div className="min-w-0 flex-1">
+                      <div className="min-w-0">
+                        <h2 className="text-3xl font-extrabold tracking-tight text-[#061a37] sm:text-4xl lg:text-[42px]">
+                          {isArabic ? "عروض خاطفة" : "Flash Deals"}
+                        </h2>
 
-          <div className="mb-4 flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#d8b776] bg-white/70 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-[#886329] sm:text-xs">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#bd852e]" />
-              {isArabic ? "عروض لفترة محدودة" : "LIMITED TIME OFFERS"}
-            </span>
+                        <p className="mt-2 text-sm font-bold text-[#976b2b] sm:text-base">
+                          {isArabic
+                            ? "كتب مميزة. أسعار استثنائية."
+                            : "Exceptional books. Special prices."}
+                        </p>
 
-            <span className="text-[10px] font-semibold uppercase tracking-widest text-[#92774b]">
-              {isArabic ? "عروض حصرية" : "EXCLUSIVE UBH DEALS"}
-            </span>
-          </div>
+                        <p className="mt-2 max-w-lg text-xs leading-6 text-[#69583d] sm:text-sm">
+                          {isArabic
+                            ? "اكتشف عروضاً مميزة على مجموعة مختارة من الكتب الأكاديمية والمهنية."
+                            : "Discover exclusive offers on selected academic and professional titles."}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
 
-          <div className="flex items-start gap-3">
+                  {/* Countdown */}
+                  <div className="relative shrink-0 rounded-2xl border border-[#dfc99f] bg-[#fffdf8]/90 p-4 shadow-[0_8px_24px_-15px_rgba(110,75,25,0.3)] sm:min-w-[270px] sm:p-5">
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#80602c] sm:text-xs">
+                        {isArabic ? "ينتهي العرض خلال" : "OFFER ENDS IN"}
+                      </p>
 
-            <div className="hidden h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-[#e1c58f] bg-white/75 text-3xl text-[#b68132] shadow-sm sm:flex">
-              ⚡
-            </div>
+                      <span className="text-xl text-[#b68132]">◷</span>
+                    </div>
 
-            <div className="min-w-0">
-              <h2 className="text-3xl font-extrabold tracking-tight text-[#061a37] sm:text-4xl lg:text-[42px]">
-                {isArabic ? "عروض خاطفة" : "Flash Deals"}
-              </h2>
+                    <div className="rounded-xl border border-[#eee1c6] bg-[#f8efdf] p-2.5 sm:p-3">
+                      <FlashSaleCountdown locale={locale} />
+                    </div>
 
-              <p className="mt-2 text-sm font-bold text-[#976b2b] sm:text-base">
-                {isArabic
-                  ? "كتب مميزة. أسعار استثنائية."
-                  : "Exceptional books. Special prices."}
-              </p>
+                    <p className="mt-3 text-center text-[10px] text-[#806e52]">
+                      {isArabic
+                        ? "لا تفوّت فرصة الاستفادة من العروض"
+                        : "Don't miss these exclusive offers."}
+                    </p>
+                  </div>
+                </div>
 
-              <p className="mt-2 max-w-lg text-xs leading-6 text-[#69583d] sm:text-sm">
-                {isArabic
-                  ? "اكتشف عروضاً مميزة على مجموعة مختارة من الكتب الأكاديمية والمهنية."
-                  : "Discover exclusive offers on selected academic and professional titles."}
-              </p>
-            </div>
-          </div>
-        </div>
+                {/* Footer */}
+                <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-[#d9c49c]/80 pt-4">
+                  <div className="flex items-center gap-2 text-xs font-medium text-[#715c3b]">
+                    <span className="text-[#a77b32]">✦</span>
+                    {isArabic
+                      ? "مجموعة مختارة من الكتب بأسعار خاصة"
+                      : "Handpicked titles at special prices"}
+                  </div>
 
-        {/* Countdown */}
-        <div className="relative shrink-0 rounded-2xl border border-[#dfc99f] bg-[#fffdf8]/90 p-4 shadow-[0_8px_24px_-15px_rgba(110,75,25,0.3)] sm:min-w-[270px] sm:p-5">
+                  <Link
+                    href={`/${locale}/shop/products?collection=offers`}
+                    className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#a9782e] to-[#c69645] px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-[#936522]/15 transition-all duration-300 hover:-translate-y-0.5 hover:from-[#956522] hover:to-[#b58336] hover:shadow-lg sm:text-sm"
+                  >
+                    {isArabic ? "تسوق العروض" : "Shop deals"}
+                    <span className="transition-transform duration-300 group-hover:-translate-y-0.5">
+                      ↗
+                    </span>
+                  </Link>
+                </div>
+              </div>
 
-          <div className="mb-3 flex items-center justify-between gap-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#80602c] sm:text-xs">
-              {isArabic ? "ينتهي العرض خلال" : "OFFER ENDS IN"}
-            </p>
+              {/* Product showcase */}
+              <div className="relative z-10 border-t border-[#ddc69e] bg-[#fffaf1]/95 px-3 pb-5 pt-5 sm:px-6 sm:pb-7 sm:pt-6 lg:px-8">
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <div>
+                    <h3 className="text-sm font-bold text-[#061a37] sm:text-base">
+                      {isArabic ? "تسوق الكتب المخفضة" : "Explore the deals"}
+                    </h3>
 
-            <span className="text-xl text-[#b68132]">◷</span>
-          </div>
+                    <p className="mt-1 text-[10px] text-slate-500 sm:text-xs">
+                      {isArabic
+                        ? "اكتشف الكتب المتاحة ضمن العروض"
+                        : "Discover books included in this promotion."}
+                    </p>
+                  </div>
 
-          <div className="rounded-xl border border-[#eee1c6] bg-[#f8efdf] p-2.5 sm:p-3">
-            <FlashSaleCountdown locale={locale} />
-          </div>
+                  <span className="shrink-0 rounded-full border border-[#e4cfaa] bg-white px-3 py-1.5 text-[10px] font-bold text-[#8e682d] sm:text-xs">
+                    {flashSaleProducts.length} {isArabic ? "منتجات" : "DEALS"}
+                  </span>
+                </div>
 
-          <p className="mt-3 text-center text-[10px] text-[#806e52]">
-            {isArabic
-              ? "لا تفوّت فرصة الاستفادة من العروض"
-              : "Don't miss these exclusive offers."}
-          </p>
-        </div>
-      </div>
+                <div className="rounded-xl border border-[#e9dfcd] bg-white p-2 shadow-[0_4px_18px_-12px_rgba(50,40,20,0.2)] sm:p-4">
+                  <ProductCarousel
+                    locale={locale}
+                    products={flashSaleProducts}
+                    title=""
+                    viewAllHref={`/${locale}/shop/products?collection=offers`}
+                    cardWidth={190}
+                    cardHeight={370}
+                    imageHeight={190}
+                    gap={16}
+                    autoPlay={true}
+                    showViewAll={false}
+                    showOldPrice
+                    showDiscountBadge
+                  />
+                </div>
+              </div>
+            </section>
+          )}
 
-      {/* Footer */}
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-[#d9c49c]/80 pt-4">
-
-        <div className="flex items-center gap-2 text-xs font-medium text-[#715c3b]">
-          <span className="text-[#a77b32]">✦</span>
-          {isArabic
-            ? "مجموعة مختارة من الكتب بأسعار خاصة"
-            : "Handpicked titles at special prices"}
-        </div>
-
-        <Link
-          href={`/${locale}/shop/products?collection=offers`}
-          className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#a9782e] to-[#c69645] px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-[#936522]/15 transition-all duration-300 hover:-translate-y-0.5 hover:from-[#956522] hover:to-[#b58336] hover:shadow-lg sm:text-sm"
-        >
-          {isArabic ? "تسوق العروض" : "Shop deals"}
-          <span className="transition-transform duration-300 group-hover:-translate-y-0.5">
-            ↗
-          </span>
-        </Link>
-      </div>
-    </div>
-
-    {/* Product showcase */}
-    <div className="relative z-10 border-t border-[#ddc69e] bg-[#fffaf1]/95 px-3 pb-5 pt-5 sm:px-6 sm:pb-7 sm:pt-6 lg:px-8">
-
-      <div className="mb-4 flex items-center justify-between gap-3">
-        <div>
-          <h3 className="text-sm font-bold text-[#061a37] sm:text-base">
-            {isArabic ? "تسوق الكتب المخفضة" : "Explore the deals"}
-          </h3>
-
-          <p className="mt-1 text-[10px] text-slate-500 sm:text-xs">
-            {isArabic
-              ? "اكتشف الكتب المتاحة ضمن العروض"
-              : "Discover books included in this promotion."}
-          </p>
-        </div>
-
-        <span className="shrink-0 rounded-full border border-[#e4cfaa] bg-white px-3 py-1.5 text-[10px] font-bold text-[#8e682d] sm:text-xs">
-          {flashSaleProducts.length} {isArabic ? "منتجات" : "DEALS"}
-        </span>
-      </div>
-
-      <div className="rounded-xl border border-[#e9dfcd] bg-white p-2 shadow-[0_4px_18px_-12px_rgba(50,40,20,0.2)] sm:p-4">
-        <ProductCarousel
-          locale={locale}
-          products={flashSaleProducts}
-          title=""
-          viewAllHref={`/${locale}/shop/products?collection=offers`}
-          cardWidth={190}
-          cardHeight={370}
-          imageHeight={190}
-          gap={16}
-          autoPlay={true}
-          showViewAll={false}
-          showOldPrice
-          showDiscountBadge
-        />
-      </div>
-    </div>
-  </section>
-)}
-
-
-
-  {/* ==========================================
+          {/* ==========================================
       FEATURED PRODUCTS
   ========================================== */}
-  <section className="relative">
+          <section className="relative">
+            <div className="mb-6 flex items-end justify-between gap-4 sm:mb-8">
+              <div className="min-w-0">
+                <div className="mb-3 flex items-center gap-2">
+                  <span className="h-[2px] w-8 bg-ubh-gold" />
 
-    <div className="mb-6 flex items-end justify-between gap-4 sm:mb-8">
-      <div className="min-w-0">
-        <div className="mb-3 flex items-center gap-2">
-          <span className="h-[2px] w-8 bg-ubh-gold" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-ubh-gold-deep sm:text-xs">
+                    {isArabic ? "مختاراتنا" : "CURATED FOR YOU"}
+                  </span>
+                </div>
 
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-ubh-gold-deep sm:text-xs">
-            {isArabic ? "مختاراتنا" : "CURATED FOR YOU"}
-          </span>
-        </div>
+                <h2 className="text-2xl font-bold tracking-tight text-ubh-navy sm:text-3xl">
+                  {isArabic ? "منتجات مميزة" : "Featured Products"}
+                </h2>
 
-        <h2 className="text-2xl font-bold tracking-tight text-ubh-navy sm:text-3xl">
-          {isArabic ? "منتجات مميزة" : "Featured Products"}
-        </h2>
+                <p className="mt-2 max-w-xl text-xs leading-6 text-slate-500 sm:text-sm">
+                  {isArabic
+                    ? "اكتشف كتباً مختارة بعناية في مختلف التخصصات."
+                    : "Explore carefully selected books across leading academic and professional subjects."}
+                </p>
+              </div>
 
-        <p className="mt-2 max-w-xl text-xs leading-6 text-slate-500 sm:text-sm">
-          {isArabic
-            ? "اكتشف كتباً مختارة بعناية في مختلف التخصصات."
-            : "Explore carefully selected books across leading academic and professional subjects."}
-        </p>
-      </div>
+              <Link
+                href={`/${locale}/shop/products`}
+                className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-ubh-navy/15 px-4 py-2.5 text-xs font-semibold text-ubh-navy transition-all duration-300 hover:border-ubh-gold hover:bg-ubh-navy hover:text-white sm:px-5 sm:text-sm"
+              >
+                {isArabic ? "تصفح الكل" : "Explore all"}
+                <span className="transition-transform duration-300 group-hover:-translate-y-0.5">
+                  ↗
+                </span>
+              </Link>
+            </div>
 
-      <Link
-        href={`/${locale}/shop/products`}
-        className="group inline-flex shrink-0 items-center gap-2 rounded-full border border-ubh-navy/15 px-4 py-2.5 text-xs font-semibold text-ubh-navy transition-all duration-300 hover:border-ubh-gold hover:bg-ubh-navy hover:text-white sm:px-5 sm:text-sm"
-      >
-        {isArabic ? "تصفح الكل" : "Explore all"}
-        <span className="transition-transform duration-300 group-hover:-translate-y-0.5">
-          ↗
-        </span>
-      </Link>
-    </div>
+            <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-3 shadow-sm shadow-slate-200/30 sm:p-5 lg:p-6">
+              <div className="pointer-events-none absolute -end-24 -top-24 h-64 w-64 rounded-full bg-blue-50/80 blur-3xl" />
 
-    <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-3 shadow-sm shadow-slate-200/30 sm:p-5 lg:p-6">
-      <div className="pointer-events-none absolute -end-24 -top-24 h-64 w-64 rounded-full bg-blue-50/80 blur-3xl" />
-
-      <div className="relative">
-        <ProductCarousel
-          locale={locale}
-          products={productsForCarousel}
-          title=""
-          viewAllHref={`/${locale}/shop/products`}
-          cardWidth={190}
-          cardHeight={370}
-          imageHeight={190}
-          gap={16}
-        />
-      </div>
-    </div>
-  </section>
-</section>
-
+              <div className="relative">
+                <ProductCarousel
+                  locale={locale}
+                  products={productsForCarousel}
+                  title=""
+                  viewAllHref={`/${locale}/shop/products`}
+                  cardWidth={190}
+                  cardHeight={370}
+                  imageHeight={190}
+                  gap={16}
+                />
+              </div>
+            </div>
+          </section>
+        </section>
 
         <AboutStore locale={locale} />
       </Container>

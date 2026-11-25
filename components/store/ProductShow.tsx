@@ -26,7 +26,6 @@ import {
 } from "@/lib/store/categories";
 import { HeroContainer } from "./ui/HeroContainer";
 
-
 type Collection =
   | "new-releases"
   | "best-sellers"
@@ -476,19 +475,19 @@ export function ProductShow({ locale, initialFilters }: ProductShowProps) {
   }, [mobileFiltersOpen]);
 
   useEffect(() => {
-  const mobile = window.matchMedia("(max-width: 639px)");
+    const mobile = window.matchMedia("(max-width: 639px)");
 
-  const updateView = () => {
-    if (mobile.matches) {
-      setViewMode("grid");
-    }
-  };
+    const updateView = () => {
+      if (mobile.matches) {
+        setViewMode("grid");
+      }
+    };
 
-  updateView();
-  mobile.addEventListener("change", updateView);
+    updateView();
+    mobile.addEventListener("change", updateView);
 
-  return () => mobile.removeEventListener("change", updateView);
-}, []);
+    return () => mobile.removeEventListener("change", updateView);
+  }, []);
 
   const subjects = useMemo(
     () =>
@@ -818,12 +817,10 @@ export function ProductShow({ locale, initialFilters }: ProductShowProps) {
       dir={isArabic ? "rtl" : "ltr"}
       className="min-h-[70vh] bg-ubh-canvas pb-16 pt-8 sm:pb-20 sm:pt-12"
     >
+      <HeroContainer className="mb-5 sm:mb-7">
+        <ProductListingHero locale={locale} />
+      </HeroContainer>
 
-<HeroContainer className="mb-5 sm:mb-7">
-
-    <ProductListingHero locale={locale} />
-</HeroContainer >
-      
       <Container>
         {/* <header className="relative overflow-hidden rounded-3xl bg-ubh-navy px-5 py-8 text-white sm:px-9 sm:py-10 lg:px-12 lg:py-12">
           <div
@@ -921,18 +918,18 @@ export function ProductShow({ locale, initialFilters }: ProductShowProps) {
               </button>
 
               <button
-  type="button"
-  onClick={() => setViewMode("list")}
-  aria-label={t.listView}
-  aria-pressed={viewMode === "list"}
-  className={`hidden h-8 w-9 items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold sm:flex ${
-    viewMode === "list"
-      ? "bg-ubh-navy text-white"
-      : "text-slate-500 hover:bg-slate-100 hover:text-ubh-navy"
-  }`}
->
-  <List size={18} aria-hidden="true" />
-</button>
+                type="button"
+                onClick={() => setViewMode("list")}
+                aria-label={t.listView}
+                aria-pressed={viewMode === "list"}
+                className={`hidden h-8 w-9 items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ubh-gold sm:flex ${
+                  viewMode === "list"
+                    ? "bg-ubh-navy text-white"
+                    : "text-slate-500 hover:bg-slate-100 hover:text-ubh-navy"
+                }`}
+              >
+                <List size={18} aria-hidden="true" />
+              </button>
             </div>
 
             {/* Keep your existing sort dropdown here */}
